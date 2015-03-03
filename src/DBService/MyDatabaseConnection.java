@@ -21,7 +21,7 @@ public class MyDatabaseConnection {
     public void connect() {
         try {
             Class.forName("org.postgresql.Driver").newInstance();
-            database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbprojekt", "projekt", "geheim");
+            database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/public", "postgres", "postgres"); // localhost:5432/dbprojekt", "projekt", "geheim"
             statement = database.createStatement();
         } catch (Exception ex) {
             System.out.println("Keine Datenbankverbindung möglich: "
