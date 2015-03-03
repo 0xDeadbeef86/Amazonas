@@ -25,7 +25,7 @@ public class LoginHelper
         dbVerbindung.connect();
         //System.out.println(sql);
         ResultSet res = dbVerbindung.executeQuery(sql);
-        //System.out.println(res);
+        System.out.println(res);
         
         int id = 0;
         while(res.next()) {            
