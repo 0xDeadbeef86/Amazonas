@@ -17,9 +17,10 @@ import model.User;
  */
 public class ArtikelHelper 
 {
-    
+    // test
     public static void insertArticle(String name, String beschreibung, int nettopreis, boolean aktiv) throws SQLException {
         String sql;
+        String test = "test";
         sql = "INSERT INTO \"Artikel\" (name, beschreibung, nettopreis, aktiv) \n" +
         "VALUES (" + "'"+name+"'" +"," + "'"+beschreibung+"'" + "," + nettopreis + "," + aktiv + ");";
         MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
