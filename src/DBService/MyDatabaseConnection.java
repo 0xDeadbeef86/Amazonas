@@ -1,6 +1,3 @@
-/*
-
-*/
 package DBService;
 
 import java.sql.Connection;
@@ -21,8 +18,8 @@ public class MyDatabaseConnection {
     public void connect() {
         try {
             Class.forName("org.postgresql.Driver").newInstance();
-            database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"); // localhost:5432/dbprojekt", "projekt", "geheim"
-            statement = database.createStatement();
+            database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/dbprojekt", "projekt", "geheim"); // localhost:5432/dbprojekt", "projekt", "geheim"
+            statement = database.createStatement();    
         } catch (Exception ex) {
             System.out.println("Keine Datenbankverbindung möglich: "
                     + ex.getMessage());

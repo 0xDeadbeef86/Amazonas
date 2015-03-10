@@ -9,7 +9,6 @@ import DBService.LoginHelper;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import model.User;
 
 /**
  *
@@ -116,35 +115,23 @@ public class LoginScreen extends javax.swing.JFrame {
         
 
         int id = 0;
-        try {          
-            String username = this.tf_Username.getText();
-            String password = this.tf_Passwort.getText();
-            id = LoginHelper.getLoginID(username, password);
-            
-            // Wenns den User gibt, dann ist die id > 0
-            if(id > 0)
-            {                
-                // User anlegen:
-                LoginHelper.setUserData(id);
-                
-                System.out.println("Titel: " + User.GetInstance().getAccessLevel() + " (ID: " + User.GetInstance().getTitle_id() + ")");
-                
-                //erfolgreich
-                setVisible(false);
-                new HauptScreen().setVisible(true);
-            }
-            else
-            {
-                //fehlgeschlagen
-                System.out.println("Login fehlgeschlagen");
-            }
-            
-            
+        try {
+            id = LoginHelper.getLoginID(this.tf_Username.getText(), this.tf_Passwort.getText());
         } catch (SQLException ex) {
             Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-  
+
+        if(id > 0)
+        {
+            //erfolgreich
+            setVisible(false);
+            new HauptScreen().setVisible(true);
+        }
+        else
+        {
+            //fehlgeschlagen
+            System.out.println("Login fehlgeschlagen");
+        }
 
         
     }//GEN-LAST:event_loginActionPerformed

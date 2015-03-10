@@ -8,6 +8,7 @@ package View;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.ArtikelTableModel;
 import model.User;
 
 /**
@@ -15,14 +16,14 @@ import model.User;
  * @author lenzch
  */
 public class HauptScreen extends javax.swing.JFrame {
-    ArtikelForm artikelForm;
+
     /**
      * Creates new form HauptScreen
      */
     public HauptScreen() throws SQLException {
-        initComponents();     
-        
-        artikelForm = new ArtikelForm();
+        initComponents();
+        //TBL_Artikel.
+        this.TBL_Artikel.setModel(new ArtikelTableModel());
     }
 
     /**
@@ -34,44 +35,70 @@ public class HauptScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
+        BT_NeuerArtikel = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TBL_Artikel = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Artikel anlegen");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        BT_NeuerArtikel.setText("neuer Artikel");
+        BT_NeuerArtikel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                BT_NeuerArtikelActionPerformed(evt);
             }
         });
+
+        TBL_Artikel.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(TBL_Artikel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(269, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(239, 239, 239)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(BT_NeuerArtikel)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
-                .addContainerGap(258, Short.MAX_VALUE))
+                .addGap(95, 95, 95)
+                .addComponent(BT_NeuerArtikel)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        artikelForm.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void BT_NeuerArtikelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_NeuerArtikelActionPerformed
+            setVisible(false);
+        try {
+            new ArtikelForm().setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BT_NeuerArtikelActionPerformed
 
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton BT_NeuerArtikel;
+    private javax.swing.JTable TBL_Artikel;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

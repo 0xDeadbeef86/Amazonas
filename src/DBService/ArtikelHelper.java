@@ -9,7 +9,6 @@ package DBService;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.Artikel;
-import model.User;
 
 /**
  *
@@ -17,15 +16,24 @@ import model.User;
  */
 public class ArtikelHelper 
 {
-    // test
-    public static void insertArticle(String name, String beschreibung, int nettopreis, boolean aktiv) throws SQLException {
+    
+    public static boolean insertArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuerID, int kategorieID, boolean aktiv) throws SQLException {
         String sql;
-        String test = "test";
-        sql = "INSERT INTO \"Artikel\" (name, beschreibung, nettopreis, aktiv) \n" +
-        "VALUES (" + "'"+name+"'" +"," + "'"+beschreibung+"'" + "," + nettopreis + "," + aktiv + ");";
+        sql = "INSERT INTO \"Artikel\" (name, beschreibung, fk_mehrwertsteuer, fk_kategorie, nettopreis, aktiv)" +
+        "VALUES (" + "'"+name+"'" +"," + "'"+beschreibung+"'" + "," + mehrwertsteuerID + "," + kategorieID + "," + nettopreis + "," + aktiv + ");";
         MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
-        dbVerbindung.connect();
-        dbVerbindung.executeUpdate(sql);
+        
+        try
+        {
+            dbVerbindung.connect();
+            dbVerbindung.executeUpdate(sql);
+            return true;
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        return false; //Fehler
     }
     
     public static Artikel getArticle(int id) throws SQLException {
