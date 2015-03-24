@@ -94,11 +94,15 @@ VALUES (7);
 
 --Kategorien
 INSERT INTO "Kategorie" (name)
-VALUES ("Nahrungsmittel");
+VALUES ('Nahrungsmittel');
 INSERT INTO "Kategorie" (name)
-VALUES ("Sonstiges");
+VALUES ('Sonstiges');
 
 
 --Artikel
 INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
 VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '2' , '1', '290', 'true');
+
+
+INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
+VALUES ('Auto', 'Bemwe', '2' , '2', '3400000', 'true');
