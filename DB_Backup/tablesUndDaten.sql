@@ -68,6 +68,7 @@ CREATE TABLE "RechnungArtikel" (
     anzahl INT CHECK (anzahl > 0)
 );
 
+--Berechtigungen
 INSERT INTO "Berechtigung" (berechtigungsstufe, titel) 
 VALUES (0, 'kein Zugriff');
 INSERT INTO "Berechtigung" (berechtigungsstufe, titel) 
@@ -77,7 +78,7 @@ VALUES (2, 'Mitarbeiter');
 INSERT INTO "Berechtigung" (berechtigungsstufe, titel) 
 VALUES (3, 'Adminstrator');
 
-
+--User
 INSERT INTO "User" (username, passwort, "fk_berechtigung")
 VALUES ('kunde', 'a', 1);
 INSERT INTO "User" (username, passwort, "fk_berechtigung")
@@ -85,3 +86,23 @@ VALUES ('mitarbeiter', 'a', 2);
 INSERT INTO "User" (username, passwort, "fk_berechtigung")
 VALUES ('admin', 'a', 3);
 
+--Mehrwersteuersätze
+INSERT INTO "Mehrwertsteuer" (mehrwertsteuersatz)
+VALUES (19);
+INSERT INTO "Mehrwertsteuer" (mehrwertsteuersatz)
+VALUES (7);
+
+--Kategorien
+INSERT INTO "Kategorie" (name)
+VALUES ('Nahrungsmittel');
+INSERT INTO "Kategorie" (name)
+VALUES ('Sonstiges');
+
+
+--Artikel
+INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
+VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '2' , '1', '290', 'true');
+
+
+INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
+VALUES ('Auto', 'Bemwe', '2' , '2', '3400000', 'true');
