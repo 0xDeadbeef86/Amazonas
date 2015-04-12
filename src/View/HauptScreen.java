@@ -5,11 +5,12 @@
  */
 package View;
 
+import DBService.ArtikelHelper;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Artikel;
 import model.ArtikelTableModel;
-import model.User;
 
 /**
  *
@@ -23,7 +24,9 @@ public class HauptScreen extends javax.swing.JFrame {
     public HauptScreen() throws SQLException {
         initComponents();
         //TBL_Artikel.
-        this.TBL_Artikel.setModel(new ArtikelTableModel());
+        this.TBL_Artikel.setModel(new ArtikelTableModel());       
+        //int index = this.TBL_Artikel.getSelectedRow();
+        //System.out.println(index);
     }
 
     /**
@@ -59,6 +62,16 @@ public class HauptScreen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TBL_Artikel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TBL_ArtikelFocusGained(evt);
+            }
+        });
+        TBL_Artikel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TBL_ArtikelMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TBL_Artikel);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -93,6 +106,31 @@ public class HauptScreen extends javax.swing.JFrame {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BT_NeuerArtikelActionPerformed
+
+    private void TBL_ArtikelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TBL_ArtikelFocusGained
+        // TODO add your handling code here:
+        //int index = this.TBL_Artikel.getSelectedRow();
+        //System.out.println(index);
+    }//GEN-LAST:event_TBL_ArtikelFocusGained
+
+    private void TBL_ArtikelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBL_ArtikelMouseClicked
+        // TODO add your handling code here:
+        int index = this.TBL_Artikel.getSelectedRow();
+        System.out.println(index);
+        
+        if(evt.getClickCount() >= 2) {
+            try {                
+                int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
+                Artikel artikel = ArtikelHelper.getArticle(id);
+
+                new ArtikelDetails(artikel).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            //System.out.println("Doppelklick auf: " + index);
+        }
+    }//GEN-LAST:event_TBL_ArtikelMouseClicked
 
     
 

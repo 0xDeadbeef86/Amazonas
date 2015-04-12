@@ -39,8 +39,10 @@ public class ArtikelTableModel extends AbstractTableModel {
     @Override
     public String getColumnName(int column) {
         if(column == 0)
+            return "id";
+        if(column == 1)
             return "Name";
-        else
+        else 
             return "Beschreibung";    
     }
     
@@ -48,9 +50,11 @@ public class ArtikelTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        if(columnIndex == 0)
+          if(columnIndex == 0)
+            return artikelList.get(rowIndex).getId();
+        if(columnIndex == 1)
             return artikelList.get(rowIndex).getName();
-        else if(columnIndex == 1)
+        else if(columnIndex == 2)
             return artikelList.get(rowIndex).getBeschreibung();
         else
             return null;
