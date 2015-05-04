@@ -5,9 +5,7 @@
  */
 package View;
 
-import javax.swing.JOptionPane;
 import model.Artikel;
-import model.Warenkorb;
 
 /**
  *
@@ -20,6 +18,7 @@ public class ArtikelDetails extends javax.swing.JFrame {
     public ArtikelDetails(Artikel artikel) {
         initComponents();  
         
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         this.artikel = artikel;
         //System.out.println(artikel.getName());
         this.LB_ArtikelName.setText(artikel.getName());
@@ -43,22 +42,21 @@ public class ArtikelDetails extends javax.swing.JFrame {
         LB_ArtikelPreis = new javax.swing.JLabel();
         BT_Warenkorb = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         LB_ArtikelName.setText("ArtikelName");
 
         LB_ArtikelBeschreibung.setText("ArtikelBeschreibung");
 
-        TB_ArtikelMenge.setText("Menge");
         TB_ArtikelMenge.addInputMethodListener(new java.awt.event.InputMethodListener() {
+            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
+            }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 TB_ArtikelMengeInputMethodTextChanged(evt);
             }
-            public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
-            }
         });
 
-        LB_ArtikelMenge.setText("ArtikelMenge");
+        LB_ArtikelMenge.setText("Menge");
 
         LB_ArtikelPreis.setText("Preis");
 
@@ -74,21 +72,19 @@ public class ArtikelDetails extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(16, 16, 16)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(BT_Warenkorb)
+                        .addComponent(LB_ArtikelBeschreibung)
+                        .addComponent(LB_ArtikelName))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(63, 63, 63)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BT_Warenkorb)
-                            .addComponent(LB_ArtikelBeschreibung)
-                            .addComponent(LB_ArtikelName)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(16, 16, 16)
                         .addComponent(LB_ArtikelMenge)
-                        .addGap(18, 18, 18)
-                        .addComponent(TB_ArtikelMenge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(43, 43, 43)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(TB_ArtikelMenge, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29)
                         .addComponent(LB_ArtikelPreis)))
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(189, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -115,30 +111,7 @@ public class ArtikelDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_TB_ArtikelMengeInputMethodTextChanged
 
     private void BT_WarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_WarenkorbActionPerformed
-        int anzahl = 0;
-        try
-        { 
-            anzahl = Integer.parseInt(this.TB_ArtikelMenge.getText());
-        }
-        catch(Exception ex)
-        { }
-        if(anzahl > 0)
-        {
-            Warenkorb.GetInstance().addArtikel(artikel.getId(), anzahl);
-            if(anzahl == 1)
-            {
-                JOptionPane.showMessageDialog(this, "Es wurde "+anzahl+" Artikel hinzugefügt.\n");
-            }
-            else
-            {
-                JOptionPane.showMessageDialog(this, "Es wurden "+anzahl+" Artikel hinzugefügt.\n");
-            }
-        }
-        else
-        {
-            JOptionPane.showMessageDialog(this, "Bitte geben Sie eine korrekte Menge ein.\n");
-        }
-        
+        // TODO add your handling code here:
         
     }//GEN-LAST:event_BT_WarenkorbActionPerformed
 

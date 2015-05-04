@@ -24,25 +24,22 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" attributes="0">
-              <Group type="103" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="63" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="BT_Warenkorb" min="-2" max="-2" attributes="0"/>
-                          <Component id="LB_ArtikelBeschreibung" min="-2" max="-2" attributes="0"/>
-                          <Component id="LB_ArtikelName" min="-2" max="-2" attributes="0"/>
-                      </Group>
+              <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="BT_Warenkorb" min="-2" max="-2" attributes="0"/>
+                      <Component id="LB_ArtikelBeschreibung" min="-2" max="-2" attributes="0"/>
+                      <Component id="LB_ArtikelName" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Component id="LB_ArtikelMenge" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="TB_ArtikelMenge" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="TB_ArtikelMenge" min="-2" pref="30" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Component id="LB_ArtikelPreis" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="95" max="32767" attributes="0"/>
+              <EmptySpace pref="189" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -78,16 +75,13 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="TB_ArtikelMenge">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Menge"/>
-      </Properties>
       <Events>
         <EventHandler event="inputMethodTextChanged" listener="java.awt.event.InputMethodListener" parameters="java.awt.event.InputMethodEvent" handler="TB_ArtikelMengeInputMethodTextChanged"/>
       </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="LB_ArtikelMenge">
       <Properties>
-        <Property name="text" type="java.lang.String" value="ArtikelMenge"/>
+        <Property name="text" type="java.lang.String" value="Menge"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="LB_ArtikelPreis">
@@ -99,6 +93,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="In Warenkorb"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BT_WarenkorbActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>

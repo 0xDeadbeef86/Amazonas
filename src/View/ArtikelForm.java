@@ -10,6 +10,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.Artikel;
 
 /**
  *
@@ -30,6 +31,25 @@ public class ArtikelForm extends javax.swing.JFrame {
         this.CheckBox_Aktiv.setSelected(true);
     }
 
+     public ArtikelForm(Artikel artikel) throws SQLException {
+        initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
+        fillComboboxen();
+        this.CheckBox_Aktiv.setSelected(true);
+        
+        // set attributes
+        this.TB_Name.setText(artikel.getName());
+        this.TF_Beschreibung.setText(artikel.getBeschreibung());
+        StringBuilder sb = new StringBuilder();
+        sb.append(artikel.getNettopreis());        
+        this.TB_Nettopreis.setText(sb.toString());       
+        StringBuilder sb2 = new StringBuilder();
+        sb2.append(artikel.getMehrwertsteuer()); 
+        sb2.append("%");
+        this.CB_Mehrwertsteuersatz.setSelectedItem(sb2);
+        //this.CB_Kategorie.setSelectedItem(artikel.getKategorie());
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

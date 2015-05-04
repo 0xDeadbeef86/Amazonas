@@ -45,11 +45,15 @@ public class ArtikelHelper
                 
         String name = "";
         String beschreibung = "";
+        int nettopreis = -1;
+        int mehrwertsteuer = -1;
         boolean aktiv = false;
         
          while(res.next()) {            
             name = res.getString("name");    
             beschreibung = res.getString("beschreibung");
+            nettopreis = res.getInt("nettopreis");
+            mehrwertsteuer = res.getInt("fk_mehrwertsteuer");
             aktiv = res.getBoolean("aktiv");
          }
         
@@ -59,6 +63,8 @@ public class ArtikelHelper
         artikel.setId(id);
         artikel.setName(name);
         artikel.setBeschreibung(beschreibung);
+        artikel.setNettpreis(nettopreis);
+        artikel.setMehrwertsteuer(mehrwertsteuer);
         artikel.setAktiv(aktiv);
         
         return artikel;

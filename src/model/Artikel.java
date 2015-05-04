@@ -34,6 +34,22 @@ public class Artikel {
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
     }
+    
+    public int getNettopreis() {
+        return nettopreis;
+    }
+
+    public void setNettpreis(int nettopreis) {
+        this.nettopreis = nettopreis;
+    }
+    
+    public int getMehrwertsteuer() {
+        return mehrwertsteuer;
+    }
+
+    public void setMehrwertsteuer(int mehrwertsteuer) {
+        this.mehrwertsteuer = mehrwertsteuer;
+    }
 
     public boolean isAktiv() {
         return aktiv;
@@ -45,6 +61,8 @@ public class Artikel {
     private int id;
     private String name;
     private String beschreibung;
+    private int nettopreis;
+    private int mehrwertsteuer;
     private boolean aktiv;
     
 }
