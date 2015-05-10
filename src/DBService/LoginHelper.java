@@ -65,8 +65,7 @@ public class LoginHelper
             while(res_Berechtigung.next()) {         
                 berechtigungLevel = res_Berechtigung.getString("titel");                    
             }
-        }
-                
+        }     
         
         // set data for User object
         User.GetInstance().setName(name);

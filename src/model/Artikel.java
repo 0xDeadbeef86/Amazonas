@@ -1,3 +1,8 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package model;
 
 /**
@@ -29,7 +34,7 @@ public class Artikel {
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
     }
-
+    
     public int getNettopreis() {
         return nettopreis;
     }
@@ -37,13 +42,21 @@ public class Artikel {
     public void setNettpreis(int nettopreis) {
         this.nettopreis = nettopreis;
     }
-
+    
     public int getMehrwertsteuer() {
         return mehrwertsteuer;
     }
 
     public void setMehrwertsteuer(int mehrwertsteuer) {
         this.mehrwertsteuer = mehrwertsteuer;
+    }
+    
+    public String getKategorie() {
+        return kategorie;
+    }
+
+    public void setKategorie(String kategorie) {
+        this.kategorie = kategorie;
     }
 
     public boolean isAktiv() {
@@ -58,5 +71,7 @@ public class Artikel {
     private String beschreibung;
     private int nettopreis;
     private int mehrwertsteuer;
+    private String kategorie;
     private boolean aktiv;
+    
 }

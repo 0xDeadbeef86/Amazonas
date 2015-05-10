@@ -40,7 +40,7 @@ public class User {
         this.id = id;
     }
     
-    public void setTitle(String accessLevel) {
+    public void setTitle(String accessLevel) {        
         this.titel = accessLevel;
     }
     

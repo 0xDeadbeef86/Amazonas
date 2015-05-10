@@ -101,7 +101,7 @@ VALUES ('Sonstiges');
 
 --Artikel
 INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
-VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '2' , '1', '290', 'true');
+VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '1' , '1', '290', 'true');
 
 
 INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 

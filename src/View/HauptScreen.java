@@ -6,6 +6,7 @@
 package View;
 
 import DBService.ArtikelHelper;
+import com.sun.xml.internal.ws.api.model.ExceptionType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,32 +16,34 @@ import model.User;
 
 /**
  *
- * @author fixch
+ * @author lenzch
  */
 public class HauptScreen extends javax.swing.JFrame {
 
     private int currentlySelectedArtikle = -1;
-
     void setCurrentlySelectedArticle(int id) {
         currentlySelectedArtikle = id;
         System.out.println(currentlySelectedArtikle);
     }
-    
+    /**
+     * Creates new form HauptScreen
+     */
     public HauptScreen() throws SQLException {
         initComponents();
+        //TBL_Artikel.
+        this.TBL_Artikel.setModel(new ArtikelTableModel());            
         
-        this.TBL_Artikel.setModel(new ArtikelTableModel());
-
-        BT_NeuerArtikel.setVisible(false);
-        BT_NeuerArtikel.setEnabled(false);
+        btnEdit.setVisible(false);
+        btnEdit.setEnabled(false);
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
         String accessLevel = User.GetInstance().getAccessLevel();
-        if (accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) {
-            BT_NeuerArtikel.setVisible(true);
-        }
+        if(accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) 
+            btnEdit.setVisible(true);
+        
+        //int index = this.TBL_Artikel.getSelectedRow();
+        //System.out.println(index);
     }
 
-   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -50,14 +53,19 @@ public class HauptScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        BT_NeuerArtikel = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         TBL_Artikel = new javax.swing.JTable();
-        BT_NeuerArtikel = new javax.swing.JButton();
-        BT_ArtikelBearbeiten = new javax.swing.JButton();
-        BT_ZumWarenkorb = new javax.swing.JButton();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        btnEdit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        BT_NeuerArtikel.setText("neuer Artikel");
+        BT_NeuerArtikel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_NeuerArtikelActionPerformed(evt);
+            }
+        });
 
         TBL_Artikel.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -70,16 +78,23 @@ public class HauptScreen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        TBL_Artikel.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                TBL_ArtikelFocusGained(evt);
+            }
+        });
+        TBL_Artikel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                TBL_ArtikelMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(TBL_Artikel);
 
-        BT_NeuerArtikel.setText("neuer Artikel");
-
-        BT_ArtikelBearbeiten.setText("Bearbeiten");
-
-        BT_ZumWarenkorb.setText("zum Warenkorb");
-        BT_ZumWarenkorb.addActionListener(new java.awt.event.ActionListener() {
+        btnEdit.setText("Edit");
+        btnEdit.setEnabled(false);
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BT_ZumWarenkorbActionPerformed(evt);
+                btnEditActionPerformed(evt);
             }
         });
 
@@ -87,73 +102,56 @@ public class HauptScreen extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
+                .addGap(239, 239, 239)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(BT_ZumWarenkorb)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(BT_ArtikelBearbeiten)
-                                .addGap(22, 22, 22)
-                                .addComponent(BT_NeuerArtikel))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 578, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(21, 21, 21))
+                        .addComponent(btnEdit)
+                        .addGap(18, 18, 18)
+                        .addComponent(BT_NeuerArtikel)))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(BT_ZumWarenkorb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_NeuerArtikel)
-                    .addComponent(BT_ArtikelBearbeiten))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(189, 189, 189)
-                        .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(26, 26, 26))
+                    .addComponent(btnEdit))
+                .addGap(24, 24, 24)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void BT_ZumWarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_ZumWarenkorbActionPerformed
-       
-    }//GEN-LAST:event_BT_ZumWarenkorbActionPerformed
-
-    private void BT_NeuerArtikelActionPerformed(java.awt.event.ActionEvent evt) {
+    private void BT_NeuerArtikelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_NeuerArtikelActionPerformed
         try {
             new ArtikelForm().setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }//GEN-LAST:event_BT_NeuerArtikelActionPerformed
 
-    
-    private void TBL_ArtikelFocusGained(java.awt.event.FocusEvent evt) {
+    private void TBL_ArtikelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TBL_ArtikelFocusGained
         // TODO add your handling code here:
         //int index = this.TBL_Artikel.getSelectedRow();
         //System.out.println(index);
-    }
+    }//GEN-LAST:event_TBL_ArtikelFocusGained
 
-    private void ArtikelAnzeigen(int clickcount) {
-        int index = this.TBL_Artikel.getSelectedRow();
-        if (index != -1) {
-            BT_NeuerArtikel.setEnabled(true);
-            int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
-            setCurrentlySelectedArticle(id);
+    private void TBL_ArtikelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBL_ArtikelMouseClicked
+        // TODO add your handling code here:
+        int index = this.TBL_Artikel.getSelectedRow();       
+        if(index != -1) {
+            btnEdit.setEnabled(true);
+             int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
+             setCurrentlySelectedArticle(id);
         }
-
-        if (clickcount >= 2) {
-            try {
+        
+        if(evt.getClickCount() >= 2) {
+            try {                
                 int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
                 Artikel artikel = ArtikelHelper.getArticle(id);
 
@@ -161,66 +159,37 @@ public class HauptScreen extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            
             //System.out.println("Doppelklick auf: " + index);
         }
-    }
+    }//GEN-LAST:event_TBL_ArtikelMouseClicked
 
-    private void TBL_ArtikelMouseClicked(java.awt.event.MouseEvent evt) {
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-        ArtikelAnzeigen(evt.getClickCount());
-    }
+        //System.out.println("TODO: Formular für \"Artikel\" bearbeiten");
+        int selectedRowId = this.TBL_Artikel.getSelectedRow();        
+        
+        int artikelId = -1;
+        if(selectedRowId != -1) {
+            btnEdit.setEnabled(true);
+             artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 0);
+             
+            Artikel artikel;
+            try {
+                artikel = ArtikelHelper.getArticle(artikelId);
+                new ArtikelForm(artikel).setVisible(true);// EditArtikelForm(artikel).setVisible(true);
+            } catch (SQLException ex) {
+                Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }  
+        }  
+    }//GEN-LAST:event_btnEditActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-        System.out.println("TODO: Formular für \"Artikel\" bearbeiten");
-    }
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HauptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HauptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HauptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HauptScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new HauptScreen().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BT_ArtikelBearbeiten;
     private javax.swing.JButton BT_NeuerArtikel;
-    private javax.swing.JButton BT_ZumWarenkorb;
     private javax.swing.JTable TBL_Artikel;
-    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JButton btnEdit;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
