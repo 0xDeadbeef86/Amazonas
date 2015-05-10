@@ -28,10 +28,10 @@ public class Warenkorb {
         
     }
     
-    public void removeArtikel(int id, int anzahl)
+    public void removeArtikel(int id)
     {
         //ToDo: testen
-        warenkorbInhalt.replace(id, anzahl);
+        warenkorbInhalt.remove(id);
         if(warenkorbInhalt.get(id) <= 0)
         {
             warenkorbInhalt.remove(id);

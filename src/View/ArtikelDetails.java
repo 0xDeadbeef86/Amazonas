@@ -5,7 +5,9 @@
  */
 package View;
 
+import javax.swing.JOptionPane;
 import model.Artikel;
+import model.Warenkorb;
 
 /**
  *
@@ -48,6 +50,11 @@ public class ArtikelDetails extends javax.swing.JFrame {
 
         LB_ArtikelBeschreibung.setText("ArtikelBeschreibung");
 
+        TB_ArtikelMenge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TB_ArtikelMengeActionPerformed(evt);
+            }
+        });
         TB_ArtikelMenge.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
@@ -111,9 +118,32 @@ public class ArtikelDetails extends javax.swing.JFrame {
     }//GEN-LAST:event_TB_ArtikelMengeInputMethodTextChanged
 
     private void BT_WarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_WarenkorbActionPerformed
-        // TODO add your handling code here:
+        int anzahl = 0;
+        try
+        {
+            anzahl = Integer.parseInt(this.TB_ArtikelMenge.getText());
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        if(anzahl == 0)
+        {
+            JOptionPane.showMessageDialog(this, "Bitte geben Sie eine gültige Menge ein");
+        }
+        else
+        {
+            Warenkorb.GetInstance().addArtikel(this.artikel.getId(), anzahl);
+            JOptionPane.showMessageDialog(this, anzahl + "x " + this.artikel.getName() + " zum Warenkorb hinzugefügt");
+        }
+        
+        
         
     }//GEN-LAST:event_BT_WarenkorbActionPerformed
+
+    private void TB_ArtikelMengeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TB_ArtikelMengeActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TB_ArtikelMengeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_Warenkorb;

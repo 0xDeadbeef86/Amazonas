@@ -31,9 +31,6 @@ public class MyDatabaseConnection {
         ResultSet result;
         try {
             result = statement.executeQuery(query);
-            /*while (result.next()) {
-                System.out.println(result.getString("mehrwertsteuersatz"));
-            }*/
             return result;
         } 
         catch (Exception ex) {

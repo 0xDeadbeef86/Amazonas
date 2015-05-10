@@ -57,6 +57,7 @@ public class HauptScreen extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         TBL_Artikel = new javax.swing.JTable();
         btnEdit = new javax.swing.JButton();
+        BT_ZumWarenkorb = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -98,6 +99,13 @@ public class HauptScreen extends javax.swing.JFrame {
             }
         });
 
+        BT_ZumWarenkorb.setText("zum Warenkorb");
+        BT_ZumWarenkorb.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_ZumWarenkorbActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,6 +115,8 @@ public class HauptScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(BT_ZumWarenkorb)
+                        .addGap(18, 18, 18)
                         .addComponent(btnEdit)
                         .addGap(18, 18, 18)
                         .addComponent(BT_NeuerArtikel)))
@@ -118,7 +128,8 @@ public class HauptScreen extends javax.swing.JFrame {
                 .addGap(95, 95, 95)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_NeuerArtikel)
-                    .addComponent(btnEdit))
+                    .addComponent(btnEdit)
+                    .addComponent(BT_ZumWarenkorb))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
@@ -184,10 +195,19 @@ public class HauptScreen extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_btnEditActionPerformed
 
+    private void BT_ZumWarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_ZumWarenkorbActionPerformed
+        try {
+            new WarenkorbScreen().setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BT_ZumWarenkorbActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_NeuerArtikel;
+    private javax.swing.JButton BT_ZumWarenkorb;
     private javax.swing.JTable TBL_Artikel;
     private javax.swing.JButton btnEdit;
     private javax.swing.JScrollPane jScrollPane1;
