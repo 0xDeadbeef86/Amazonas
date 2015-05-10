@@ -18,6 +18,13 @@ import model.Artikel;
  */
 public class ArtikelForm extends javax.swing.JFrame {
 
+    enum FormState
+    {
+        ERSTELLEN,
+        BEARBEITEN
+    }
+    FormState state = FormState.ERSTELLEN;
+    
     HashMap<Integer, Integer> mehrwertsteuersaetze;
     HashMap<Integer, String> kategorien;
 
@@ -25,6 +32,8 @@ public class ArtikelForm extends javax.swing.JFrame {
      * Creates new form UserAnlegen
      */
     public ArtikelForm() throws SQLException {
+        state = FormState.ERSTELLEN;
+        
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         fillComboboxen();
@@ -32,22 +41,34 @@ public class ArtikelForm extends javax.swing.JFrame {
     }
 
      public ArtikelForm(Artikel artikel) throws SQLException {
+        state = FormState.BEARBEITEN;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         fillComboboxen();
         this.CheckBox_Aktiv.setSelected(true);
         
-        // set attributes
+        // set (diverse) attributes
         this.TB_Name.setText(artikel.getName());
         this.TF_Beschreibung.setText(artikel.getBeschreibung());
         StringBuilder sb = new StringBuilder();
         sb.append(artikel.getNettopreis());        
         this.TB_Nettopreis.setText(sb.toString());       
-        StringBuilder sb2 = new StringBuilder();
-        sb2.append(artikel.getMehrwertsteuer()); 
+        
+        // mehrwertsteuer
+        StringBuilder sb2 = new StringBuilder();        
+        sb2.append(artikel.getMehrwertsteuer()); //artikel.getMehrwertsteuer()
         sb2.append("%");
+        System.out.println(sb2);
+        this.CB_Mehrwertsteuersatz.setEditable(true);
         this.CB_Mehrwertsteuersatz.setSelectedItem(sb2);
-        //this.CB_Kategorie.setSelectedItem(artikel.getKategorie());
+        
+        // kategorie
+        StringBuilder sb3 = new StringBuilder();        
+        sb3.append(artikel.getKategorie()); //artikel.getMehrwertsteuer()        
+        System.out.println(sb3);
+        this.CB_Kategorie.setEditable(true);
+        this.CB_Kategorie.setSelectedItem(sb3);
+        
     }
     
     /**
@@ -179,6 +200,14 @@ public class ArtikelForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_OKActionPerformed
+        if(state == FormState.ERSTELLEN)
+            erstelleArtikel();
+        else
+            bearbeiteArtikel();
+    }//GEN-LAST:event_BT_OKActionPerformed
+
+    private void erstelleArtikel()
+    {
         boolean aktiv = false;
         String name = "";
         String beschreibung = "";
@@ -236,9 +265,13 @@ public class ArtikelForm extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(ArtikelForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-    }//GEN-LAST:event_BT_OKActionPerformed
-
+        }        
+    }
+    
+    private void bearbeiteArtikel() {        
+        System.out.println("bearbeiten");
+    }
+    
     /**
      * @param args the command line arguments
      */

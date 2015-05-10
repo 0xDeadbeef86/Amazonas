@@ -31,7 +31,7 @@ public class HauptScreen extends javax.swing.JFrame {
     public HauptScreen() throws SQLException {
         initComponents();
         //TBL_Artikel.
-        this.TBL_Artikel.setModel(new ArtikelTableModel());       
+        this.TBL_Artikel.setModel(new ArtikelTableModel());            
         
         btnEdit.setVisible(false);
         btnEdit.setEnabled(false);

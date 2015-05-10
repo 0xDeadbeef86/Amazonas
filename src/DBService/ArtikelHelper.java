@@ -46,17 +46,23 @@ public class ArtikelHelper
         String name = "";
         String beschreibung = "";
         int nettopreis = -1;
-        int mehrwertsteuer = -1;
+        int mehrwertsteuerId = -1;
+        int kategorieId = -1;
+        String kategorie = "";
+        int mehrwertsteuersatz = -1;
         boolean aktiv = false;
         
          while(res.next()) {            
             name = res.getString("name");    
             beschreibung = res.getString("beschreibung");
             nettopreis = res.getInt("nettopreis");
-            mehrwertsteuer = res.getInt("fk_mehrwertsteuer");
+            mehrwertsteuerId = res.getInt("fk_mehrwertsteuer");
+            kategorieId = res.getInt("fk_kategorie");
             aktiv = res.getBoolean("aktiv");
-         }
-        
+         }        
+        mehrwertsteuersatz = getMwst(mehrwertsteuerId);
+        kategorie = getKat(kategorieId);
+         
         // set data for Artikel object
         Artikel artikel = new Artikel();
         
@@ -64,9 +70,46 @@ public class ArtikelHelper
         artikel.setName(name);
         artikel.setBeschreibung(beschreibung);
         artikel.setNettpreis(nettopreis);
-        artikel.setMehrwertsteuer(mehrwertsteuer);
+        artikel.setMehrwertsteuer(mehrwertsteuersatz);
+        artikel.setKategorie(kategorie);
         artikel.setAktiv(aktiv);
         
         return artikel;
+    }
+    
+    private static int getMwst(int id) throws SQLException {
+        String sql;
+        sql = "SELECT * FROM \"Mehrwertsteuer\" WHERE id =" + id +";"; 
+        MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+        dbVerbindung.connect();
+        ResultSet res = dbVerbindung.executeQuery(sql);
+                
+ 
+        int mehrwertsteuersatz = -1;
+        boolean aktiv = false;
+        
+         while(res.next()) {
+            mehrwertsteuersatz = res.getInt("mehrwertsteuersatz");
+         }
+         
+         return mehrwertsteuersatz;
+    }
+    
+     private static String getKat(int id) throws SQLException {
+        String sql;
+        sql = "SELECT * FROM \"Kategorie\" WHERE id =" + id +";"; 
+        MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+        dbVerbindung.connect();
+        ResultSet res = dbVerbindung.executeQuery(sql);
+                
+ 
+        String kategorie = "-1";
+        boolean aktiv = false;
+        
+         while(res.next()) {
+            kategorie = res.getString("name");
+         }
+         
+         return kategorie;
     }
 }

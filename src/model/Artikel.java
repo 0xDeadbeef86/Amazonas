@@ -50,6 +50,14 @@ public class Artikel {
     public void setMehrwertsteuer(int mehrwertsteuer) {
         this.mehrwertsteuer = mehrwertsteuer;
     }
+    
+    public String getKategorie() {
+        return kategorie;
+    }
+
+    public void setKategorie(String kategorie) {
+        this.kategorie = kategorie;
+    }
 
     public boolean isAktiv() {
         return aktiv;
@@ -63,6 +71,7 @@ public class Artikel {
     private String beschreibung;
     private int nettopreis;
     private int mehrwertsteuer;
+    private String kategorie;
     private boolean aktiv;
     
 }
