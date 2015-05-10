@@ -6,7 +6,7 @@
 package View;
 
 import DBService.ArtikelHelper;
-import com.sun.xml.internal.ws.api.model.ExceptionType;
+//import com.sun.xml.internal.ws.api.model.ExceptionType;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
