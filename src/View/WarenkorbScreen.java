@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import model.Artikel;
 import model.Warenkorb;
 
@@ -28,12 +29,13 @@ public class WarenkorbScreen extends javax.swing.JFrame {
         HashMap<Integer, Integer> alleArtikelImWarenkorb = Warenkorb.GetInstance().getWarenkorbinhalt();
         Object[] alleIDs = alleArtikelImWarenkorb.keySet().toArray();
         System.out.println(alleIDs.length);
-        for (Object alleID : alleIDs) {
-            Artikel art = ArtikelHelper.getArticle((int) alleID); 
-            System.out.println(art);
-            int bruttoPreis = (int)(art.getMehrwertsteuer() / 100) * art.getNettopreis();
-            PANEL_AlleArtikel.add(new PanelArtikel(art.getName(), bruttoPreis, alleArtikelImWarenkorb.get(alleID)));
+        for (Object artID : alleIDs) {
+            Artikel art = ArtikelHelper.getArticle((int) artID); 
+            System.out.println(art.getMehrwertsteuer() + " " + art.getNettopreis());
+            int bruttoPreisInCent = (int)((art.getMehrwertsteuer() * art.getNettopreis()) / 100);
+            this.PANEL_AlleArtikel.add(new PanelArtikel(art.getName(), bruttoPreisInCent, alleArtikelImWarenkorb.get((int) artID)));
         }
+        this.LB_SUM_Gesamtpreis.setText(1+"");
     }
 
     /**
@@ -51,7 +53,9 @@ public class WarenkorbScreen extends javax.swing.JFrame {
         LB_Artikelname = new javax.swing.JLabel();
         LB_Anzahl = new javax.swing.JLabel();
         LB_Einzelpreis = new javax.swing.JLabel();
-        LB_Gesamt = new javax.swing.JLabel();
+        LB_Gesamtpreis = new javax.swing.JLabel();
+        PANEL_Gesamt = new javax.swing.JPanel();
+        LB_SUM_Gesamtpreis = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,8 +74,25 @@ public class WarenkorbScreen extends javax.swing.JFrame {
         LB_Einzelpreis.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
         LB_Einzelpreis.setText("Einzelpreis");
 
-        LB_Gesamt.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
-        LB_Gesamt.setText("Gesamtpreis");
+        LB_Gesamtpreis.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+        LB_Gesamtpreis.setText("Gesamtpreis");
+
+        javax.swing.GroupLayout PANEL_GesamtLayout = new javax.swing.GroupLayout(PANEL_Gesamt);
+        PANEL_Gesamt.setLayout(PANEL_GesamtLayout);
+        PANEL_GesamtLayout.setHorizontalGroup(
+            PANEL_GesamtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, PANEL_GesamtLayout.createSequentialGroup()
+                .addContainerGap(515, Short.MAX_VALUE)
+                .addComponent(LB_SUM_Gesamtpreis, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        PANEL_GesamtLayout.setVerticalGroup(
+            PANEL_GesamtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PANEL_GesamtLayout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(LB_SUM_Gesamtpreis, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(32, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -80,6 +101,9 @@ public class WarenkorbScreen extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(PANEL_Gesamt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -93,7 +117,7 @@ public class WarenkorbScreen extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addComponent(LB_Einzelpreis)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LB_Gesamt)
+                        .addComponent(LB_Gesamtpreis)
                         .addGap(53, 53, 53))))
         );
         layout.setVerticalGroup(
@@ -101,16 +125,18 @@ public class WarenkorbScreen extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(LB_Warenkorb)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(LB_Anzahl, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(LB_Gesamt)
+                        .addComponent(LB_Gesamtpreis)
                         .addComponent(LB_Artikelname)
                         .addComponent(LB_Einzelpreis)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 482, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(PANEL_Gesamt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(291, 291, 291))
         );
 
         pack();
@@ -122,9 +148,11 @@ public class WarenkorbScreen extends javax.swing.JFrame {
     private javax.swing.JLabel LB_Anzahl;
     private javax.swing.JLabel LB_Artikelname;
     private javax.swing.JLabel LB_Einzelpreis;
-    private javax.swing.JLabel LB_Gesamt;
+    private javax.swing.JLabel LB_Gesamtpreis;
+    private javax.swing.JLabel LB_SUM_Gesamtpreis;
     private javax.swing.JLabel LB_Warenkorb;
     private javax.swing.JPanel PANEL_AlleArtikel;
+    private javax.swing.JPanel PANEL_Gesamt;
     private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

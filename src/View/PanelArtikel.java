@@ -21,7 +21,7 @@ public class PanelArtikel extends javax.swing.JPanel {
     public PanelArtikel(String artikelName, int bruttoPreisInCent, int anzahl) {
         initComponents();
         
-        if(artikelName.trim() == "" && bruttoPreisInCent <= 0 && anzahl <= 0)
+        if("".equals(artikelName.trim()) && bruttoPreisInCent <= 0 && anzahl <= 0)
         {
             JOptionPane.showMessageDialog(this, "Falsche Übergabeparameter an PanelArtikel");
             this.LB_Artikelname.setText("Es ist ein Fehler aufgetreten");
@@ -41,6 +41,7 @@ public class PanelArtikel extends javax.swing.JPanel {
         }
         if(bruttoPreisInEuro != 0)
         {
+            System.out.println(bruttoPreisInEuro + "€");
             this.LB_Bruttopreis.setText(String.valueOf(bruttoPreisInEuro));
         }
         

@@ -11,61 +11,6 @@ package model;
  */
 public class Artikel {
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBeschreibung() {
-        return beschreibung;
-    }
-
-    public void setBeschreibung(String beschreibung) {
-        this.beschreibung = beschreibung;
-    }
-    
-    public int getNettopreis() {
-        return nettopreis;
-    }
-
-    public void setNettpreis(int nettopreis) {
-        this.nettopreis = nettopreis;
-    }
-    
-    public int getMehrwertsteuer() {
-        return mehrwertsteuer;
-    }
-
-    public void setMehrwertsteuer(int mehrwertsteuer) {
-        this.mehrwertsteuer = mehrwertsteuer;
-    }
-    
-    public String getKategorie() {
-        return kategorie;
-    }
-
-    public void setKategorie(String kategorie) {
-        this.kategorie = kategorie;
-    }
-
-    public boolean isAktiv() {
-        return aktiv;
-    }
-
-    public void setAktiv(boolean aktiv) {
-        this.aktiv = aktiv;
-    }
     private int id;
     private String name;
     private String beschreibung;
@@ -73,5 +18,61 @@ public class Artikel {
     private int mehrwertsteuer;
     private String kategorie;
     private boolean aktiv;
+    
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBeschreibung() {
+        return this.beschreibung;
+    }
+
+    public void setBeschreibung(String beschreibung) {
+        this.beschreibung = beschreibung;
+    }
+    
+    public int getNettopreis() {
+        return this.nettopreis;
+    }
+
+    public void setNettpreis(int nettopreis) {
+        this.nettopreis = nettopreis;
+    }
+    
+    public int getMehrwertsteuer() {
+        return this.mehrwertsteuer;
+    }
+
+    public void setMehrwertsteuer(int mehrwertsteuer) {
+        this.mehrwertsteuer = mehrwertsteuer;
+    }
+    
+    public String getKategorie() {
+        return this.kategorie;
+    }
+
+    public void setKategorie(String kategorie) {
+        this.kategorie = kategorie;
+    }
+
+    public boolean isAktiv() {
+        return this.aktiv;
+    }
+
+    public void setAktiv(boolean aktiv) {
+        this.aktiv = aktiv;
+    }
     
 }

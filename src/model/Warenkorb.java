@@ -25,7 +25,7 @@ public class Warenkorb {
     public void addArtikel(int id, int anzahl)
     {
         warenkorbInhalt.put(id, anzahl);
-        
+        System.out.println("ID:"+id);
     }
     
     public void removeArtikel(int id)
@@ -45,6 +45,7 @@ public class Warenkorb {
     
     public HashMap<Integer, Integer> getWarenkorbinhalt()
     {
+        System.out.println(this.warenkorbInhalt);
         return this.warenkorbInhalt;
     }
     
