@@ -67,6 +67,9 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JSpinner" name="SPINNER_Anzahl">
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="SPINNER_AnzahlStateChanged"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="LB_Bruttopreis">
       <Properties>

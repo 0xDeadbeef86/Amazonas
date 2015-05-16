@@ -48,7 +48,7 @@ public class PanelArtikel extends javax.swing.JPanel {
         double gesamtPreis = 0;
         if(anzahl > 0 && bruttoPreisInEuro > 0)
         {
-            gesamtPreis = bruttoPreisInEuro * anzahl;
+            gesamtPreis = rundeKorrektInEuro(bruttoPreisInEuro * anzahl);
         }
                 
         this.LB_Gesamtpreis.setText(String.valueOf(gesamtPreis));
@@ -71,6 +71,12 @@ public class PanelArtikel extends javax.swing.JPanel {
         setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         LB_Artikelname.setFont(new java.awt.Font("Cantarell", 1, 15)); // NOI18N
+
+        SPINNER_Anzahl.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                SPINNER_AnzahlStateChanged(evt);
+            }
+        });
 
         LB_Bruttopreis.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
@@ -108,6 +114,23 @@ public class PanelArtikel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void SPINNER_AnzahlStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_SPINNER_AnzahlStateChanged
+        if(!"".equals(this.LB_Bruttopreis.getText()) && this.SPINNER_Anzahl.getValue() != "")
+        {
+            double bruttopreis = Double.parseDouble(this.LB_Bruttopreis.getText());
+            int anzahl = (int) this.SPINNER_Anzahl.getValue();
+            double gesamtpreis = rundeKorrektInEuro(bruttopreis * anzahl);
+            this.LB_Gesamtpreis.setText(String.valueOf(gesamtpreis));
+        }
+    }//GEN-LAST:event_SPINNER_AnzahlStateChanged
+
+    //behebt Probleme mit Fließkommazahlen
+    private double rundeKorrektInEuro(double eingabe)
+    {
+        eingabe = eingabe * 100;
+        eingabe = Math.round(eingabe);
+        return eingabe / 100;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel LB_Artikelname;
