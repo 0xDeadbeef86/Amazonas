@@ -36,6 +36,32 @@ public class ArtikelHelper
         return false; //Fehler
     }
     
+    public static boolean updateArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuerID, int kategorieID, boolean aktiv, int id) throws SQLException {
+        String sql;
+        sql = "UPDATE \"Artikel\" SET name = " 
+                + "'" + name + "'" 
+                + ", beschreibung = " + "'" + beschreibung + "'" 
+                + ", nettopreis = " + "'" + nettopreis + "'" 
+                + ", fk_mehrwertsteuer = " + "'" + mehrwertsteuerID + "'" 
+                + ", fk_kategorie = " + "'" + kategorieID + "'" 
+                + ", aktiv = " + "'" + aktiv + "'"
+                + "where id = " + "'" + id + "'"; 
+        MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+        //System.out.println(sql);
+        try
+        {
+            dbVerbindung.connect();
+            dbVerbindung.executeUpdate(sql);
+            return true;
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        
+        return false; //Fehler
+    }
+    
     public static Artikel getArticle(int id) throws SQLException {
         String sql;
         sql = "SELECT * FROM \"Artikel\" WHERE id =" + id +";"; 
