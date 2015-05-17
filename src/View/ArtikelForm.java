@@ -28,6 +28,8 @@ public class ArtikelForm extends javax.swing.JFrame {
     HashMap<Integer, Integer> mehrwertsteuersaetze;
     HashMap<Integer, String> kategorien;
 
+    private Artikel artikel;
+    
     /**
      * Creates new form UserAnlegen
      */
@@ -47,6 +49,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         fillComboboxen();
         this.CheckBox_Aktiv.setSelected(true);
         
+        this.artikel = artikel;
         // set (diverse) attributes
         this.TB_Name.setText(artikel.getName());
         this.TF_Beschreibung.setText(artikel.getBeschreibung());
@@ -203,7 +206,11 @@ public class ArtikelForm extends javax.swing.JFrame {
         if(state == FormState.ERSTELLEN)
             erstelleArtikel();
         else
-            bearbeiteArtikel();
+            try {
+                bearbeiteArtikel();
+        } catch (SQLException ex) {
+            Logger.getLogger(ArtikelForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_BT_OKActionPerformed
 
     private void erstelleArtikel()
@@ -268,8 +275,19 @@ public class ArtikelForm extends javax.swing.JFrame {
         }        
     }
     
-    private void bearbeiteArtikel() {        
+    private void bearbeiteArtikel() throws SQLException {        
         System.out.println("bearbeiten");
+        //TODO: 
+        int id = artikel.getId();
+        String name = this.TB_Name.getText();
+        String beschreibung = this.TF_Beschreibung.getText();
+        int nettopreis = Integer.parseInt(this.TB_Nettopreis.getText());
+        int mehrwertsteuerID = 1; //TODO: Integer.parseInt(this.CB_Mehrwertsteuersatz.getSelectedItem().toString());
+        int kategorieID = 1; //TODO: 
+        boolean aktiv = true;       
+        
+        ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id);
+        
     }
     
     /**
