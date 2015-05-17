@@ -38,8 +38,9 @@ public class HauptScreen extends javax.swing.JFrame {
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
         String accessLevel = User.GetInstance().getAccessLevel();
         if(accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) 
+        {
             btnEdit.setVisible(true);
-        
+        }
         //int index = this.TBL_Artikel.getSelectedRow();
         //System.out.println(index);
     }
