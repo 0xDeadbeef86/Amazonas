@@ -56,7 +56,11 @@ public class Amazonas {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new LoginScreen().setVisible(true);
+                LoginScreen loginScreen = new LoginScreen();
+                loginScreen.setVisible(true);
+                loginScreen.setResizable(false);
+                loginScreen.setLocationRelativeTo(null);
+                
             }
         });
     }

@@ -10,6 +10,7 @@ import DBService.ArtikelHelper;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Artikel;
 import model.ArtikelTableModel;
 import model.User;
@@ -21,24 +22,24 @@ import model.User;
 public class HauptScreen extends javax.swing.JFrame {
 
     private int currentlySelectedArtikle = -1;
+
     void setCurrentlySelectedArticle(int id) {
         currentlySelectedArtikle = id;
         System.out.println(currentlySelectedArtikle);
     }
+
     /**
      * Creates new form HauptScreen
      */
     public HauptScreen() throws SQLException {
         initComponents();
-        //TBL_Artikel.
-        this.TBL_Artikel.setModel(new ArtikelTableModel());            
+        this.TBL_Artikel.setModel(new ArtikelTableModel());
         
         btnEdit.setVisible(false);
         btnEdit.setEnabled(false);
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
         String accessLevel = User.GetInstance().getAccessLevel();
-        if(accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) 
-        {
+        if (accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) {
             btnEdit.setVisible(true);
         }
         //int index = this.TBL_Artikel.getSelectedRow();
@@ -61,6 +62,13 @@ public class HauptScreen extends javax.swing.JFrame {
         BT_ZumWarenkorb = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+                formWindowGainedFocus(evt);
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+            }
+        });
 
         BT_NeuerArtikel.setText("neuer Artikel");
         BT_NeuerArtikel.addActionListener(new java.awt.event.ActionListener() {
@@ -80,11 +88,6 @@ public class HauptScreen extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        TBL_Artikel.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                TBL_ArtikelFocusGained(evt);
-            }
-        });
         TBL_Artikel.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 TBL_ArtikelMouseClicked(evt);
@@ -112,7 +115,7 @@ public class HauptScreen extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(239, 239, 239)
+                .addGap(150, 150, 150)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(BT_ZumWarenkorb)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -120,7 +123,7 @@ public class HauptScreen extends javax.swing.JFrame {
                         .addComponent(btnEdit)
                         .addGap(18, 18, 18)
                         .addComponent(BT_NeuerArtikel)))
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,29 +144,26 @@ public class HauptScreen extends javax.swing.JFrame {
 
     private void BT_NeuerArtikelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_NeuerArtikelActionPerformed
         try {
-            new ArtikelForm().setVisible(true);
+            ArtikelForm artikelForm = new ArtikelForm();
+            artikelForm.setVisible(true);
+            artikelForm.setResizable(false);
+            artikelForm.setLocationRelativeTo(null);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BT_NeuerArtikelActionPerformed
 
-    private void TBL_ArtikelFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_TBL_ArtikelFocusGained
-        // TODO add your handling code here:
-        //int index = this.TBL_Artikel.getSelectedRow();
-        //System.out.println(index);
-    }//GEN-LAST:event_TBL_ArtikelFocusGained
-
     private void TBL_ArtikelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TBL_ArtikelMouseClicked
         // TODO add your handling code here:
-        int index = this.TBL_Artikel.getSelectedRow();       
-        if(index != -1) {
+        int index = this.TBL_Artikel.getSelectedRow();
+        if (index != -1) {
             btnEdit.setEnabled(true);
-             int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
-             setCurrentlySelectedArticle(id);
+            int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
+            setCurrentlySelectedArticle(id);
         }
-        
-        if(evt.getClickCount() >= 2) {
-            try {                
+
+        if (evt.getClickCount() >= 2) {
+            try {
                 int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
                 Artikel artikel = ArtikelHelper.getArticle(id);
 
@@ -171,29 +171,33 @@ public class HauptScreen extends javax.swing.JFrame {
             } catch (SQLException ex) {
                 Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-            //System.out.println("Doppelklick auf: " + index);
+
         }
     }//GEN-LAST:event_TBL_ArtikelMouseClicked
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
         //System.out.println("TODO: Formular für \"Artikel\" bearbeiten");
-        int selectedRowId = this.TBL_Artikel.getSelectedRow();        
-        
+        int selectedRowId = this.TBL_Artikel.getSelectedRow();
+
         int artikelId = -1;
-        if(selectedRowId != -1) {
+        if (selectedRowId != -1) {
             btnEdit.setEnabled(true);
-             artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 0);
-             
-            Artikel artikel;
-            try {
-                artikel = ArtikelHelper.getArticle(artikelId);
-                new ArtikelForm(artikel).setVisible(true);// EditArtikelForm(artikel).setVisible(true);
-            } catch (SQLException ex) {
-                Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
-            }  
-        }  
+            artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 0);
+            if (artikelId != -1) {
+                Artikel artikel;
+                try {
+                    ArtikelForm artikelForm = new ArtikelForm(ArtikelHelper.getArticle(artikelId));
+                    artikelForm.setVisible(true);
+                    artikelForm.setResizable(false);
+                    artikelForm.setLocationRelativeTo(null);
+                } catch (SQLException ex) {
+                    Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Fehler: Der selektiere Artikel konnte nicht in der Datenbank gefunden werden");
+            }
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void BT_ZumWarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_ZumWarenkorbActionPerformed
@@ -204,7 +208,14 @@ public class HauptScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BT_ZumWarenkorbActionPerformed
 
-    
+    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+                try {
+            this.TBL_Artikel.setModel(new ArtikelTableModel());
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_formWindowGainedFocus
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_NeuerArtikel;

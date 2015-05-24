@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author lenzch
  */
 public class LoginScreen extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form LoginScreen
      */
@@ -32,30 +32,27 @@ public class LoginScreen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        tf_Passwort = new javax.swing.JTextField();
         tf_Username = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         login = new javax.swing.JButton();
+        tf_Passwort = new javax.swing.JPasswordField();
+        LB_Ausgabe = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tf_Passwort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tf_PasswortActionPerformed(evt);
-            }
-        });
-
+        tf_Username.setText("admin");
         tf_Username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_UsernameActionPerformed(evt);
             }
         });
 
-        jLabel1.setText("password:");
+        jLabel1.setText("Passwort");
 
-        jLabel2.setText("username:");
+        jLabel2.setText("Benutzername");
 
+        login.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
         login.setText("Login");
         login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -63,41 +60,48 @@ public class LoginScreen extends javax.swing.JFrame {
             }
         });
 
+        tf_Passwort.setText("a");
+
+        LB_Ausgabe.setForeground(new java.awt.Color(255, 0, 0));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(137, Short.MAX_VALUE)
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(login)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(tf_Passwort, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(118, 118, 118))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(137, Short.MAX_VALUE)
-                    .addComponent(tf_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(118, 118, 118)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(LB_Ausgabe, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addContainerGap())
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(tf_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(tf_Passwort, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(100, 100, 100)))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(73, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(67, 67, 67)
-                .addComponent(jLabel1)
+                .addContainerGap()
+                .addComponent(LB_Ausgabe, javax.swing.GroupLayout.DEFAULT_SIZE, 19, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(tf_Passwort, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(login)
-                .addGap(49, 49, 49))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(94, 94, 94)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tf_Username, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(170, Short.MAX_VALUE)))
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tf_Passwort, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addGap(11, 11, 11)
+                .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -107,13 +111,7 @@ public class LoginScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_UsernameActionPerformed
 
-    private void tf_PasswortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tf_PasswortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tf_PasswortActionPerformed
-
     private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
-        
-
         int id = 0;
         try {
             id = LoginHelper.getLoginID(this.tf_Username.getText(), this.tf_Passwort.getText());
@@ -122,30 +120,33 @@ public class LoginScreen extends javax.swing.JFrame {
             Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-        if(id > 0)
+        if (id > 0) //Login erfolgreich
         {
-            //erfolgreich
-            setVisible(false);
+
+            this.setVisible(false);
             try {
-                new HauptScreen().setVisible(true);
+                HauptScreen hauptScreen = new HauptScreen();
+                hauptScreen.setVisible(true);
+                hauptScreen.setResizable(false);
+                hauptScreen.setLocationRelativeTo(null);
             } catch (SQLException ex) {
                 Logger.getLogger(LoginScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else
+        } else //Login fehlgeschlagen
         {
-            //fehlgeschlagen
-            System.out.println("Login fehlgeschlagen");
+
+            this.LB_Ausgabe.setText("Login fehlgeschlagen");
         }
 
-        
+
     }//GEN-LAST:event_loginActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel LB_Ausgabe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JButton login;
-    private javax.swing.JTextField tf_Passwort;
+    private javax.swing.JPasswordField tf_Passwort;
     private javax.swing.JTextField tf_Username;
     // End of variables declaration//GEN-END:variables
 }

@@ -8,9 +8,6 @@ package View;
 import DBService.ArtikelHelper;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 import model.Artikel;
 import model.Warenkorb;
 import model.WarenkorbTableModel;
@@ -27,6 +24,7 @@ public class WarenkorbScreen extends javax.swing.JFrame {
      */
     public WarenkorbScreen() throws SQLException {
         initComponents();
+        this.setDefaultCloseOperation(HIDE_ON_CLOSE);
         
         HashMap<Integer, Integer> alleArtikelImWarenkorb = Warenkorb.GetInstance().getWarenkorbinhalt();
         //test

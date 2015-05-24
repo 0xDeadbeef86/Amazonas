@@ -18,62 +18,64 @@ import model.Artikel;
  */
 public class ArtikelForm extends javax.swing.JFrame {
 
-    enum FormState
-    {
+    enum FormState {
+
         ERSTELLEN,
         BEARBEITEN
     }
     FormState state = FormState.ERSTELLEN;
-    
+
     HashMap<Integer, Integer> mehrwertsteuersaetze;
     HashMap<Integer, String> kategorien;
 
     private Artikel artikel;
-    
+
     /**
      * Creates new form UserAnlegen
      */
     public ArtikelForm() throws SQLException {
         state = FormState.ERSTELLEN;
-        
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         fillComboboxen();
         this.CheckBox_Aktiv.setSelected(true);
+        this.LB_Aktion.setText("Artikel anlegen");
+        this.BT_OK.setText("Artikel anlegen");
     }
 
-     public ArtikelForm(Artikel artikel) throws SQLException {
+    public ArtikelForm(Artikel artikel) throws SQLException {
         state = FormState.BEARBEITEN;
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         fillComboboxen();
         this.CheckBox_Aktiv.setSelected(true);
-        
+        this.LB_Aktion.setText("Artikel bearbeiten");
+        this.BT_OK.setText("Artikel speichern");
+
         this.artikel = artikel;
-        // set (diverse) attributes
         this.TB_Name.setText(artikel.getName());
         this.TF_Beschreibung.setText(artikel.getBeschreibung());
         StringBuilder sb = new StringBuilder();
-        sb.append(artikel.getNettopreis());        
-        this.TB_Nettopreis.setText(sb.toString());       
-        
+        sb.append(artikel.getNettopreis());
+        this.TB_Nettopreis.setText(sb.toString());
+
         // mehrwertsteuer
-        StringBuilder sb2 = new StringBuilder();        
+        StringBuilder sb2 = new StringBuilder();
         sb2.append(artikel.getMehrwertsteuer()); //artikel.getMehrwertsteuer()
         sb2.append("%");
         System.out.println(sb2);
         this.CB_Mehrwertsteuersatz.setEditable(true);
         this.CB_Mehrwertsteuersatz.setSelectedItem(sb2);
-        
+
         // kategorie
-        StringBuilder sb3 = new StringBuilder();        
+        StringBuilder sb3 = new StringBuilder();
         sb3.append(artikel.getKategorie()); //artikel.getMehrwertsteuer()        
         System.out.println(sb3);
         this.CB_Kategorie.setEditable(true);
         this.CB_Kategorie.setSelectedItem(sb3);
-        
+
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -203,18 +205,18 @@ public class ArtikelForm extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_OKActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_OKActionPerformed
-        if(state == FormState.ERSTELLEN)
+        if (state == FormState.ERSTELLEN) {
             erstelleArtikel();
-        else
+        } else {
             try {
                 bearbeiteArtikel();
-        } catch (SQLException ex) {
-            Logger.getLogger(ArtikelForm.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(ArtikelForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_BT_OKActionPerformed
 
-    private void erstelleArtikel()
-    {
+    private void erstelleArtikel() {
         boolean aktiv = false;
         String name = "";
         String beschreibung = "";
@@ -226,7 +228,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         if (this.CheckBox_Aktiv.isSelected()) {
             aktiv = true;
         }
-        
+
         if (!"".equals(this.TB_Name.getText().trim())) {
             name = this.TB_Name.getText();
         } else {
@@ -263,73 +265,35 @@ public class ArtikelForm extends javax.swing.JFrame {
         } else {
             try {
                 if (ArtikelHelper.insertArticle(name, beschreibung, nettoPreis, mehrwertsteuerID, kategorieID, aktiv)) {
-                    JOptionPane.showMessageDialog(this, "Erfolgreich gespeichert");
-                    setVisible(false);
-                    new HauptScreen().setVisible(true);
+                    JOptionPane.showMessageDialog(this, "Artikel erfolgreich angelegt");
+                    this.setVisible(false);
+                    //new HauptScreen().setVisible(true);
                 } else {
-                    JOptionPane.showMessageDialog(this, "Fehler beim Speichern des Artikels");
+                    JOptionPane.showMessageDialog(this, "Fehler beim Anlegen des Artikels");
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(ArtikelForm.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }        
+        }
     }
-    
-    private void bearbeiteArtikel() throws SQLException {        
+
+    private void bearbeiteArtikel() throws SQLException {
         System.out.println("bearbeiten");
-        //TODO: 
         int id = artikel.getId();
         String name = this.TB_Name.getText();
         String beschreibung = this.TF_Beschreibung.getText();
         int nettopreis = Integer.parseInt(this.TB_Nettopreis.getText());
         int mehrwertsteuerID = 1; //TODO: Integer.parseInt(this.CB_Mehrwertsteuersatz.getSelectedItem().toString());
         int kategorieID = 1; //TODO: 
-        boolean aktiv = true;       
-        
-        ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id);
-        
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ArtikelForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ArtikelForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ArtikelForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ArtikelForm.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
+        boolean aktiv = true;
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    new ArtikelForm().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ArtikelForm.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+        if (ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id)) {
+            JOptionPane.showMessageDialog(this, "Artikel erfolgreich gespeichert");
+            this.setVisible(false);
+            
+        } else {
+            JOptionPane.showMessageDialog(this, "Fehler: Artikel konnte nicht gespeichert werden");
+        }
     }
 
     //Füllt die Comboboxen mit Werten
