@@ -15,11 +15,11 @@ public class MyDatabaseConnection {
     Statement statement;
 
     //stellt eine Verbindung zur Datenbank her
-    public void connect() {
+    private void connect() {
         try {
             Class.forName("org.postgresql.Driver").newInstance();
             database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"); // localhost:5432/dbprojekt", "projekt", "geheim"         "jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"
-            statement = database.createStatement();    
+            statement = database.createStatement();
         } catch (Exception ex) {
             System.out.println("Keine Datenbankverbindung möglich: "
                     + ex.getMessage());
@@ -30,31 +30,33 @@ public class MyDatabaseConnection {
     public ResultSet executeQuery(String query) {
         ResultSet result;
         try {
+            this.connect();
             result = statement.executeQuery(query);
             return result;
-        } 
-        catch (Exception ex) {
+        } catch (Exception ex) {
             System.out.println("Die Abfrage " + query
                     + "hat den Fehler " + ex.getMessage() + " produziert");
         }
-        
+        this.disconnect();
         return null;
     }
-    
+
     //führt eine angegebene SQL-Anweisung aus, die eine Zahl zurückgibt (UPDATE, DELETE)
     public int executeUpdate(String query) {
         try {
-            return statement.executeUpdate(query);           
-        } 
-        catch (Exception ex) {
+            this.connect();
+            int res = statement.executeUpdate(query);
+            return res;
+        } catch (Exception ex) {
             System.out.println("Update " + query
                     + "hat den Fehler " + ex.getMessage() + " produziert");
         }
+        this.disconnect();
         return 0;
     }
 
     //Schließt die Verbindung zur Datenbank
-    public void disconnect() {
+    private void disconnect() {
         try {
             statement.close();
             database.close();

@@ -17,7 +17,9 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ArtikelTableModel extends AbstractTableModel {
 
-    private ArrayList<Artikel> artikelList = new ArrayList<Artikel>();
+    private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+
+    private ArrayList<Artikel> artikelList = new ArrayList<>();
 
     public ArtikelTableModel() throws SQLException {
         artikelList = getAllActiveArticle();
@@ -49,13 +51,9 @@ public class ArtikelTableModel extends AbstractTableModel {
 
         if (columnIndex == 0) {
             return artikelList.get(rowIndex).getName();
-        }
-        else if(columnIndex == 1)
-        {
+        } else if (columnIndex == 1) {
             return this.getArtikelIDByRow(rowIndex);
-        }
-        else
-        {
+        } else {
             return "fehlerhafter Übergabeparameter";
         }
 
@@ -64,9 +62,7 @@ public class ArtikelTableModel extends AbstractTableModel {
     public static ArrayList<Artikel> getAllActiveArticle() throws SQLException {
         String sql;
         sql = "SELECT * FROM \"Artikel\" WHERE aktiv = true;";
-        MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
-        dbVerbindung.connect();
-        ResultSet res = dbVerbindung.executeQuery(sql);
+        ResultSet res = ArtikelTableModel.dbVerbindung.executeQuery(sql);
 
         ArrayList<Artikel> artikelList = new ArrayList<Artikel>();
 

@@ -7,46 +7,43 @@ import java.util.HashMap;
  * @author fixch
  */
 public class Warenkorb {
-   
-    private HashMap<Integer, Integer> warenkorbInhalt = new HashMap<>(); //Key: ArtikelID, Value: Anzahl
-    
+
+    private final HashMap<Integer, Integer> warenkorbInhalt = new HashMap<>(); //Key: ArtikelID, Value: Anzahl
+
     private static final Warenkorb warenkorbObjekt = new Warenkorb();
 
     private Warenkorb() {
-          
-    }   
-    
-    public static Warenkorb GetInstance()
-    {
+
+    }
+
+    public static Warenkorb GetInstance() {
         return warenkorbObjekt;
     }
-    
-    
-    public void addArtikel(int id, int anzahl)
-    {
-        warenkorbInhalt.put(id, anzahl);
-        System.out.println("ID:"+id);
+
+    public void addArtikel(int id, int anzahl) {
+        int aktuelleAnzahl = 0;
+        try {
+            aktuelleAnzahl = warenkorbInhalt.get(id);
+        } catch (Exception ex) {
+
+        }
+        warenkorbInhalt.put(id, anzahl + aktuelleAnzahl);
     }
-    
-    public void removeArtikel(int id)
-    {
+
+    public void removeArtikel(int id) {
         //ToDo: testen
         warenkorbInhalt.remove(id);
-        if(warenkorbInhalt.get(id) <= 0)
-        {
+        if (warenkorbInhalt.get(id) <= 0) {
             warenkorbInhalt.remove(id);
         }
     }
-    
-    public void bestellen()
-    {
+
+    public void bestellen() {
         //ToDo: implementieren
     }
-    
-    public HashMap<Integer, Integer> getWarenkorbinhalt()
-    {
-        System.out.println(this.warenkorbInhalt);
+
+    public HashMap<Integer, Integer> getWarenkorbinhalt() {
         return this.warenkorbInhalt;
     }
-    
+
 }

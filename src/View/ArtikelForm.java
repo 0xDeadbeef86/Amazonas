@@ -18,6 +18,8 @@ import model.Artikel;
  */
 public class ArtikelForm extends javax.swing.JFrame {
 
+    private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+
     enum FormState {
 
         ERSTELLEN,
@@ -289,7 +291,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         if (ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id)) {
             JOptionPane.showMessageDialog(this, "Artikel erfolgreich gespeichert");
             this.setVisible(false);
-            
+
         } else {
             JOptionPane.showMessageDialog(this, "Fehler: Artikel konnte nicht gespeichert werden");
         }
@@ -359,9 +361,7 @@ public class ArtikelForm extends javax.swing.JFrame {
     private HashMap<Integer, Integer> getMehrwertsteuersaetzeFromDB() throws SQLException {
         String sql;
         sql = "SELECT * FROM \"Mehrwertsteuer\"";
-        MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
-        dbVerbindung.connect();
-        ResultSet res = dbVerbindung.executeQuery(sql);
+        ResultSet res = ArtikelForm.dbVerbindung.executeQuery(sql);
         HashMap<Integer, Integer> mehrwertsteuersaetze = new HashMap<>();
         int id = 0;
         int mehrwertsteuersatz = 0;
@@ -379,9 +379,7 @@ public class ArtikelForm extends javax.swing.JFrame {
     private HashMap<Integer, String> getKategorienFromDB() throws SQLException {
         String sql;
         sql = "SELECT * FROM \"Kategorie\"";
-        MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
-        dbVerbindung.connect();
-        ResultSet res = dbVerbindung.executeQuery(sql);
+        ResultSet res = ArtikelForm.dbVerbindung.executeQuery(sql);
         HashMap<Integer, String> alleKategorien = new HashMap<>();
         int id = 0;
         String kategorie = "";

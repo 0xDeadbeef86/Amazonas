@@ -4,12 +4,18 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/DBService/ArtikelHelper.java</file>
-            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/WarenkorbScreen.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/DBService/LoginHelper.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/DBService/MyDatabaseConnection.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/ArtikelDetails.java</file>
             <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/LoginScreen.java</file>
-            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/ArtikelForm.java</file>
             <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/HauptScreen.java</file>
             <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/model/ArtikelTableModel.java</file>
             <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/model/User.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/model/Warenkorb.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/model/Artikel.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/model/WarenkorbTableModel.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/WarenkorbScreen.java</file>
+            <file>file:/C:/Users/Theresia%20Fix/Desktop/Datenbankprojekt/amazonas/Amazonas/src/View/ArtikelForm.java</file>
         </group>
     </open-files>
 </project-private>

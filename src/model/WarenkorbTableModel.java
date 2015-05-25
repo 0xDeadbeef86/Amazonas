@@ -9,7 +9,6 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -57,8 +56,9 @@ public class WarenkorbTableModel extends AbstractTableModel {
                 //Einzelpreis
                 return String.valueOf(artikel.getBruttopreis()) + " €"; //zwei Nachkommastellen
             } else {
-                return "Gesamtpreis (ToDo)";
                 //Gesamtpreis
+                return (artikel.getBruttopreis() * this.warenkorbInhalt.get(artikel.getId()));
+
             }
         } else {
             return "Artikel ist leer";
@@ -89,24 +89,18 @@ public class WarenkorbTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object eingabe, int rowIndex, int colIndex) {
-        System.out.println(rowIndex);
-        System.out.println("alleIDs: " + this.alleIDs[rowIndex]);
-        //ToDo: Try-Catch (anderer Wert als Ganzzahl)
         int neueAnzahl = -1;
-        try
-        {
+        try {
             neueAnzahl = Integer.parseInt((String) eingabe);
+        } catch (Exception ex) {
+
         }
-        catch(Exception ex)
+        if (neueAnzahl > -1) //positive Ganzzahl eingegeben
         {
-            
-        }
-        if(neueAnzahl > -1) //positive Ganzzahl eingegeben
-        {
-            this.warenkorbInhalt.put((Integer) this.alleIDs[rowIndex],  neueAnzahl);
+            this.warenkorbInhalt.put((Integer) this.alleIDs[rowIndex], neueAnzahl);
             fireTableDataChanged();
         }
-        
+
     }
 
 }

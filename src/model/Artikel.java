@@ -18,8 +18,7 @@ public class Artikel {
     private int mehrwertsteuer;
     private String kategorie;
     private boolean aktiv;
-    private double bruttopreis;
-    
+
     public int getId() {
         return this.id;
     }
@@ -43,7 +42,7 @@ public class Artikel {
     public void setBeschreibung(String beschreibung) {
         this.beschreibung = beschreibung;
     }
-    
+
     public int getNettopreis() {
         return this.nettopreis;
     }
@@ -51,7 +50,7 @@ public class Artikel {
     public void setNettpreis(int nettopreis) {
         this.nettopreis = nettopreis;
     }
-    
+
     public int getMehrwertsteuer() {
         return this.mehrwertsteuer;
     }
@@ -59,7 +58,7 @@ public class Artikel {
     public void setMehrwertsteuer(int mehrwertsteuer) {
         this.mehrwertsteuer = mehrwertsteuer;
     }
-    
+
     public String getKategorie() {
         return this.kategorie;
     }
@@ -75,14 +74,13 @@ public class Artikel {
     public void setAktiv(boolean aktiv) {
         this.aktiv = aktiv;
     }
-    
+
     public double getBruttopreis() {
-        return rundeKorrektInEuro((double)((int)(((this.getMehrwertsteuer() + 100) * this.getNettopreis()) / 100 ) / 100d));
+        return rundeKorrektInEuro((double) ((int) (((this.getMehrwertsteuer() + 100) * this.getNettopreis()) / 100) / 100d));
     }
-    
+
     //behebt Probleme mit Fließkommazahlen
-    private double rundeKorrektInEuro(double eingabe)
-    {
+    private double rundeKorrektInEuro(double eingabe) {
         eingabe = eingabe * 100;
         eingabe = Math.round(eingabe);
         return eingabe / 100;
