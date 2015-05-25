@@ -25,7 +25,6 @@ public class HauptScreen extends javax.swing.JFrame {
 
     void setCurrentlySelectedArticle(int id) {
         currentlySelectedArtikle = id;
-        System.out.println(currentlySelectedArtikle);
     }
 
     /**
@@ -34,7 +33,7 @@ public class HauptScreen extends javax.swing.JFrame {
     public HauptScreen() throws SQLException {
         initComponents();
         this.TBL_Artikel.setModel(new ArtikelTableModel());
-        
+
         btnEdit.setVisible(false);
         btnEdit.setEnabled(false);
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
@@ -158,13 +157,13 @@ public class HauptScreen extends javax.swing.JFrame {
         int index = this.TBL_Artikel.getSelectedRow();
         if (index != -1) {
             btnEdit.setEnabled(true);
-            int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
+            int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 1);
             setCurrentlySelectedArticle(id);
         }
 
         if (evt.getClickCount() >= 2) {
             try {
-                int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 0);
+                int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 1);
                 Artikel artikel = ArtikelHelper.getArticle(id);
 
                 new ArtikelDetails(artikel).setVisible(true);
@@ -183,7 +182,7 @@ public class HauptScreen extends javax.swing.JFrame {
         int artikelId = -1;
         if (selectedRowId != -1) {
             btnEdit.setEnabled(true);
-            artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 0);
+            artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 1);
             if (artikelId != -1) {
                 Artikel artikel;
                 try {
@@ -209,8 +208,9 @@ public class HauptScreen extends javax.swing.JFrame {
     }//GEN-LAST:event_BT_ZumWarenkorbActionPerformed
 
     private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-                try {
+        try {
             this.TBL_Artikel.setModel(new ArtikelTableModel());
+            this.btnEdit.setEnabled(false);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }

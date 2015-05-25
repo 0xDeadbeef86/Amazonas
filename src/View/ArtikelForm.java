@@ -267,7 +267,6 @@ public class ArtikelForm extends javax.swing.JFrame {
                 if (ArtikelHelper.insertArticle(name, beschreibung, nettoPreis, mehrwertsteuerID, kategorieID, aktiv)) {
                     JOptionPane.showMessageDialog(this, "Artikel erfolgreich angelegt");
                     this.setVisible(false);
-                    //new HauptScreen().setVisible(true);
                 } else {
                     JOptionPane.showMessageDialog(this, "Fehler beim Anlegen des Artikels");
                 }

@@ -24,7 +24,7 @@ public class ArtikelDetails extends javax.swing.JFrame {
         this.artikel = artikel;
         this.LB_ArtikelName.setText(artikel.getName());
         this.LB_ArtikelBeschreibung.setText(artikel.getBeschreibung());
-        this.LB_ArtikelPreis.setText(String.valueOf((double)((int)((artikel.getMehrwertsteuer() * artikel.getNettopreis()) / 100 ) / 100d)) + " €"); //zwei Nachkommstellen
+        this.LB_ArtikelPreis.setText(String.valueOf(artikel.getBruttopreis()) + " €"); //zwei Nachkommstellen
     }
 
     /**

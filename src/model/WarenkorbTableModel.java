@@ -9,19 +9,19 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author Christian
  */
-public class WarenkorbTableModel extends AbstractTableModel
-{
-    private HashMap<Integer, Integer> warenkorbInhalt = new HashMap<>();
+public class WarenkorbTableModel extends AbstractTableModel {
+
+    private HashMap<Integer, Integer> warenkorbInhalt = new HashMap<>(); //ArtikelID, Anzahl
     private Object[] alleIDs;
-    
-    public WarenkorbTableModel(HashMap<Integer, Integer> warenkorbInhalt) 
-    {
+
+    public WarenkorbTableModel(HashMap<Integer, Integer> warenkorbInhalt) {
         this.warenkorbInhalt = warenkorbInhalt;
         this.alleIDs = warenkorbInhalt.keySet().toArray();
     }
@@ -39,66 +39,74 @@ public class WarenkorbTableModel extends AbstractTableModel
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Artikel artikel = null;
-        try { 
+        try {
+            System.out.println("TEST:" + this.alleIDs[rowIndex] + " " + this.alleIDs.length + " " + rowIndex);
             artikel = ArtikelHelper.getArticle((int) this.alleIDs[rowIndex]);
         } catch (SQLException ex) {
             Logger.getLogger(WarenkorbTableModel.class.getName()).log(Level.SEVERE, null, ex);
         }
-        if(artikel != null)
-        {
-            if(columnIndex == 0)
-            {
+        if (artikel != null) {
+            if (columnIndex == 0) {
                 //Artikelname 
                 return artikel.getName();
-                
-            }
-            else if(columnIndex == 1)
-            {
+
+            } else if (columnIndex == 1) {
                 //Anzahl
                 return this.warenkorbInhalt.get(artikel.getId()).toString();
-            }
-            else if(columnIndex == 2)
-            {
+            } else if (columnIndex == 2) {
                 //Einzelpreis
-                return String.valueOf((double)((int)((artikel.getMehrwertsteuer() * artikel.getNettopreis()) / 100 ) / 100d)) + " €"; //zwei Nachkommastellen
-            }
-            else
-            {
+                return String.valueOf(artikel.getBruttopreis()) + " €"; //zwei Nachkommastellen
+            } else {
                 return "Gesamtpreis (ToDo)";
                 //Gesamtpreis
             }
-        }
-        else
-        {
+        } else {
             return "Artikel ist leer";
         }
     }
-    
-   @Override
+
+    @Override
     public String getColumnName(int column) {
-        if(column == 0)
-        {
+        if (column == 0) {
             return "Artikelname";
-        }
-        else if(column == 1)
-        {
+        } else if (column == 1) {
             return "Anzahl";
-        }
-        else if(column == 2)
-        {
-            return "Einzelpreis";    
-        }
-        else
-        {
+        } else if (column == 2) {
+            return "Einzelpreis";
+        } else {
             return "Gesamtpreis";
         }
     }
-    //behebt Probleme mit Fließkommazahlen
-    private double rundeKorrektInEuro(double eingabe)
-    {
-        eingabe = eingabe * 100;
-        eingabe = Math.round(eingabe);
-        return eingabe / 100;
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int colIndex) {
+        if (colIndex == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
-    
+
+    @Override
+    public void setValueAt(Object eingabe, int rowIndex, int colIndex) {
+        System.out.println(rowIndex);
+        System.out.println("alleIDs: " + this.alleIDs[rowIndex]);
+        //ToDo: Try-Catch (anderer Wert als Ganzzahl)
+        int neueAnzahl = -1;
+        try
+        {
+            neueAnzahl = Integer.parseInt((String) eingabe);
+        }
+        catch(Exception ex)
+        {
+            
+        }
+        if(neueAnzahl > -1) //positive Ganzzahl eingegeben
+        {
+            this.warenkorbInhalt.put((Integer) this.alleIDs[rowIndex],  neueAnzahl);
+            fireTableDataChanged();
+        }
+        
+    }
+
 }
