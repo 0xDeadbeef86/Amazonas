@@ -2,6 +2,7 @@ package DBService;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -11,14 +12,14 @@ import java.sql.Statement;
  */
 public class MyDatabaseConnection {
 
-    Connection database;
-    Statement statement;
+    public Connection database;
+    private Statement statement;
 
     //stellt eine Verbindung zur Datenbank her
-    private void connect() {
+    public void connect() {
         try {
             Class.forName("org.postgresql.Driver").newInstance();
-            database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"); // localhost:5432/dbprojekt", "projekt", "geheim"         "jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"
+            this.database = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"); // localhost:5432/dbprojekt", "projekt", "geheim"         "jdbc:postgresql://localhost:5432/postgres", "postgres", "postgres"
             statement = database.createStatement();
         } catch (Exception ex) {
             System.out.println("Keine Datenbankverbindung möglich: "

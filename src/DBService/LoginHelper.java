@@ -5,6 +5,7 @@
  */
 package DBService;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import model.User;
@@ -18,10 +19,15 @@ public class LoginHelper {
     private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
 
     //returns: 0 bei fehlgeschlagenem Loginversuch, ansonsten die ID
+    @SuppressWarnings("empty-statement")
     public static int getLoginID(String name, String passwort) throws SQLException {
-        String sql;
-        sql = "SELECT id FROM \"User\" WHERE username='" + name + "' AND passwort = '" + passwort + "'";
-        ResultSet res = LoginHelper.dbVerbindung.executeQuery(sql);
+        String sql = "SELECT id FROM \"User\" WHERE username = ? AND passwort = ?";
+        dbVerbindung.connect();
+        PreparedStatement prepStmt = dbVerbindung.database.prepareStatement(sql);
+        prepStmt.setString(1, name);
+        prepStmt.setString(2, passwort);
+        
+        ResultSet res = prepStmt.executeQuery();
 
         int id = 0;
         while (res.next()) {
