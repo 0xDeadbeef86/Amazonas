@@ -97,7 +97,14 @@ public class WarenkorbTableModel extends AbstractTableModel {
         }
         if (neueAnzahl > -1) //positive Ganzzahl eingegeben
         {
-            this.warenkorbInhalt.put((Integer) this.alleIDs[rowIndex], neueAnzahl);
+            if(neueAnzahl > 0)
+            {
+                this.warenkorbInhalt.put((Integer) this.alleIDs[rowIndex], neueAnzahl);
+            }
+            else // neueAnzahl == 0 -> Artikel soll aus Warenkorb entfernt werden
+            {
+                this.warenkorbInhalt.remove(this.alleIDs[rowIndex]);
+            }
             fireTableDataChanged();
         }
 

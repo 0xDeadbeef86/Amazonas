@@ -59,15 +59,9 @@ public class HauptScreen extends javax.swing.JFrame {
         TBL_Artikel = new javax.swing.JTable();
         btnEdit = new javax.swing.JButton();
         BT_ZumWarenkorb = new javax.swing.JButton();
+        BT_Reload = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                formWindowGainedFocus(evt);
-            }
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-            }
-        });
 
         BT_NeuerArtikel.setText("neuer Artikel");
         BT_NeuerArtikel.addActionListener(new java.awt.event.ActionListener() {
@@ -109,6 +103,13 @@ public class HauptScreen extends javax.swing.JFrame {
             }
         });
 
+        BT_Reload.setText("Neu laden");
+        BT_Reload.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_ReloadActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -117,11 +118,14 @@ public class HauptScreen extends javax.swing.JFrame {
                 .addGap(150, 150, 150)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(BT_ZumWarenkorb)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEdit)
-                        .addGap(18, 18, 18)
-                        .addComponent(BT_NeuerArtikel)))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(BT_Reload)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEdit)
+                            .addGap(18, 18, 18)
+                            .addComponent(BT_NeuerArtikel))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -132,7 +136,8 @@ public class HauptScreen extends javax.swing.JFrame {
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_NeuerArtikel)
-                    .addComponent(btnEdit))
+                    .addComponent(btnEdit)
+                    .addComponent(BT_Reload))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
@@ -157,13 +162,13 @@ public class HauptScreen extends javax.swing.JFrame {
         int index = this.TBL_Artikel.getSelectedRow();
         if (index != -1) {
             btnEdit.setEnabled(true);
-            int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 1);
+            int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 2);
             setCurrentlySelectedArticle(id);
         }
 
         if (evt.getClickCount() >= 2) {
             try {
-                int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 1);
+                int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 2);
                 Artikel artikel = ArtikelHelper.getArticle(id);
 
                 new ArtikelDetails(artikel).setVisible(true);
@@ -182,7 +187,7 @@ public class HauptScreen extends javax.swing.JFrame {
         int artikelId = -1;
         if (selectedRowId != -1) {
             btnEdit.setEnabled(true);
-            artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 1);
+            artikelId = (int) this.TBL_Artikel.getModel().getValueAt(selectedRowId, 2);
             if (artikelId != -1) {
                 Artikel artikel;
                 try {
@@ -207,18 +212,19 @@ public class HauptScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BT_ZumWarenkorbActionPerformed
 
-    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
+    private void BT_ReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_ReloadActionPerformed
         try {
             this.TBL_Artikel.setModel(new ArtikelTableModel());
             this.btnEdit.setEnabled(false);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_formWindowGainedFocus
+    }//GEN-LAST:event_BT_ReloadActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_NeuerArtikel;
+    private javax.swing.JButton BT_Reload;
     private javax.swing.JButton BT_ZumWarenkorb;
     private javax.swing.JTable TBL_Artikel;
     private javax.swing.JButton btnEdit;

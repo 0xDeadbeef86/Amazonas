@@ -76,6 +76,7 @@ public class Artikel {
     }
 
     public double getBruttopreis() {
+        System.out.println(this.getMehrwertsteuer() + " " + this.getNettopreis());
         return rundeKorrektInEuro((double) ((int) (((this.getMehrwertsteuer() + 100) * this.getNettopreis()) / 100) / 100d));
     }
 

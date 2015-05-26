@@ -121,6 +121,11 @@ public class ArtikelForm extends javax.swing.JFrame {
         LB_Aktiv.setText("aktiv *");
 
         CheckBox_Aktiv.setSelected(true);
+        CheckBox_Aktiv.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CheckBox_AktivMouseClicked(evt);
+            }
+        });
 
         BT_OK.setFont(new java.awt.Font("Cantarell", 0, 18)); // NOI18N
         BT_OK.setText("Anlegen/Bearbeiten");
@@ -218,6 +223,29 @@ public class ArtikelForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BT_OKActionPerformed
 
+    private void CheckBox_AktivMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CheckBox_AktivMouseClicked
+        if (!this.CheckBox_Aktiv.isSelected()) { //ist vor Mausklick aktiv
+            int returnConfirm = JOptionPane.showConfirmDialog(this, "Wollen Sie den Artikel wirklich inaktiv setzen?");
+            if (returnConfirm == 0) //Ja
+            {
+                this.CheckBox_Aktiv.setSelected(false);
+            } else //Nein, Abbrechen oder X
+            {
+                this.CheckBox_Aktiv.setSelected(true);
+            }
+        } else //ist vor Mausklick nicht aktiv
+        {
+            int returnConfirm = JOptionPane.showConfirmDialog(this, "Wollen Sie den Artikel wieder aktivieren?");
+            if (returnConfirm == 0) //Ja
+            {
+                this.CheckBox_Aktiv.setSelected(true);
+            } else //Nein, Abbrechen oder X
+            {
+                this.CheckBox_Aktiv.setSelected(false);
+            }
+        }
+    }//GEN-LAST:event_CheckBox_AktivMouseClicked
+
     private void erstelleArtikel() {
         boolean aktiv = false;
         String name = "";
@@ -286,7 +314,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         int nettopreis = Integer.parseInt(this.TB_Nettopreis.getText());
         int mehrwertsteuerID = 1; //TODO: Integer.parseInt(this.CB_Mehrwertsteuersatz.getSelectedItem().toString());
         int kategorieID = 1; //TODO: 
-        boolean aktiv = true;
+        boolean aktiv = this.CheckBox_Aktiv.isSelected();
 
         if (ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id)) {
             JOptionPane.showMessageDialog(this, "Artikel erfolgreich gespeichert");

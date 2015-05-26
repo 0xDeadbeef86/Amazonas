@@ -7,7 +7,9 @@ package DBService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import model.Artikel;
+import model.ArtikelTableModel;
 
 /**
  *
@@ -88,6 +90,19 @@ public class ArtikelHelper {
         artikel.setAktiv(aktiv);
 
         return artikel;
+    }
+
+    public static ArrayList<Artikel> getAllActiveArticle() throws SQLException {
+        String sql;
+        sql = "SELECT * FROM \"Artikel\" WHERE aktiv = true";
+        ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
+
+        ArrayList<Artikel> artikelList = new ArrayList<>();
+
+        while (res.next()) {
+            artikelList.add(getArticle(res.getInt("id")));
+        }
+        return artikelList;
     }
 
     private static int getMwst(int id) throws SQLException {

@@ -5,8 +5,8 @@
  */
 package model;
 
+import DBService.ArtikelHelper;
 import DBService.MyDatabaseConnection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
@@ -22,7 +22,7 @@ public class ArtikelTableModel extends AbstractTableModel {
     private ArrayList<Artikel> artikelList = new ArrayList<>();
 
     public ArtikelTableModel() throws SQLException {
-        artikelList = getAllActiveArticle();
+        artikelList = ArtikelHelper.getAllActiveArticle();
     }
 
     @Override
@@ -32,13 +32,19 @@ public class ArtikelTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 1;
+        return 2;
     }
 
     @Override
     public String getColumnName(int column) {
 
-        return "Artikelname";
+        if (column == 0) {
+            return "Artikelname";
+        } else if (column == 1) {
+            return "Bruttopreis";
+        } else {
+            return "";
+        }
 
     }
 
@@ -48,41 +54,16 @@ public class ArtikelTableModel extends AbstractTableModel {
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-
         if (columnIndex == 0) {
             return artikelList.get(rowIndex).getName();
         } else if (columnIndex == 1) {
+            return (String.valueOf(this.artikelList.get(rowIndex).getBruttopreis()) + " €");
+        } else if (columnIndex == 2) { // wird nicht ausgegeben
             return this.getArtikelIDByRow(rowIndex);
         } else {
             return "fehlerhafter Übergabeparameter";
         }
 
-    }
-
-    public static ArrayList<Artikel> getAllActiveArticle() throws SQLException {
-        String sql;
-        sql = "SELECT * FROM \"Artikel\" WHERE aktiv = true;";
-        ResultSet res = ArtikelTableModel.dbVerbindung.executeQuery(sql);
-
-        ArrayList<Artikel> artikelList = new ArrayList<Artikel>();
-
-        while (res.next()) {
-            Artikel artikel = new Artikel();
-
-            int id = res.getInt("id");
-            String name = res.getString("name");
-            String beschreibung = res.getString("beschreibung");
-            boolean aktiv = true;// res.getBoolean("aktiv");
-            // set data for Artikel object
-            artikel.setId(id);
-            artikel.setName(name);
-            artikel.setBeschreibung(beschreibung);
-            artikel.setAktiv(aktiv);
-
-            artikelList.add(artikel);
-        }
-
-        return artikelList;
     }
 
 }
