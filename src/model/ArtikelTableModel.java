@@ -21,8 +21,15 @@ public class ArtikelTableModel extends AbstractTableModel {
 
     private ArrayList<Artikel> artikelList = new ArrayList<>();
 
-    public ArtikelTableModel() throws SQLException {
-        artikelList = ArtikelHelper.getAllActiveArticle();
+    public ArtikelTableModel(boolean inaktiveZusaetzlichAnzeigen) throws SQLException {
+        if(!inaktiveZusaetzlichAnzeigen) //nur aktive Artikel anzeigen
+        {
+            this.artikelList = ArtikelHelper.getAllActiveArticle();
+        }
+        else //auch inaktive Artikel anzeigen
+        {
+            this.artikelList = ArtikelHelper.getAlleArtikel();
+        }
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         initComponents();
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         fillComboboxen();
-        this.CheckBox_Aktiv.setSelected(true);
+        this.CheckBox_Aktiv.setSelected(artikel.isAktiv());
         this.LB_Aktion.setText("Artikel bearbeiten");
         this.BT_OK.setText("Artikel speichern");
 

@@ -104,6 +104,20 @@ public class ArtikelHelper {
         }
         return artikelList;
     }
+    
+    public static ArrayList<Artikel> getAlleArtikel() throws SQLException
+    {
+        String sql;
+        sql = "SELECT * FROM \"Artikel\"";
+        ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
+
+        ArrayList<Artikel> artikelList = new ArrayList<>();
+
+        while (res.next()) {
+            artikelList.add(getArticle(res.getInt("id")));
+        }
+        return artikelList;
+    }
 
     private static int getMwst(int id) throws SQLException {
         String sql;

@@ -30,6 +30,8 @@
                   <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <Component id="BT_Reload" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="CB_InaktiveAnzeigen" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
                           <Component id="btnEdit" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -52,6 +54,7 @@
                   <Component id="BT_NeuerArtikel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="btnEdit" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="BT_Reload" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="CB_InaktiveAnzeigen" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
               <Component id="jScrollPane1" min="-2" pref="304" max="-2" attributes="0"/>
@@ -143,6 +146,14 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BT_ReloadActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="CB_InaktiveAnzeigen">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="inaktive Artikel anzeigen"/>
+      </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="CB_InaktiveAnzeigenMouseClicked"/>
       </Events>
     </Component>
   </SubComponents>

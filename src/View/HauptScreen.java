@@ -22,6 +22,7 @@ import model.User;
 public class HauptScreen extends javax.swing.JFrame {
 
     private int currentlySelectedArtikle = -1;
+    private boolean auchInaktiveAnzeigen;
 
     void setCurrentlySelectedArticle(int id) {
         currentlySelectedArtikle = id;
@@ -32,14 +33,18 @@ public class HauptScreen extends javax.swing.JFrame {
      */
     public HauptScreen() throws SQLException {
         initComponents();
-        this.TBL_Artikel.setModel(new ArtikelTableModel());
+        this.TBL_Artikel.setModel(new ArtikelTableModel(this.auchInaktiveAnzeigen));
 
         btnEdit.setVisible(false);
         btnEdit.setEnabled(false);
+        BT_NeuerArtikel.setVisible(false);
+        CB_InaktiveAnzeigen.setVisible(false);
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
         String accessLevel = User.GetInstance().getAccessLevel();
         if (accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) {
             btnEdit.setVisible(true);
+            BT_NeuerArtikel.setVisible(true);
+            CB_InaktiveAnzeigen.setVisible(true);
         }
         //int index = this.TBL_Artikel.getSelectedRow();
         //System.out.println(index);
@@ -60,6 +65,7 @@ public class HauptScreen extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
         BT_ZumWarenkorb = new javax.swing.JButton();
         BT_Reload = new javax.swing.JButton();
+        CB_InaktiveAnzeigen = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,6 +116,13 @@ public class HauptScreen extends javax.swing.JFrame {
             }
         });
 
+        CB_InaktiveAnzeigen.setText("inaktive Artikel anzeigen");
+        CB_InaktiveAnzeigen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                CB_InaktiveAnzeigenMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -121,6 +134,8 @@ public class HauptScreen extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addComponent(BT_Reload)
+                            .addGap(18, 18, 18)
+                            .addComponent(CB_InaktiveAnzeigen)
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(btnEdit)
                             .addGap(18, 18, 18)
@@ -137,7 +152,8 @@ public class HauptScreen extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_NeuerArtikel)
                     .addComponent(btnEdit)
-                    .addComponent(BT_Reload))
+                    .addComponent(BT_Reload)
+                    .addComponent(CB_InaktiveAnzeigen))
                 .addGap(24, 24, 24)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(31, Short.MAX_VALUE))
@@ -170,8 +186,14 @@ public class HauptScreen extends javax.swing.JFrame {
             try {
                 int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 2);
                 Artikel artikel = ArtikelHelper.getArticle(id);
-
-                new ArtikelDetails(artikel).setVisible(true);
+                if(artikel.isAktiv())
+                {
+                    new ArtikelDetails(artikel).setVisible(true);
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(this, "Der ausgewählte Artikel ist inaktiv und kann deswegen nicht gekauft werden");
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -214,18 +236,24 @@ public class HauptScreen extends javax.swing.JFrame {
 
     private void BT_ReloadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_ReloadActionPerformed
         try {
-            this.TBL_Artikel.setModel(new ArtikelTableModel());
+            this.TBL_Artikel.setModel(new ArtikelTableModel(this.auchInaktiveAnzeigen));
             this.btnEdit.setEnabled(false);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_BT_ReloadActionPerformed
 
+    private void CB_InaktiveAnzeigenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_CB_InaktiveAnzeigenMouseClicked
+        this.auchInaktiveAnzeigen = this.CB_InaktiveAnzeigen.isSelected();
+        this.BT_Reload.doClick();
+    }//GEN-LAST:event_CB_InaktiveAnzeigenMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_NeuerArtikel;
     private javax.swing.JButton BT_Reload;
     private javax.swing.JButton BT_ZumWarenkorb;
+    private javax.swing.JCheckBox CB_InaktiveAnzeigen;
     private javax.swing.JTable TBL_Artikel;
     private javax.swing.JButton btnEdit;
     private javax.swing.JScrollPane jScrollPane1;
