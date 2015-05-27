@@ -1,5 +1,7 @@
 package model;
 
+import DBService.ArtikelHelper;
+import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
@@ -40,6 +42,23 @@ public class Warenkorb {
 
     public void bestellen() {
         //ToDo: implementieren
+    }
+
+    public double getGesamtbruttopreisAllerArtikel() throws SQLException {
+        Object[] alleIDs = this.warenkorbInhalt.keySet().toArray();
+        double gesamtpreisAllerArtikel = 0.0;
+        for (int i = 0; i < this.warenkorbInhalt.size(); i++) {
+            Artikel artikel = ArtikelHelper.getArticle((int) alleIDs[i]);
+            gesamtpreisAllerArtikel += artikel.getBruttopreis() * this.warenkorbInhalt.get(alleIDs[i]);
+        }
+        return rundeKorrektInEuro(gesamtpreisAllerArtikel);
+    }
+    
+    //behebt Probleme mit Fließkommazahlen
+    private double rundeKorrektInEuro(double eingabe) {
+        eingabe = eingabe * 100;
+        eingabe = Math.round(eingabe);
+        return eingabe / 100;
     }
 
     public HashMap<Integer, Integer> getWarenkorbinhalt() {

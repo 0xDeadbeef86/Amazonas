@@ -39,7 +39,6 @@ public class WarenkorbTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Artikel artikel = null;
         try {
-            System.out.println("TEST:" + this.alleIDs[rowIndex] + " " + this.alleIDs.length + " " + rowIndex);
             artikel = ArtikelHelper.getArticle((int) this.alleIDs[rowIndex]);
         } catch (SQLException ex) {
             Logger.getLogger(WarenkorbTableModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -54,10 +53,10 @@ public class WarenkorbTableModel extends AbstractTableModel {
                 return this.warenkorbInhalt.get(artikel.getId()).toString();
             } else if (columnIndex == 2) {
                 //Einzelpreis
-                return String.valueOf(artikel.getBruttopreis()) + " €"; //zwei Nachkommastellen
+                return String.valueOf(rundeKorrektInEuro(artikel.getBruttopreis())) + " €"; //zwei Nachkommastellen
             } else {
                 //Gesamtpreis
-                return (artikel.getBruttopreis() * this.warenkorbInhalt.get(artikel.getId()));
+                return (rundeKorrektInEuro(artikel.getBruttopreis() * this.warenkorbInhalt.get(artikel.getId())));
 
             }
         } else {
@@ -108,6 +107,13 @@ public class WarenkorbTableModel extends AbstractTableModel {
             fireTableDataChanged();
         }
 
+    }
+    
+    //behebt Probleme mit Fließkommazahlen
+    private double rundeKorrektInEuro(double eingabe) {
+        eingabe = eingabe * 100;
+        eingabe = Math.round(eingabe);
+        return eingabe / 100;
     }
 
 }
