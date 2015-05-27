@@ -33,14 +33,14 @@ public class Warenkorb {
     }
 
     public void removeArtikel(int id) {
-        //ToDo: testen
-        warenkorbInhalt.remove(id);
-        if (warenkorbInhalt.get(id) <= 0) {
+        warenkorbInhalt.replace(id, 0);
+
+        if (warenkorbInhalt.get(id) <= 0 && warenkorbInhalt.get(id) != null) {
             warenkorbInhalt.remove(id);
         }
     }
 
-    public void bestellen() {
+    public void bestellen() { //hier?
         //ToDo: implementieren
     }
 

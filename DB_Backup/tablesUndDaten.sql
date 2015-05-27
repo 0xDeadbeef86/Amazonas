@@ -106,3 +106,12 @@ VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '1' , '1', '290', 'true');
 
 INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
 VALUES ('Auto', 'Bemwe', '2' , '2', '3400000', 'true');
+
+--Adresse
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
+VALUES ('Vorname', 'Nachname', 'Anschrift');
+
+--UserAdresse
+INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
+VALUES (3, 1);
+

@@ -6,7 +6,6 @@
 package View;
 
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,14 +20,18 @@ public class WarenkorbScreen extends javax.swing.JFrame {
 
     /**
      * Creates new form WarenkorbScreen
+     *
      * @throws java.sql.SQLException
      */
     public WarenkorbScreen() throws SQLException {
         initComponents();
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
-        
-        HashMap<Integer, Integer> alleArtikelImWarenkorb = Warenkorb.GetInstance().getWarenkorbinhalt();
-        this.TBL_Warenkorb.setModel(new WarenkorbTableModel(alleArtikelImWarenkorb));
+        if (Warenkorb.GetInstance().getGesamtbruttopreisAllerArtikel() > 0) {
+            this.BT_Kaufen.setEnabled(true);
+        } else {
+            this.BT_Kaufen.setEnabled(false);
+        }
+        this.TBL_Warenkorb.setModel(new WarenkorbTableModel(Warenkorb.GetInstance().getWarenkorbinhalt()));
         this.LB_GesamtpreisAllerArtikel.setText(Warenkorb.GetInstance().getGesamtbruttopreisAllerArtikel() + " €");
     }
 
@@ -48,6 +51,7 @@ public class WarenkorbScreen extends javax.swing.JFrame {
         TBL_Warenkorb = new javax.swing.JTable();
         BT_Kaufen = new javax.swing.JButton();
         LB_GesamtpreisAllerArtikel = new javax.swing.JLabel();
+        BT_Leeren = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(1000, 769));
@@ -102,6 +106,13 @@ public class WarenkorbScreen extends javax.swing.JFrame {
         LB_GesamtpreisAllerArtikel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         LB_GesamtpreisAllerArtikel.setText("0.00 €");
 
+        BT_Leeren.setText("Warenkorb leeren");
+        BT_Leeren.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_LeerenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -111,12 +122,16 @@ public class WarenkorbScreen extends javax.swing.JFrame {
                 .addComponent(LB_GesamtpreisAllerArtikel, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(35, 35, 35)
                 .addComponent(BT_Kaufen, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addComponent(PANEL_Gesamt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(46, 46, 46)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(LB_Warenkorb)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(LB_Warenkorb)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BT_Leeren))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 941, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -124,7 +139,9 @@ public class WarenkorbScreen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addComponent(LB_Warenkorb)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LB_Warenkorb)
+                    .addComponent(BT_Leeren))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -135,32 +152,47 @@ public class WarenkorbScreen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(BT_Kaufen, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LB_GesamtpreisAllerArtikel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(LB_GesamtpreisAllerArtikel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_KaufenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_KaufenActionPerformed
-        if(JOptionPane.showConfirmDialog(this, "Wollen Sie die Artikel für " + this.LB_GesamtpreisAllerArtikel.getText() + " bestellen?") == 0) //Ja
+        if (JOptionPane.showConfirmDialog(this, "Wollen Sie die/den Artikel für " + this.LB_GesamtpreisAllerArtikel.getText() + " bestellen?") == 0) //Ja
         {
-            //bestellen
+            //Adresse auswählen
+            //Rechnung in Datenbank einfügen
+            //Rechnung anzeigen
+
         }
     }//GEN-LAST:event_BT_KaufenActionPerformed
 
     private void TBL_WarenkorbPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TBL_WarenkorbPropertyChange
         try {
             this.LB_GesamtpreisAllerArtikel.setText(Warenkorb.GetInstance().getGesamtbruttopreisAllerArtikel() + " €");
+            if (Warenkorb.GetInstance().getGesamtbruttopreisAllerArtikel() <= 0) {
+                this.BT_Kaufen.setEnabled(false);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(WarenkorbScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_TBL_WarenkorbPropertyChange
 
-    
+    private void BT_LeerenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_LeerenActionPerformed
+        Object[] alleIDs = Warenkorb.GetInstance().getWarenkorbinhalt().keySet().toArray();
+        for (Object id : alleIDs) {
+            Warenkorb.GetInstance().removeArtikel((int) id);
+        }
+        this.TBL_Warenkorb.setModel(new WarenkorbTableModel(Warenkorb.GetInstance().getWarenkorbinhalt()));
+        this.BT_Kaufen.setEnabled(false);
+
+    }//GEN-LAST:event_BT_LeerenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_Kaufen;
+    private javax.swing.JButton BT_Leeren;
     private javax.swing.JLabel LB_GesamtpreisAllerArtikel;
     private javax.swing.JLabel LB_SUM_Gesamtpreis;
     private javax.swing.JLabel LB_Warenkorb;
