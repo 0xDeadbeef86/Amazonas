@@ -34,6 +34,8 @@ public class ArtikelForm extends javax.swing.JFrame {
 
     /**
      * Creates new form UserAnlegen
+     *
+     * @throws java.sql.SQLException
      */
     public ArtikelForm() throws SQLException {
         state = FormState.ERSTELLEN;
@@ -317,6 +319,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         boolean aktiv = this.CheckBox_Aktiv.isSelected();
 
         if (ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id)) {
+            ArtikelHelper.artikelPuffer.remove(id);
             JOptionPane.showMessageDialog(this, "Artikel erfolgreich gespeichert");
             this.setVisible(false);
 

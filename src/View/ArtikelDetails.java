@@ -15,7 +15,7 @@ import model.Warenkorb;
  */
 public class ArtikelDetails extends javax.swing.JFrame {
 
-    private Artikel artikel;
+    private final Artikel artikel;
          
     public ArtikelDetails(Artikel artikel) {
         initComponents();  
@@ -137,6 +137,7 @@ public class ArtikelDetails extends javax.swing.JFrame {
         {
             Warenkorb.GetInstance().addArtikel(this.artikel.getId(), anzahl);
             JOptionPane.showMessageDialog(this, anzahl + "x " + this.artikel.getName() + " zum Warenkorb hinzugefügt");
+            this.setVisible(false);
         }
         
         

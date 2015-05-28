@@ -40,10 +40,6 @@ public class Warenkorb {
         }
     }
 
-    public void bestellen() { //hier?
-        //ToDo: implementieren
-    }
-
     public double getGesamtbruttopreisAllerArtikel() throws SQLException {
         Object[] alleIDs = this.warenkorbInhalt.keySet().toArray();
         double gesamtpreisAllerArtikel = 0.0;

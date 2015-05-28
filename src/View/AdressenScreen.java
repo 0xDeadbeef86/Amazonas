@@ -5,11 +5,13 @@
  */
 package View;
 
+import DBService.BestellungHelper;
+import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author Theresia Fix
+ * @author fixch
  */
 public class AdressenScreen extends javax.swing.JFrame {
 
@@ -17,9 +19,11 @@ public class AdressenScreen extends javax.swing.JFrame {
      * Creates new form AdressenScreen
      */
     private double gesamtpreisAllerArtikel = 0.0;
-    public AdressenScreen(double gesamtpreisAllerArtikel) {
+    private final HashMap<Integer, Integer> alleBestellenArtikel;
+    public AdressenScreen(double gesamtpreisAllerArtikel, HashMap<Integer, Integer> bestellteArtikel) {
         initComponents();
         this.gesamtpreisAllerArtikel = gesamtpreisAllerArtikel;
+        this.alleBestellenArtikel = bestellteArtikel;
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
     }
 
@@ -73,10 +77,22 @@ public class AdressenScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_BestellenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_BestellenActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "Wollen Sie die/den Artikel für " + this.gesamtpreisAllerArtikel + " € bestellen?") == 0) //Ja
+        if(BestellungHelper.insertBestellung(1, this.alleBestellenArtikel)) //Bestellung erfolgreich in die DB eingetragen
         {
-            
+            JOptionPane.showMessageDialog(this, "Ihre Bestellung wurde erfolgreich gespeichert");
+            this.setVisible(false);
         }
+        else
+        {
+            JOptionPane.showMessageDialog(this, "Ihre Bestellung konnte leider nicht gespeichert werden");
+        }
+       
+
+//Rechnung in Datenbank einfügen
+        //INSERT INTO "Rechnung" (fk_user_adresse) VALUES (1);
+        //INSERT INTO "RechnungArtikel" (fk_rechnung, fk_artikel, anzahl) VALUES (1, 1, 1);
+        //Rechnung anzeigen
+        //SELECT * FROM v_BestellungenAnzeigen WHERE "RechnungID" = 1
     }//GEN-LAST:event_BT_BestellenActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

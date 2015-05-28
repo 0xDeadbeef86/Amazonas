@@ -96,11 +96,9 @@ public class WarenkorbTableModel extends AbstractTableModel {
         }
         if (neueAnzahl > -1) //positive Ganzzahl eingegeben
         {
-            if(neueAnzahl > 0)
-            {
+            if (neueAnzahl > 0) {
                 this.warenkorbInhalt.put((Integer) this.alleIDs[rowIndex], neueAnzahl);
-            }
-            else // neueAnzahl == 0 -> Artikel soll aus Warenkorb entfernt werden
+            } else // neueAnzahl == 0 -> Artikel soll aus Warenkorb entfernt werden
             {
                 this.warenkorbInhalt.remove(this.alleIDs[rowIndex]);
             }
@@ -108,7 +106,7 @@ public class WarenkorbTableModel extends AbstractTableModel {
         }
 
     }
-    
+
     //behebt Probleme mit Fließkommazahlen
     private double rundeKorrektInEuro(double eingabe) {
         eingabe = eingabe * 100;

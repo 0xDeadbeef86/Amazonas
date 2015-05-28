@@ -18,7 +18,7 @@ import model.Artikel;
 public class ArtikelHelper {
 
     private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
-    private static final HashMap<Integer, Artikel> artikelPuffer = new HashMap<>(); //ID, Artikel
+    public static final HashMap<Integer, Artikel> artikelPuffer = new HashMap<>(); //ID, Artikel
 
     public static boolean insertArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuerID, int kategorieID, boolean aktiv) throws SQLException {
         String sql;

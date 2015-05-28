@@ -36,7 +36,7 @@ public class MyDatabaseConnection {
             return result;
         } catch (Exception ex) {
             System.out.println("Die Abfrage " + query
-                    + "hat den Fehler " + ex.getMessage() + " produziert");
+                    + "hat den Fehler " + ex.getMessage() + " verursacht");
         }
         this.disconnect();
         return null;
@@ -50,7 +50,7 @@ public class MyDatabaseConnection {
             return res;
         } catch (Exception ex) {
             System.out.println("Update " + query
-                    + "hat den Fehler " + ex.getMessage() + " produziert");
+                    + "hat den Fehler " + ex.getMessage() + "  verursacht");
         }
         this.disconnect();
         return 0;
