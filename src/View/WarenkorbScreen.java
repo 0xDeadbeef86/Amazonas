@@ -5,6 +5,7 @@
  */
 package View;
 
+import DBService.ArtikelHelper;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -159,13 +160,19 @@ public class WarenkorbScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_KaufenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_KaufenActionPerformed
-        if (JOptionPane.showConfirmDialog(this, "Wollen Sie die/den Artikel für " + this.LB_GesamtpreisAllerArtikel.getText() + " bestellen?") == 0) //Ja
-        {
-            //Adresse auswählen
+
+        try {
+            AdressenScreen adressenScreen = new AdressenScreen(Warenkorb.GetInstance().getGesamtbruttopreisAllerArtikel());
+            this.setVisible(false);
+            adressenScreen.setVisible(true);
+            adressenScreen.setResizable(false);
+            adressenScreen.setLocationRelativeTo(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(WarenkorbScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
             //Rechnung in Datenbank einfügen
             //Rechnung anzeigen
-
-        }
     }//GEN-LAST:event_BT_KaufenActionPerformed
 
     private void TBL_WarenkorbPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_TBL_WarenkorbPropertyChange
