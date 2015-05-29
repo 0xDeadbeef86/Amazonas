@@ -39,12 +39,17 @@ public class HauptScreen extends javax.swing.JFrame {
         btnEdit.setEnabled(false);
         BT_NeuerArtikel.setVisible(false);
         CB_InaktiveAnzeigen.setVisible(false);
+        BT_Statistiken.setVisible(false);
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
         String accessLevel = User.GetInstance().getAccessLevel();
         if (accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) {
             btnEdit.setVisible(true);
             BT_NeuerArtikel.setVisible(true);
             CB_InaktiveAnzeigen.setVisible(true);
+        }
+        if(accessLevel.equals("Adminstrator"))
+        {
+            BT_Statistiken.setVisible(true);
         }
         //int index = this.TBL_Artikel.getSelectedRow();
         //System.out.println(index);
@@ -66,6 +71,7 @@ public class HauptScreen extends javax.swing.JFrame {
         BT_ZumWarenkorb = new javax.swing.JButton();
         BT_Reload = new javax.swing.JButton();
         CB_InaktiveAnzeigen = new javax.swing.JCheckBox();
+        BT_Statistiken = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -123,31 +129,42 @@ public class HauptScreen extends javax.swing.JFrame {
             }
         });
 
+        BT_Statistiken.setText("Statistiken anzeigen");
+        BT_Statistiken.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_StatistikenActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(150, 150, 150)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(BT_ZumWarenkorb)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(BT_Reload)
-                            .addGap(18, 18, 18)
-                            .addComponent(CB_InaktiveAnzeigen)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnEdit)
-                            .addGap(18, 18, 18)
-                            .addComponent(BT_NeuerArtikel))
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BT_Statistiken)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BT_ZumWarenkorb))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BT_Reload)
+                        .addGap(18, 18, 18)
+                        .addComponent(CB_InaktiveAnzeigen)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEdit)
+                        .addGap(18, 18, 18)
+                        .addComponent(BT_NeuerArtikel))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(139, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(BT_ZumWarenkorb)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BT_ZumWarenkorb)
+                    .addComponent(BT_Statistiken))
                 .addGap(61, 61, 61)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_NeuerArtikel)
@@ -248,10 +265,24 @@ public class HauptScreen extends javax.swing.JFrame {
         this.BT_Reload.doClick();
     }//GEN-LAST:event_CB_InaktiveAnzeigenMouseClicked
 
+    private void BT_StatistikenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_StatistikenActionPerformed
+
+        try {
+                    StatistikenScreen statistikenScreen = new StatistikenScreen();
+                    statistikenScreen.setVisible(true);
+                    statistikenScreen.setResizable(false);
+                    statistikenScreen.setLocationRelativeTo(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_BT_StatistikenActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_NeuerArtikel;
     private javax.swing.JButton BT_Reload;
+    private javax.swing.JButton BT_Statistiken;
     private javax.swing.JButton BT_ZumWarenkorb;
     private javax.swing.JCheckBox CB_InaktiveAnzeigen;
     private javax.swing.JTable TBL_Artikel;

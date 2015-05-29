@@ -1,3 +1,4 @@
+DROP VIEW IF EXISTS v_KundeUmsatzBestellungen;
 DROP TABLE IF EXISTS 
     "Berechtigung",
     "User",
@@ -68,6 +69,33 @@ CREATE TABLE "RechnungArtikel" (
     anzahl INT CHECK (anzahl > 0)
 );
 
+--Views
+
+-- CREATE OR REPLACE VIEW v_BestellungenAnzeigen AS
+-- SELECT "Rechnung"."id" AS "RechnungID", "Rechnung"."datum", "Adresse"."nachname", "Adresse"."vorname", "Adresse"."anschrift", "Artikel"."id" AS "ArtikelID", "RechnungArtikel"."anzahl"
+-- FROM "Rechnung", "RechnungArtikel", "UserAdresse", "User", "Adresse", "Artikel"
+-- WHERE "Rechnung"."fk_user_adresse" = "UserAdresse"."id" 
+-- AND "User"."id" = "UserAdresse"."fk_user"
+-- AND "Adresse"."id" = "UserAdresse"."fk_adresse"
+-- AND "RechnungArtikel"."fk_rechnung" = "Rechnung"."id"
+-- AND "RechnungArtikel"."fk_artikel" = "Artikel"."id";
+
+--ToDo: LEFT JOIN auf User, sodass alle User ausgegeben werden und nicht nur die, die Bestellungen getätigt haben
+CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
+    SELECT 
+    "User".username AS "Kunde", 
+    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
+    SUM((("Artikel".nettopreis * "RechnungArtikel".anzahl))) AS "Gesamtnettoumsatz", 
+    COUNT("Rechnung".id) AS Bestellungen
+        FROM "Artikel", "Rechnung", "RechnungArtikel", "User", "UserAdresse", "Mehrwertsteuer"
+            WHERE "Artikel".id = "RechnungArtikel".fk_artikel
+            AND "RechnungArtikel".fk_rechnung = "Rechnung".id
+            AND "UserAdresse".id = "Rechnung".fk_user_adresse
+            AND "User".id = "UserAdresse".fk_user
+            AND "RechnungArtikel".fk_artikel = "Artikel".id
+            AND "Artikel".fk_mehrwertsteuer = "Mehrwertsteuer".id
+                GROUP BY "User".username;
+
 --Berechtigungen
 INSERT INTO "Berechtigung" (berechtigungsstufe, titel) 
 VALUES (0, 'kein Zugriff');
@@ -101,17 +129,47 @@ VALUES ('Sonstiges');
 
 --Artikel
 INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
-VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '1' , '1', '290', 'true');
+VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '2' , '1', '290', 'true');
 
 
 INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
-VALUES ('Auto', 'Bemwe', '2' , '2', '3400000', 'true');
+VALUES ('Auto', 'Bemwe', '1' , '2', '3400000', 'true');
+
+INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
+VALUES ('Pampers', 'Pampers für Kinder mit 4-6kg', '1' , '2', '999', 'true');
+
 
 --Adresse
 INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
 VALUES ('Vorname', 'Nachname', 'Anschrift');
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
+VALUES ('Peter', 'Meier', 'Daheim');
 
 --UserAdresse
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
 VALUES (3, 1);
+INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
+VALUES (1, 2);
+
+--Rechnung
+INSERT INTO "Rechnung" ("fk_user_adresse") 
+VALUES (1);
+INSERT INTO "Rechnung" ("fk_user_adresse") 
+VALUES (2);
+INSERT INTO "Rechnung" ("fk_user_adresse") 
+VALUES (2);
+
+--RechnungArtikel
+INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
+VALUES (1, 1, 1);
+INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
+VALUES (1, 2, 2);
+
+INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
+VALUES (2, 3, 5);
+INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
+VALUES (2, 1, 1);
+
+INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
+VALUES (3, 3, 3);
 
