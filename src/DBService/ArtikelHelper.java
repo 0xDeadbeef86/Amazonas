@@ -55,7 +55,7 @@ public class ArtikelHelper {
     }
 
     public static Artikel getArticle(int id) throws SQLException {
-        if(artikelPuffer.get(id) == null) //gesuchter Artikel ist nicht im Puffer, Artikel muss aus der Datenbank geladen werden
+        if (artikelPuffer.get(id) == null) //gesuchter Artikel ist nicht im Puffer, Artikel muss aus der Datenbank geladen werden
         {
             String sql;
             sql = "SELECT * FROM \"Artikel\" WHERE id = '" + id + "';";
@@ -93,8 +93,7 @@ public class ArtikelHelper {
             artikel.setAktiv(aktiv);
             artikelPuffer.put(id, artikel);
             return artikel;
-        }
-        else //gesuchter Artikel ist im Puffer
+        } else //gesuchter Artikel ist im Puffer
         {
             return artikelPuffer.get(id);
         }
@@ -112,9 +111,8 @@ public class ArtikelHelper {
         }
         return artikelList;
     }
-    
-    public static ArrayList<Artikel> getAlleArtikel() throws SQLException
-    {
+
+    public static ArrayList<Artikel> getAlleArtikel() throws SQLException {
         String sql;
         sql = "SELECT * FROM \"Artikel\"";
         ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);

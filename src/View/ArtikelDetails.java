@@ -16,10 +16,10 @@ import model.Warenkorb;
 public class ArtikelDetails extends javax.swing.JFrame {
 
     private final Artikel artikel;
-         
+
     public ArtikelDetails(Artikel artikel) {
-        initComponents();  
-        
+        initComponents();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         this.artikel = artikel;
         this.LB_ArtikelName.setText(artikel.getName());
@@ -121,31 +121,24 @@ public class ArtikelDetails extends javax.swing.JFrame {
 
     private void BT_WarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_WarenkorbActionPerformed
         int anzahl = 0;
-        try
-        {
+        try {
             anzahl = Integer.parseInt(this.TB_ArtikelMenge.getText());
+        } catch (Exception ex) {
+
         }
-        catch(Exception ex)
-        {
-            
-        }
-        if(anzahl == 0)
-        {
+        if (anzahl == 0) {
             JOptionPane.showMessageDialog(this, "Bitte geben Sie eine gültige Menge ein");
-        }
-        else
-        {
+        } else {
             Warenkorb.GetInstance().addArtikel(this.artikel.getId(), anzahl);
             JOptionPane.showMessageDialog(this, anzahl + "x " + this.artikel.getName() + " zum Warenkorb hinzugefügt");
             this.setVisible(false);
         }
-        
-        
-        
+
+
     }//GEN-LAST:event_BT_WarenkorbActionPerformed
 
     private void TB_ArtikelMengeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TB_ArtikelMengeActionPerformed
-        // TODO add your handling code here:
+        //ToDo: Preis ändern
     }//GEN-LAST:event_TB_ArtikelMengeActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

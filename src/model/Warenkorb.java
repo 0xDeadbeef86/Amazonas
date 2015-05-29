@@ -49,7 +49,7 @@ public class Warenkorb {
         }
         return rundeKorrektInEuro(gesamtpreisAllerArtikel);
     }
-    
+
     //behebt Probleme mit Fließkommazahlen
     private double rundeKorrektInEuro(double eingabe) {
         eingabe = eingabe * 100;

@@ -6,9 +6,7 @@
 package DBService;
 
 import java.sql.ResultSet;
-import java.util.ArrayList;
 import java.util.HashMap;
-import model.Artikel;
 
 /**
  *
@@ -35,7 +33,7 @@ public class BestellungHelper {
             }
 
             for (int i = 0; i < artikelAnzahl.size(); i++) {
-                 BestellungHelper.dbVerbindung.executeUpdate("INSERT INTO \"RechnungArtikel\" (fk_rechnung, fk_artikel, anzahl)"
+                BestellungHelper.dbVerbindung.executeUpdate("INSERT INTO \"RechnungArtikel\" (fk_rechnung, fk_artikel, anzahl)"
                         + " VALUES (" + rechnungID + ", " + alleArtikelIDs[i] + ", " + artikelAnzahl.get(alleArtikelIDs[i]) + ")");
             }
 

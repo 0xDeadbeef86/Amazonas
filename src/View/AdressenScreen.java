@@ -20,6 +20,7 @@ public class AdressenScreen extends javax.swing.JFrame {
      */
     private double gesamtpreisAllerArtikel = 0.0;
     private final HashMap<Integer, Integer> alleBestellenArtikel;
+
     public AdressenScreen(double gesamtpreisAllerArtikel, HashMap<Integer, Integer> bestellteArtikel) {
         initComponents();
         this.gesamtpreisAllerArtikel = gesamtpreisAllerArtikel;
@@ -77,16 +78,13 @@ public class AdressenScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_BestellenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_BestellenActionPerformed
-        if(BestellungHelper.insertBestellung(1, this.alleBestellenArtikel)) //Bestellung erfolgreich in die DB eingetragen
+        if (BestellungHelper.insertBestellung(1, this.alleBestellenArtikel)) //Bestellung erfolgreich in die DB eingetragen
         {
             JOptionPane.showMessageDialog(this, "Ihre Bestellung wurde erfolgreich gespeichert");
             this.setVisible(false);
-        }
-        else
-        {
+        } else {
             JOptionPane.showMessageDialog(this, "Ihre Bestellung konnte leider nicht gespeichert werden");
         }
-       
 
 //Rechnung in Datenbank einfügen
         //INSERT INTO "Rechnung" (fk_user_adresse) VALUES (1);

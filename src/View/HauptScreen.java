@@ -30,6 +30,8 @@ public class HauptScreen extends javax.swing.JFrame {
 
     /**
      * Creates new form HauptScreen
+     *
+     * @throws java.sql.SQLException
      */
     public HauptScreen() throws SQLException {
         initComponents();
@@ -47,8 +49,7 @@ public class HauptScreen extends javax.swing.JFrame {
             BT_NeuerArtikel.setVisible(true);
             CB_InaktiveAnzeigen.setVisible(true);
         }
-        if(accessLevel.equals("Adminstrator"))
-        {
+        if (accessLevel.equals("Adminstrator")) {
             BT_Statistiken.setVisible(true);
         }
         //int index = this.TBL_Artikel.getSelectedRow();
@@ -203,12 +204,9 @@ public class HauptScreen extends javax.swing.JFrame {
             try {
                 int id = (int) this.TBL_Artikel.getModel().getValueAt(index, 2);
                 Artikel artikel = ArtikelHelper.getArticle(id);
-                if(artikel.isAktiv())
-                {
+                if (artikel.isAktiv()) {
                     new ArtikelDetails(artikel).setVisible(true);
-                }
-                else
-                {
+                } else {
                     JOptionPane.showMessageDialog(this, "Der ausgewählte Artikel ist inaktiv und kann deswegen nicht gekauft werden");
                 }
             } catch (SQLException ex) {
@@ -268,10 +266,10 @@ public class HauptScreen extends javax.swing.JFrame {
     private void BT_StatistikenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_StatistikenActionPerformed
 
         try {
-                    StatistikenScreen statistikenScreen = new StatistikenScreen();
-                    statistikenScreen.setVisible(true);
-                    statistikenScreen.setResizable(false);
-                    statistikenScreen.setLocationRelativeTo(null);
+            StatistikenScreen statistikenScreen = new StatistikenScreen();
+            statistikenScreen.setVisible(true);
+            statistikenScreen.setResizable(false);
+            statistikenScreen.setLocationRelativeTo(null);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -11,11 +11,10 @@ package model;
  */
 public class User {
 
-  
     private String name;
     private int id;
     private String titel;
-    private int title_id; 
+    private int title_id;
 
     public void setTitle_id(int title_id) {
         this.title_id = title_id;
@@ -28,22 +27,22 @@ public class User {
     private static final User userObjekt = new User();
 
     private User() {
-          
-    }   
-    
+
+    }
+
     // Setter
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public void setId(int id) {
         this.id = id;
     }
-    
-    public void setTitle(String accessLevel) {        
+
+    public void setTitle(String accessLevel) {
         this.titel = accessLevel;
     }
-    
+
     // Getter
     public String getName() {
         return name;
@@ -57,12 +56,8 @@ public class User {
         return titel;
     }
 
-    
-    public static User GetInstance()
-    {
+    public static User GetInstance() {
         return userObjekt;
     }
-    
-    
-    
+
 }

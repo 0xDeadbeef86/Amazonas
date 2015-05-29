@@ -10,12 +10,13 @@ import model.StatistikenTableModel;
 
 /**
  *
- * @author Theresia Fix
+ * @author fixch
  */
 public class StatistikenScreen extends javax.swing.JFrame {
 
     /**
      * Creates new form StatistikenScreen
+     *
      * @throws java.sql.SQLException
      */
     public StatistikenScreen() throws SQLException {

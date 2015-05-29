@@ -26,7 +26,7 @@ public class LoginHelper {
         PreparedStatement prepStmt = dbVerbindung.database.prepareStatement(sql);
         prepStmt.setString(1, name);
         prepStmt.setString(2, passwort);
-        
+
         ResultSet res = prepStmt.executeQuery();
 
         int id = 0;
