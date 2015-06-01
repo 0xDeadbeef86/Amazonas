@@ -114,14 +114,14 @@ public class ArtikelHelper {
     public static ArrayList<Artikel> getFilteredArticle(boolean inaktiveZusaetzlichAnzeigen, String kategorie, String suchtext) throws SQLException {
         String sql;  
         
-        sql = "SELECT * FROM \"vwartikel\" "; 
+        sql = "SELECT * FROM \"vwartikel\" WHERE"; 
         
         // filter aktiv/inaktiv articles
         if(inaktiveZusaetzlichAnzeigen)
-            sql = sql.concat("WHERE aktiv = true");
+            sql = sql.concat(" aktiv = true ");
         
         // filter kategorie        
-        sql = sql.concat(" AND kategorie = " + "'" + kategorie + "' ");
+        sql = sql.concat(" kategorie = " + "'" + kategorie + "' ");
         
         // search limitation via texfield
         String sqlSearchExtension =  "AND name like " + "'%" + suchtext + "%' ";
