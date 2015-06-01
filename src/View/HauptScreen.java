@@ -6,8 +6,11 @@
 package View;
 
 import DBService.ArtikelHelper;
+import java.awt.event.KeyEvent;
 //import com.sun.xml.internal.ws.api.model.ExceptionType;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -21,6 +24,7 @@ import model.User;
  */
 public class HauptScreen extends javax.swing.JFrame {
 
+    private HashMap<Integer, String> kategorien;
     private int currentlySelectedArtikle = -1;
     private boolean auchInaktiveAnzeigen;
 
@@ -36,10 +40,11 @@ public class HauptScreen extends javax.swing.JFrame {
     public HauptScreen() throws SQLException {
         initComponents();
         this.TBL_Artikel.setModel(new ArtikelTableModel(this.auchInaktiveAnzeigen));
-
+        fillComboboxen();
         btnEdit.setVisible(false);
         btnEdit.setEnabled(false);
         BT_NeuerArtikel.setVisible(false);
+        BT_CreateAccount.setVisible(false);
         CB_InaktiveAnzeigen.setVisible(false);
         BT_Statistiken.setVisible(false);
         System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
@@ -51,9 +56,21 @@ public class HauptScreen extends javax.swing.JFrame {
         }
         if (accessLevel.equals("Adminstrator")) {
             BT_Statistiken.setVisible(true);
+            BT_CreateAccount.setVisible(true);
         }
         //int index = this.TBL_Artikel.getSelectedRow();
         //System.out.println(index);
+    }
+    
+        //Füllt die Comboboxen mit Werten
+    private void fillComboboxen() throws SQLException {
+        //Kategorien
+        this.kategorien = ArtikelHelper.getKategorienFromDB();
+        ArrayList<Integer> alleIDsKategorien = new ArrayList<>();
+        alleIDsKategorien.addAll(this.kategorien.keySet());
+        for (int i = 0; i < alleIDsKategorien.size(); i++) {
+            this.CB_Kategorie.addItem(this.kategorien.get(alleIDsKategorien.get(i)));
+        }
     }
 
     /**
@@ -73,6 +90,12 @@ public class HauptScreen extends javax.swing.JFrame {
         BT_Reload = new javax.swing.JButton();
         CB_InaktiveAnzeigen = new javax.swing.JCheckBox();
         BT_Statistiken = new javax.swing.JButton();
+        TF_Suche = new javax.swing.JTextField();
+        CB_Kategorie = new javax.swing.JComboBox();
+        LBL_Kategorie = new javax.swing.JLabel();
+        LBL_SUCHE = new javax.swing.JLabel();
+        BT_Adresse = new javax.swing.JButton();
+        BT_CreateAccount = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -137,44 +160,101 @@ public class HauptScreen extends javax.swing.JFrame {
             }
         });
 
+        TF_Suche.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TF_SucheActionPerformed(evt);
+            }
+        });
+        TF_Suche.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                TF_SucheKeyPressed(evt);
+            }
+        });
+
+        LBL_Kategorie.setText("Kategorie");
+
+        LBL_SUCHE.setText("Suche");
+
+        BT_Adresse.setText("Adresse");
+        BT_Adresse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_AdresseActionPerformed(evt);
+            }
+        });
+
+        BT_CreateAccount.setText("Create Account");
+        BT_CreateAccount.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_CreateAccountActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(150, 150, 150)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                .addGap(136, 136, 136)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(BT_Statistiken)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(BT_ZumWarenkorb))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addComponent(BT_Reload)
+                            .addGap(14, 14, 14)
+                            .addComponent(CB_InaktiveAnzeigen)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnEdit)
+                            .addGap(18, 18, 18)
+                            .addComponent(BT_NeuerArtikel))
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(CB_Kategorie, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18))
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                    .addComponent(LBL_Kategorie)
+                                    .addGap(92, 92, 92)))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(LBL_SUCHE)
+                                .addComponent(TF_Suche, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(BT_Statistiken)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(BT_ZumWarenkorb))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(BT_Reload)
+                        .addComponent(BT_CreateAccount)
                         .addGap(18, 18, 18)
-                        .addComponent(CB_InaktiveAnzeigen)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnEdit)
-                        .addGap(18, 18, 18)
-                        .addComponent(BT_NeuerArtikel))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(139, Short.MAX_VALUE))
+                        .addComponent(BT_Adresse, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(153, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(BT_Adresse)
+                    .addComponent(BT_CreateAccount))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_ZumWarenkorb)
                     .addComponent(BT_Statistiken))
-                .addGap(61, 61, 61)
+                .addGap(26, 26, 26)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(BT_NeuerArtikel)
                     .addComponent(btnEdit)
                     .addComponent(BT_Reload)
                     .addComponent(CB_InaktiveAnzeigen))
-                .addGap(24, 24, 24)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBL_Kategorie)
+                    .addComponent(LBL_SUCHE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TF_Suche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(CB_Kategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
@@ -276,14 +356,67 @@ public class HauptScreen extends javax.swing.JFrame {
 
     }//GEN-LAST:event_BT_StatistikenActionPerformed
 
+    private void TF_SucheKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TF_SucheKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            try {
+                sucheArtikel();
+            } catch (SQLException ex) {
+                Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }              
+    }//GEN-LAST:event_TF_SucheKeyPressed
+
+    private void sucheArtikel() throws SQLException {   
+        String kategorie = CB_Kategorie.getSelectedItem().toString();
+        String suchtext = TF_Suche.getText(); 
+        
+        ArtikelTableModel model = new ArtikelTableModel(this.auchInaktiveAnzeigen, kategorie, suchtext);
+        this.TBL_Artikel.setModel(model);
+        this.btnEdit.setEnabled(false);
+    }
+    
+    private void TF_SucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_SucheActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TF_SucheActionPerformed
+
+    private void BT_CreateAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_CreateAccountActionPerformed
+        try {
+            CreateAccountScreen createAccountForm;
+            createAccountForm = new CreateAccountScreen();
+            createAccountForm.setVisible(true);
+            //createAccountForm.setResizable(false);
+            //createAccountForm.setLocationRelativeTo(null);
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BT_CreateAccountActionPerformed
+
+    private void BT_AdresseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_AdresseActionPerformed
+        try {
+            // TODO Account:
+            UserAdresseScreen userAdresseScreen;
+            userAdresseScreen = new UserAdresseScreen();
+            userAdresseScreen.setVisible(true);
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BT_AdresseActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BT_Adresse;
+    private javax.swing.JButton BT_CreateAccount;
     private javax.swing.JButton BT_NeuerArtikel;
     private javax.swing.JButton BT_Reload;
     private javax.swing.JButton BT_Statistiken;
     private javax.swing.JButton BT_ZumWarenkorb;
     private javax.swing.JCheckBox CB_InaktiveAnzeigen;
+    private javax.swing.JComboBox CB_Kategorie;
+    private javax.swing.JLabel LBL_Kategorie;
+    private javax.swing.JLabel LBL_SUCHE;
     private javax.swing.JTable TBL_Artikel;
+    private javax.swing.JTextField TF_Suche;
     private javax.swing.JButton btnEdit;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables

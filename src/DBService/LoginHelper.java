@@ -38,29 +38,24 @@ public class LoginHelper {
     }
 
     public static void setUserData(int loginId) throws SQLException {
-        String name = "name";
-        String berechtigungLevel = "";
+        String name = "";
+        String titel = "";
+        int berechtigungsstufe = -1;
 
         //TODO: QUERY
-        String sql_UserData = "SELECT * FROM \"User\" WHERE id='" + loginId + "'";
+        String sql_UserData = "SELECT * FROM \"vwuser\" WHERE id='" + loginId + "'";
         ResultSet res_User = LoginHelper.dbVerbindung.executeQuery(sql_UserData);
-
-        int berechtigungLevel_id = -1;
+        
         while (res_User.next()) {
             name = res_User.getString("username");
-            berechtigungLevel_id = Integer.parseInt(res_User.getString("fk_berechtigung"));
-
-            String sql_Berechtigung = "SELECT * FROM \"Berechtigung\" WHERE berechtigungsstufe='" + berechtigungLevel_id + "'";
-            ResultSet res_Berechtigung = LoginHelper.dbVerbindung.executeQuery(sql_Berechtigung);
-            while (res_Berechtigung.next()) {
-                berechtigungLevel = res_Berechtigung.getString("titel");
-            }
+            titel = res_User.getString("berechtigung");
+            berechtigungsstufe = res_User.getInt("berechtigungsstufe");
         }
 
         // set data for User object
         User.GetInstance().setName(name);
         User.GetInstance().setId(loginId);
-        User.GetInstance().setTitle(berechtigungLevel);
-        User.GetInstance().setTitle_id(berechtigungLevel_id);
+        User.GetInstance().setTitle(titel);
+        User.GetInstance().setTitle_id(berechtigungsstufe);
     }
 }

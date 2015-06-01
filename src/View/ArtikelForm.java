@@ -103,6 +103,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         LB_Aktiv = new javax.swing.JLabel();
         CheckBox_Aktiv = new javax.swing.JCheckBox();
         BT_OK = new javax.swing.JButton();
+        BT_DELETE = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,6 +118,12 @@ public class ArtikelForm extends javax.swing.JFrame {
         LB_Nettopreis.setText("Nettopreis: (in Cent) *");
 
         LB_Mehrwertsteuersatz.setText("Mehrwertsteuer: *");
+
+        CB_Mehrwertsteuersatz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                CB_MehrwertsteuersatzActionPerformed(evt);
+            }
+        });
 
         LB_Kategorie.setText("Kategorie: *");
 
@@ -134,6 +141,14 @@ public class ArtikelForm extends javax.swing.JFrame {
         BT_OK.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BT_OKActionPerformed(evt);
+            }
+        });
+
+        BT_DELETE.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        BT_DELETE.setText("Löschen");
+        BT_DELETE.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_DELETEActionPerformed(evt);
             }
         });
 
@@ -167,10 +182,12 @@ public class ArtikelForm extends javax.swing.JFrame {
                             .addComponent(TF_Beschreibung)
                             .addComponent(TB_Nettopreis)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LB_Aktion)
-                            .addComponent(BT_OK))
-                        .addGap(0, 175, Short.MAX_VALUE)))
+                        .addComponent(LB_Aktion)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(BT_OK)
+                        .addGap(75, 75, 75)
+                        .addComponent(BT_DELETE, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -206,7 +223,9 @@ public class ArtikelForm extends javax.swing.JFrame {
                     .addComponent(CheckBox_Aktiv)
                     .addComponent(LB_Aktiv))
                 .addGap(18, 18, 18)
-                .addComponent(BT_OK)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BT_DELETE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(BT_OK, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -248,13 +267,30 @@ public class ArtikelForm extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_CheckBox_AktivMouseClicked
 
+    private void CB_MehrwertsteuersatzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CB_MehrwertsteuersatzActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_CB_MehrwertsteuersatzActionPerformed
+
+    private void BT_DELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_DELETEActionPerformed
+        int artikelId = artikel.getId();
+        if (ArtikelHelper.deleteArticle(artikelId)) {
+            ArtikelHelper.artikelPuffer.remove(artikelId);
+            JOptionPane.showMessageDialog(this, "Artikel erfolgreich gelöscht");
+            this.setVisible(false);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Fehler: Artikel konnte nicht gelöscht werden");
+        }
+        ;
+    }//GEN-LAST:event_BT_DELETEActionPerformed
+
     private void erstelleArtikel() {
         boolean aktiv = false;
         String name = "";
         String beschreibung = "";
-        int nettoPreis = 0;
-        int mehrwertsteuerID = 0;
-        int kategorieID = 0;
+        int nettoPreis = 0;       
+        int mehrwertsteuer = 0;        
+        String kategorie = "";
         String fehlermeldung = "";
 
         if (this.CheckBox_Aktiv.isSelected()) {
@@ -281,22 +317,15 @@ public class ArtikelForm extends javax.swing.JFrame {
         } else {
             fehlermeldung += "Bitte geben Sie einen Nettopreis ein\n";
         }
-
-        mehrwertsteuerID = getMehrwertsteuerIDFromForm();
-        if (mehrwertsteuerID == 0) {
-            fehlermeldung += "Fehler beim Auslesen des Mehrwertsteuersatzes\n";
-        }
-
-        kategorieID = getKategorieIDFromForm();
-        if (kategorieID == 0) {
-            fehlermeldung += "Fehler beim Auslesen der Kategorie\n";
-        }
-
+        
+        mehrwertsteuer = getMehrwertsteuerNameFromForm();
+        kategorie = getKategorieNameFromForm();
+        
         if (!"".equals(fehlermeldung)) {
             JOptionPane.showMessageDialog(this, fehlermeldung);
         } else {
             try {
-                if (ArtikelHelper.insertArticle(name, beschreibung, nettoPreis, mehrwertsteuerID, kategorieID, aktiv)) {
+                if (ArtikelHelper.insertArticle(name, beschreibung, nettoPreis, mehrwertsteuer, kategorie, aktiv)) {
                     JOptionPane.showMessageDialog(this, "Artikel erfolgreich angelegt");
                     this.setVisible(false);
                 } else {
@@ -314,11 +343,14 @@ public class ArtikelForm extends javax.swing.JFrame {
         String name = this.TB_Name.getText();
         String beschreibung = this.TF_Beschreibung.getText();
         int nettopreis = Integer.parseInt(this.TB_Nettopreis.getText());
-        int mehrwertsteuerID = 1; //TODO: Integer.parseInt(this.CB_Mehrwertsteuersatz.getSelectedItem().toString());
-        int kategorieID = 1; //TODO: 
+        //int mehrwertsteuerID = 1; //TODO: Integer.parseInt(this.CB_Mehrwertsteuersatz.getSelectedItem().toString());
+        //int kategorieID = 1; //TODO: 
+        int mehrwertsteuer = getMehrwertsteuerNameFromForm();
+        String ketegorie = getKategorieNameFromForm();
+        
         boolean aktiv = this.CheckBox_Aktiv.isSelected();
 
-        if (ArtikelHelper.updateArticle(name, beschreibung, nettopreis, mehrwertsteuerID, kategorieID, aktiv, id)) {
+        if (ArtikelHelper.updateArticle(id, name, beschreibung, nettopreis, mehrwertsteuer, ketegorie, aktiv/*, id*/)) {
             ArtikelHelper.artikelPuffer.remove(id);
             JOptionPane.showMessageDialog(this, "Artikel erfolgreich gespeichert");
             this.setVisible(false);
@@ -339,7 +371,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         }
 
         //Kategorien
-        this.kategorien = getKategorienFromDB();
+        this.kategorien = ArtikelHelper.getKategorienFromDB();// getKategorienFromDB();
         ArrayList<Integer> alleIDsKategorien = new ArrayList<>();
         alleIDsKategorien.addAll(this.kategorien.keySet());
         for (int i = 0; i < alleIDsKategorien.size(); i++) {
@@ -372,6 +404,14 @@ public class ArtikelForm extends javax.swing.JFrame {
         return 0; //Fehler
     }
 
+    private int getMehrwertsteuerNameFromForm() {      
+        String eingabe = (String) this.CB_Mehrwertsteuersatz.getSelectedItem().toString();
+        if (eingabe.endsWith("%")) {
+            eingabe = eingabe.substring(0, eingabe.length() - 1);
+        }
+        return Integer.parseInt(eingabe);
+    }
+    
     //Gibt die KategorieID für den Wert aus dem Formular zurück
     private int getKategorieIDFromForm() {
         String eingabe = (String) this.CB_Kategorie.getSelectedItem();
@@ -386,6 +426,10 @@ public class ArtikelForm extends javax.swing.JFrame {
             }
         }
         return 0; //Fehler
+    }
+    
+    private String getKategorieNameFromForm() {
+        return (String) this.CB_Kategorie.getSelectedItem().toString();   
     }
 
     //Gibt eine HashMap mit Key: MehrwertsteuerID und Value: Mehrwertsteuersatz zurück
@@ -405,25 +449,9 @@ public class ArtikelForm extends javax.swing.JFrame {
         }
         return mehrwertsteuersaetze;
     }
-
-    //Gibt eine HashMap mit Key: KatergorieID und Value: Katoegoriename zurück
-    private HashMap<Integer, String> getKategorienFromDB() throws SQLException {
-        String sql;
-        sql = "SELECT * FROM \"Kategorie\"";
-        ResultSet res = ArtikelForm.dbVerbindung.executeQuery(sql);
-        HashMap<Integer, String> alleKategorien = new HashMap<>();
-        int id = 0;
-        String kategorie = "";
-        while (res.next()) {
-            id = Integer.parseInt(res.getString("id"));
-            kategorie = res.getString("name");
-            if (id != 0 && !"".equals(kategorie)) {
-                alleKategorien.put(id, kategorie);
-            }
-        }
-        return alleKategorien;
-    }
+   
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BT_DELETE;
     private javax.swing.JButton BT_OK;
     private javax.swing.JComboBox CB_Kategorie;
     private javax.swing.JComboBox CB_Mehrwertsteuersatz;

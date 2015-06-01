@@ -5,6 +5,7 @@
  */
 package DBService;
 
+import View.ArtikelForm;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -19,11 +20,11 @@ public class ArtikelHelper {
 
     private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
     public static final HashMap<Integer, Artikel> artikelPuffer = new HashMap<>(); //ID, Artikel
-
-    public static boolean insertArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuerID, int kategorieID, boolean aktiv) throws SQLException {
-        String sql;
-        sql = "INSERT INTO \"Artikel\" (name, beschreibung, fk_mehrwertsteuer, fk_kategorie, nettopreis, aktiv)"
-                + "VALUES (" + "'" + name + "'" + "," + "'" + beschreibung + "'" + "," + mehrwertsteuerID + "," + kategorieID + "," + nettopreis + "," + aktiv + ");";
+    
+    public static boolean insertArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuer, String kategorie, boolean aktiv) throws SQLException {
+        String sql;        
+        sql = "INSERT INTO \"vwartikel\" (name, beschreibung, mehrwertsteuer, kategorie, nettopreis, aktiv)"
+        + "VALUES (" + "'" + name + "'" + "," + "'" + beschreibung + "'" + "," + mehrwertsteuer + "," + "'" + kategorie + "'" + "," + nettopreis + "," + aktiv + ");";
 
         try {
             ArtikelHelper.dbVerbindung.executeUpdate(sql);
@@ -32,16 +33,30 @@ public class ArtikelHelper {
 
         }
         return false; //Fehler
+    }    
+    
+    public static boolean deleteArticle(int id) {
+        String sql;
+        sql = "DELETE FROM \"Artikel\" "
+                + "WHERE id = " + "'" + id + "'";
+          try {
+            ArtikelHelper.dbVerbindung.executeUpdate(sql);
+            return true;
+        } catch (Exception ex) {
+
+        }
+
+        return false; //Fehler
     }
 
-    public static boolean updateArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuerID, int kategorieID, boolean aktiv, int id) throws SQLException {
+    public static boolean updateArticle(int id, String name, String beschreibung, int nettopreis, int mehrwertsteuer, String kategorie, boolean aktiv) throws SQLException {
         String sql;
-        sql = "UPDATE \"Artikel\" SET name = "
+        sql = "UPDATE \"vwartikel\" SET name = "
                 + "'" + name + "'"
                 + ", beschreibung = " + "'" + beschreibung + "'"
                 + ", nettopreis = " + "'" + nettopreis + "'"
-                + ", fk_mehrwertsteuer = " + "'" + mehrwertsteuerID + "'"
-                + ", fk_kategorie = " + "'" + kategorieID + "'"
+                + ", mehrwertsteuer = " + "'" + mehrwertsteuer + "'"
+                + ", kategorie = " + "'" + kategorie + "'"
                 + ", aktiv = " + "'" + aktiv + "'"
                 + "where id = " + "'" + id + "'";
         try {
@@ -58,28 +73,24 @@ public class ArtikelHelper {
         if (artikelPuffer.get(id) == null) //gesuchter Artikel ist nicht im Puffer, Artikel muss aus der Datenbank geladen werden
         {
             String sql;
-            sql = "SELECT * FROM \"Artikel\" WHERE id = '" + id + "';";
+            sql = "SELECT * FROM \"vwartikel\" WHERE id = '" + id + "';";
             ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
 
             String name = "";
             String beschreibung = "";
             int nettopreis = -1;
-            int mehrwertsteuerId = -1;
-            int kategorieId = -1;
             String kategorie = "";
-            int mehrwertsteuersatz = -1;
+            int mehrwertsteuer = -1;
             boolean aktiv = false;
 
             while (res.next()) {
                 name = res.getString("name");
                 beschreibung = res.getString("beschreibung");
                 nettopreis = res.getInt("nettopreis");
-                mehrwertsteuerId = res.getInt("fk_mehrwertsteuer");
-                kategorieId = res.getInt("fk_kategorie");
+                mehrwertsteuer = res.getInt("mehrwertsteuer");
+                kategorie = res.getString("kategorie");
                 aktiv = res.getBoolean("aktiv");
             }
-            mehrwertsteuersatz = getMwst(mehrwertsteuerId);
-            kategorie = getKat(kategorieId);
 
             // set data for Artikel object
             Artikel artikel = new Artikel();
@@ -88,15 +99,45 @@ public class ArtikelHelper {
             artikel.setName(name);
             artikel.setBeschreibung(beschreibung);
             artikel.setNettpreis(nettopreis);
-            artikel.setMehrwertsteuer(mehrwertsteuersatz);
+            artikel.setMehrwertsteuer(mehrwertsteuer);
             artikel.setKategorie(kategorie);
             artikel.setAktiv(aktiv);
             artikelPuffer.put(id, artikel);
             return artikel;
-        } else //gesuchter Artikel ist im Puffer
+        } 
+        else //gesuchter Artikel ist im Puffer
         {
             return artikelPuffer.get(id);
         }
+    }
+    
+    public static ArrayList<Artikel> getFilteredArticle(boolean inaktiveZusaetzlichAnzeigen, String kategorie, String suchtext) throws SQLException {
+        String sql;  
+        
+        sql = "SELECT * FROM \"vwartikel\" "; 
+        
+        // filter aktiv/inaktiv articles
+        if(inaktiveZusaetzlichAnzeigen)
+            sql = sql.concat("WHERE aktiv = true");
+        
+        // filter kategorie        
+        sql = sql.concat(" AND kategorie = " + "'" + kategorie + "' ");
+        
+        // search limitation via texfield
+        String sqlSearchExtension =  "AND name like " + "'%" + suchtext + "%' ";
+        if(!suchtext.isEmpty())
+            sql = sql.concat(sqlSearchExtension);
+        
+        // finish the query
+        sql = sql.concat(";");      
+    
+        ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
+        ArrayList<Artikel> artikelList = new ArrayList<>();
+
+        while (res.next()) {
+            artikelList.add(getArticle(res.getInt("id")));
+        }
+        return artikelList;
     }
 
     public static ArrayList<Artikel> getAllActiveArticle() throws SQLException {
@@ -114,7 +155,7 @@ public class ArtikelHelper {
 
     public static ArrayList<Artikel> getAlleArtikel() throws SQLException {
         String sql;
-        sql = "SELECT * FROM \"Artikel\"";
+        sql = "SELECT * FROM \"User\"";
         ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
 
         ArrayList<Artikel> artikelList = new ArrayList<>();
@@ -124,6 +165,8 @@ public class ArtikelHelper {
         }
         return artikelList;
     }
+    
+    
 
     private static int getMwst(int id) throws SQLException {
         String sql;
@@ -153,5 +196,23 @@ public class ArtikelHelper {
         }
 
         return kategorie;
+    }
+    
+        //Gibt eine HashMap mit Key: KatergorieID und Value: Katoegoriename zurück
+    public static HashMap<Integer, String> getKategorienFromDB() throws SQLException {
+        String sql;
+        sql = "SELECT * FROM \"Kategorie\"";
+        ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
+        HashMap<Integer, String> alleKategorien = new HashMap<>();
+        int id = 0;
+        String kategorie = "";
+        while (res.next()) {
+            id = Integer.parseInt(res.getString("id"));
+            kategorie = res.getString("name");
+            if (id != 0 && !"".equals(kategorie)) {
+                alleKategorien.put(id, kategorie);
+            }
+        }
+        return alleKategorien;
     }
 }

@@ -17,11 +17,19 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ArtikelTableModel extends AbstractTableModel {
 
-    private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+    // private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
 
     private ArrayList<Artikel> artikelList = new ArrayList<>();
 
     public ArtikelTableModel(boolean inaktiveZusaetzlichAnzeigen) throws SQLException {
+         artikelLaden(inaktiveZusaetzlichAnzeigen);
+    }
+    
+    public ArtikelTableModel(boolean inaktiveZusaetzlichAnzeigen, String kategorie, String suchtext) throws SQLException {
+        this.artikelList = ArtikelHelper.getFilteredArticle(inaktiveZusaetzlichAnzeigen, kategorie, suchtext);
+    }
+    
+    private void artikelLaden(boolean inaktiveZusaetzlichAnzeigen) throws SQLException {      
         if(!inaktiveZusaetzlichAnzeigen) //nur aktive Artikel anzeigen
         {
             this.artikelList = ArtikelHelper.getAllActiveArticle();
@@ -30,7 +38,7 @@ public class ArtikelTableModel extends AbstractTableModel {
         {
             this.artikelList = ArtikelHelper.getAlleArtikel();
         }
-    }
+    }   
 
     @Override
     public int getRowCount() {

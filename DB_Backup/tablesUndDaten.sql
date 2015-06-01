@@ -1,3 +1,6 @@
+DROP VIEW IF EXISTS vwuseradresse;
+DROP VIEW IF EXISTS vwuser;
+DROP VIEW IF EXISTS vwartikel;
 DROP VIEW IF EXISTS v_KundeUmsatzBestellungen;
 DROP TABLE IF EXISTS 
     "Berechtigung",
@@ -8,7 +11,7 @@ DROP TABLE IF EXISTS
     "Adresse",
     "UserAdresse",
     "Rechnung",
-    "RechnungArtikel";
+    "RechnungArtikel" Cascade;
 
 CREATE TABLE "Berechtigung" (
     id SERIAL PRIMARY KEY,
@@ -96,6 +99,114 @@ CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
             AND "Artikel".fk_mehrwertsteuer = "Mehrwertsteuer".id
                 GROUP BY "User".username;
 
+
+
+-- Artikel
+CREATE OR REPLACE VIEW vwartikel AS 
+    SELECT 
+    "Artikel".id,
+    "Artikel".name, 
+    "Artikel".beschreibung,
+    "Mehrwertsteuer".mehrwertsteuersatz as mehrwertsteuer, 
+    "Kategorie".name AS kategorie, 
+    "Artikel".nettopreis,
+    "Artikel".aktiv 
+        FROM "Artikel"
+            JOIN "Mehrwertsteuer" ON "Mehrwertsteuer".id = "Artikel".fk_mehrwertsteuer -- "Mehrwertsteuer".mehrwertsteuersatz
+            JOIN "Kategorie" ON "Kategorie".id = "Artikel".fk_kategorie -- "Kategorie".name    
+                ORDER BY "Artikel".id;
+
+CREATE OR REPLACE RULE rule_vwartikel_insert 
+AS ON INSERT TO vwartikel
+DO INSTEAD (
+    INSERT INTO "Artikel" (name, beschreibung, fk_mehrwertsteuer, fk_kategorie, nettopreis, aktiv) VALUES (
+        NEW.name, 
+        NEW.beschreibung,         
+        (SELECT id from "Mehrwertsteuer" where "Mehrwertsteuer".mehrwertsteuersatz=NEW.mehrwertsteuer),
+        (SELECT id from "Kategorie" where "Kategorie".name=NEW.kategorie),
+        NEW.nettopreis,
+        NEW.aktiv
+    )        
+);
+
+CREATE OR REPLACE RULE rule_vwartikel_update
+AS ON UPDATE TO vwartikel
+DO INSTEAD (
+    UPDATE "Artikel" SET
+        name = NEW.name, 
+        beschreibung = NEW.beschreibung, 
+        fk_mehrwertsteuer = (SELECT id from "Mehrwertsteuer" where "Mehrwertsteuer".mehrwertsteuersatz=NEW.mehrwertsteuer), 
+        fk_kategorie = (SELECT id from "Kategorie" where "Kategorie".name=NEW.kategorie),
+        nettopreis = NEW.nettopreis,
+        aktiv = NEW.aktiv
+    WHERE id = OLD.id
+);
+
+-- User
+CREATE OR REPLACE VIEW vwuser AS 
+    SELECT 
+    "User".id,
+    "User".username, 
+    "User".passwort,
+    "Berechtigung".titel as berechtigung,
+    "Berechtigung".berechtigungsstufe
+        FROM "User"
+            JOIN "Berechtigung" ON "Berechtigung".id = "User".fk_berechtigung            
+                ORDER BY "User".id;
+
+CREATE OR REPLACE RULE rule_vwuser_insert 
+AS ON INSERT TO vwuser
+DO INSTEAD (
+    INSERT INTO "User" (username, passwort, fk_berechtigung) VALUES (
+        NEW.username, 
+        NEW.passwort,         
+        (SELECT id from "Berechtigung" where "Berechtigung".titel = NEW.berechtigung)        
+    )        
+);
+
+CREATE OR REPLACE RULE rule_vwuser_update
+AS ON UPDATE TO vwuser
+DO INSTEAD (
+    UPDATE "User" SET
+        username = NEW.username, 
+        passwort = NEW.passwort, 
+        fk_berechtigung = (SELECT id from "Berechtigung" where "Berechtigung".titel=NEW.berechtigung)    
+    WHERE id = OLD.id
+);
+
+-- UserAdresse
+CREATE OR REPLACE VIEW vwuseradresse AS 
+    SELECT 
+    "UserAdresse".id,
+    "User".id as UserID,
+    "Adresse".id as AdresseID,      
+    "User".username as User,   
+    "Adresse".vorname as Vorname,  
+    "Adresse".nachname as Nachname,  
+    "Adresse".anschrift as Adresse
+        FROM "Adresse"
+            JOIN "UserAdresse" ON "Adresse".id = "UserAdresse".fk_adresse
+            JOIN "User" ON "UserAdresse".fk_user = "User".id          
+                ORDER BY "UserAdresse".id;
+
+-- CREATE OR REPLACE RULE rule_vwuseradresse_insert 
+-- AS ON INSERT TO vwuseradresse
+-- DO INSTEAD (
+--    INSERT INTO "UserAdresse" (fk_user, fk_adresse) VALUES (
+--        (SELECT id from "User" where "User".id = NEW.UserId),  
+--        (SELECT id from "Adresse" where "Adresse".id = NEW.AdresseID)
+--    )  
+--);
+--CREATE OR REPLACE RULE rule_vwuseradresse_insert2 
+--AS ON INSERT TO vwuseradresse
+--DO INSTEAD (    
+--    UPDATE "Adresse" SET 
+--        anschrift = NEW.adresse
+--    WHERE id = NEW.adresseid   
+--);
+
+
+
 --Berechtigungen
 INSERT INTO "Berechtigung" (berechtigungsstufe, titel) 
 VALUES (0, 'kein Zugriff');
@@ -107,12 +218,14 @@ INSERT INTO "Berechtigung" (berechtigungsstufe, titel)
 VALUES (3, 'Adminstrator');
 
 --User
-INSERT INTO "User" (username, passwort, "fk_berechtigung")
-VALUES ('kunde', 'a', 1);
-INSERT INTO "User" (username, passwort, "fk_berechtigung")
-VALUES ('mitarbeiter', 'a', 2);
-INSERT INTO "User" (username, passwort, "fk_berechtigung")
-VALUES ('admin', 'a', 3);
+INSERT INTO "vwuser" (username, passwort, berechtigung)
+VALUES ('kunde', 'a', 'Kunde');
+INSERT INTO "vwuser" (username, passwort, berechtigung)
+VALUES ('mitarbeiter', 'a', 'Mitarbeiter');
+INSERT INTO "vwuser" (username, passwort, berechtigung)
+VALUES ('admin', 'a', 'Adminstrator');
+--INSERT INTO "vwuser" (username, passwort, berechtigung)
+--VALUES ('Grupfel', 'a', 'Kunde');
 
 --Mehrwersteuersätze
 INSERT INTO "Mehrwertsteuer" (mehrwertsteuersatz)
@@ -128,20 +241,19 @@ VALUES ('Sonstiges');
 
 
 --Artikel
-INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
-VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '2' , '1', '290', 'true');
+INSERT INTO "vwartikel" ("name", "beschreibung", "mehrwertsteuer", "kategorie", "nettopreis", "aktiv")
+VALUES ('Wurst', 'Datt ist ne Wuaaarst!!!', '7' , 'Nahrungsmittel', '290', 'true');
 
+INSERT INTO "vwartikel" ("name", "beschreibung", "mehrwertsteuer", "kategorie", "nettopreis", "aktiv") 
+VALUES ('Auto', 'Bemwe', '19' , 'Sonstiges', '3400000', 'true');
 
-INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
-VALUES ('Auto', 'Bemwe', '1' , '2', '3400000', 'true');
-
-INSERT INTO "Artikel" ("name", "beschreibung", "fk_mehrwertsteuer", "fk_kategorie", "nettopreis", "aktiv") 
-VALUES ('Pampers', 'Pampers für Kinder mit 4-6kg', '1' , '2', '999', 'true');
+INSERT INTO "vwartikel" ("name", "beschreibung", "mehrwertsteuer", "kategorie", "nettopreis", "aktiv") 
+VALUES ('Pampers', 'Pampers für Kinder mit 4-6kg', '19' , 'Sonstiges', '999', 'true');
 
 
 --Adresse
 INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
-VALUES ('Vorname', 'Nachname', 'Anschrift');
+VALUES ('Bibo', 'Vogel', 'Anschrift');
 INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
 VALUES ('Peter', 'Meier', 'Daheim');
 
@@ -172,4 +284,9 @@ VALUES (2, 1, 1);
 
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
 VALUES (3, 3, 3);
+
+
+
+
+
 
