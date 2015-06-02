@@ -189,6 +189,8 @@ CREATE OR REPLACE VIEW vwuseradresse AS
             JOIN "User" ON "UserAdresse".fk_user = "User".id          
                 ORDER BY "UserAdresse".id;
 
+
+
 -- CREATE OR REPLACE RULE rule_vwuseradresse_insert 
 -- AS ON INSERT TO vwuseradresse
 -- DO INSTEAD (

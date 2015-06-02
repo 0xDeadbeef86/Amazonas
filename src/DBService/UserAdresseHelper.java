@@ -71,4 +71,47 @@ public class UserAdresseHelper {
         }
     }
     
+    public static boolean insertUserAdresse(int userId, String user, String vorname, String nachname, String adresse) throws SQLException {
+        try {    
+            
+            String sql_adresse;
+            sql_adresse = "INSERT INTO \"Adresse\" (vorname, nachname, anschrift)" 
+                + " VALUES (" + "'" + vorname + "'" + "," + "'" + nachname + "'" + "," + "'" + adresse + "'" + ");";   
+            
+            String sql_userAdresse;
+            sql_userAdresse = "INSERT into \"UserAdresse\" (fk_user, fk_adresse) VALUES ((select id from \"User\" where username = '" + user
+                    + "'), (select id from \"Adresse\" where vorname = '" + vorname + "' and nachname = '" + nachname + "'));";
+            
+            
+            //String sql_adresse;
+            //sql_adresse = "INSERT INTO \"Adresse\" (vorname, nachname, anschrift)" 
+            //    + " VALUES (" + "'" + vorname + "'" + "," + "'" + nachname + "'" + "," + "'" + adresse + "'" + ") RETURNING id;";    
+
+            //ResultSet res = dbVerbindung.executeQuery(sql_adresse);
+            //int adresse_id = -1;
+
+            //while (res.next()) {
+            //    adresse_id = res.getInt("id");
+            //}
+            
+            //System.out.println(adresse_id);
+
+            //String sql_userAdresse = "INSERT INTO \"UserAdresse\" (fk_user, fk_adresse)"
+            //    + "VALUES (" + "'" + userId + "'" + "," + "'" + sql_adresse + "'" + ");";
+            dbVerbindung.executeUpdate(sql_adresse);
+            dbVerbindung.executeUpdate(sql_userAdresse);
+
+            System.out.println(sql_userAdresse);
+
+            return true;
+        } catch (Exception ex) {
+            System.out.println("EXCEPTION!!!");
+        }
+        return false; //Fehler
+    }    
+
+    public static void deleteUserAdresse(int UserAdresse) {
+        System.out.println("UserArtikel gelöscht!");
+    }
+    
 }
