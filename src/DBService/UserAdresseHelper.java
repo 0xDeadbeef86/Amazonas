@@ -82,22 +82,6 @@ public class UserAdresseHelper {
             sql_userAdresse = "INSERT into \"UserAdresse\" (fk_user, fk_adresse) VALUES ((select id from \"User\" where username = '" + user
                     + "'), (select id from \"Adresse\" where vorname = '" + vorname + "' and nachname = '" + nachname + "'));";
             
-            
-            //String sql_adresse;
-            //sql_adresse = "INSERT INTO \"Adresse\" (vorname, nachname, anschrift)" 
-            //    + " VALUES (" + "'" + vorname + "'" + "," + "'" + nachname + "'" + "," + "'" + adresse + "'" + ") RETURNING id;";    
-
-            //ResultSet res = dbVerbindung.executeQuery(sql_adresse);
-            //int adresse_id = -1;
-
-            //while (res.next()) {
-            //    adresse_id = res.getInt("id");
-            //}
-            
-            //System.out.println(adresse_id);
-
-            //String sql_userAdresse = "INSERT INTO \"UserAdresse\" (fk_user, fk_adresse)"
-            //    + "VALUES (" + "'" + userId + "'" + "," + "'" + sql_adresse + "'" + ");";
             dbVerbindung.executeUpdate(sql_adresse);
             dbVerbindung.executeUpdate(sql_userAdresse);
 
@@ -110,8 +94,17 @@ public class UserAdresseHelper {
         return false; //Fehler
     }    
 
-    public static void deleteUserAdresse(int UserAdresse) {
-        System.out.println("UserArtikel gelöscht!");
-    }
-    
+    public static boolean deleteUserAdresse(int id) { 
+        String sql;
+        sql = "DELETE FROM \"UserAdresse\" "
+                + "WHERE id = " + "'" + id + "'";
+          try {
+            dbVerbindung.executeUpdate(sql);
+            return true;
+        } catch (Exception ex) {
+
+        }
+
+        return false; //Fehler
+    }    
 }
