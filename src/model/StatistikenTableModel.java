@@ -26,6 +26,13 @@ public class StatistikenTableModel extends AbstractTableModel {
     private static double gesamtbruttoumsaetzeAVG = 0, gesamtnettoumsaetzeAVG = 0, bestellungenAVG = 0; // in Cent
 
     public StatistikenTableModel() throws SQLException {
+        StatistikenTableModel.kunden.clear();
+        StatistikenTableModel.gesamtbruttoumsaetze.clear();
+        StatistikenTableModel.gesamtnettoumsaetze.clear();
+        StatistikenTableModel.bestellungen.clear();
+        StatistikenTableModel.gesamtbruttoumsaetzeAVG = 0;
+        StatistikenTableModel.gesamtnettoumsaetzeAVG = 0;
+        StatistikenTableModel.bestellungenAVG = 0;
         String sql = "SELECT * FROM v_KundeUmsatzBestellungen";
         ResultSet res = StatistikenTableModel.dbVerbindung.executeQuery(sql);
         while (res.next()) {
@@ -75,7 +82,7 @@ public class StatistikenTableModel extends AbstractTableModel {
             } else if (columnIndex == 2) {
                 return rundeKorrektInEuro(StatistikenTableModel.gesamtnettoumsaetzeAVG / 100d) + " €";
             } else {
-                return StatistikenTableModel.bestellungenAVG;
+                return rundeKorrektInEuro(StatistikenTableModel.bestellungenAVG);
             }
 
         }

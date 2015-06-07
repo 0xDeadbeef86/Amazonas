@@ -33,7 +33,7 @@ public class Warenkorb {
     }
 
     public void removeArtikel(int id) {
-        warenkorbInhalt.replace(id, 0);
+        warenkorbInhalt.remove(id);
 
         if (warenkorbInhalt.get(id) <= 0 && warenkorbInhalt.get(id) != null) {
             warenkorbInhalt.remove(id);
