@@ -74,30 +74,19 @@ CREATE TABLE "RechnungArtikel" (
 
 --Views
 
--- CREATE OR REPLACE VIEW v_BestellungenAnzeigen AS
--- SELECT "Rechnung"."id" AS "RechnungID", "Rechnung"."datum", "Adresse"."nachname", "Adresse"."vorname", "Adresse"."anschrift", "Artikel"."id" AS "ArtikelID", "RechnungArtikel"."anzahl"
--- FROM "Rechnung", "RechnungArtikel", "UserAdresse", "User", "Adresse", "Artikel"
--- WHERE "Rechnung"."fk_user_adresse" = "UserAdresse"."id" 
--- AND "User"."id" = "UserAdresse"."fk_user"
--- AND "Adresse"."id" = "UserAdresse"."fk_adresse"
--- AND "RechnungArtikel"."fk_rechnung" = "Rechnung"."id"
--- AND "RechnungArtikel"."fk_artikel" = "Artikel"."id";
-
---ToDo: LEFT JOIN auf User, sodass alle User ausgegeben werden und nicht nur die, die Bestellungen getätigt haben
 CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
     SELECT 
     "User".username AS "Kunde", 
     SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
     SUM((("Artikel".nettopreis * "RechnungArtikel".anzahl))) AS "Gesamtnettoumsatz", 
     COUNT("Rechnung".id) AS Bestellungen
-        FROM "Artikel", "Rechnung", "RechnungArtikel", "User", "UserAdresse", "Mehrwertsteuer"
-            WHERE "Artikel".id = "RechnungArtikel".fk_artikel
-            AND "RechnungArtikel".fk_rechnung = "Rechnung".id
-            AND "UserAdresse".id = "Rechnung".fk_user_adresse
-            AND "User".id = "UserAdresse".fk_user
-            AND "RechnungArtikel".fk_artikel = "Artikel".id
-            AND "Artikel".fk_mehrwertsteuer = "Mehrwertsteuer".id
-                GROUP BY "User".username;
+        FROM "UserAdresse"
+             LEFT JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
+             JOIN "RechnungArtikel" ON "RechnungArtikel".fk_rechnung = "Rechnung".id
+             JOIN "Artikel" ON "Artikel".id = "RechnungArtikel".fk_artikel
+             JOIN "Mehrwertsteuer" ON "Artikel".fk_mehrwertsteuer = "Mehrwertsteuer".id
+             RIGHT JOIN "User" ON "User".id = "UserAdresse".fk_user
+                 GROUP BY "User".username;
 
 
 
@@ -258,12 +247,16 @@ INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
 VALUES ('Bibo', 'Vogel', 'Anschrift');
 INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
 VALUES ('Peter', 'Meier', 'Daheim');
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
+VALUES ('Andreas', 'Schulz', 'Im Gems 5');
 
 --UserAdresse
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
 VALUES (3, 1);
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
 VALUES (1, 2);
+INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
+VALUES (2, 3);
 
 --Rechnung
 INSERT INTO "Rechnung" ("fk_user_adresse") 
@@ -286,9 +279,3 @@ VALUES (2, 1, 1);
 
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
 VALUES (3, 3, 3);
-
-
-
-
-
-
