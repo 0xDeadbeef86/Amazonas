@@ -168,7 +168,7 @@
     </Container>
     <Component class="javax.swing.JButton" name="btnEdit">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Edit"/>
+        <Property name="text" type="java.lang.String" value="Artikel bearbeiten"/>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
       <Events>
@@ -232,7 +232,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="BT_Adresse">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Adresse"/>
+        <Property name="text" type="java.lang.String" value="Adressen"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BT_AdresseActionPerformed"/>
@@ -240,7 +240,7 @@
     </Component>
     <Component class="javax.swing.JButton" name="BT_CreateAccount">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Create Account"/>
+        <Property name="text" type="java.lang.String" value="Accounts"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BT_CreateAccountActionPerformed"/>

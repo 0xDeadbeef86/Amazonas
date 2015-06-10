@@ -63,18 +63,16 @@ public class ArtikelForm extends javax.swing.JFrame {
         sb.append(artikel.getNettopreis());
         this.TB_Nettopreis.setText(sb.toString());
 
-        // mehrwertsteuer
+        // Mehrwertsteuer
         StringBuilder sb2 = new StringBuilder();
-        sb2.append(artikel.getMehrwertsteuer()); //artikel.getMehrwertsteuer()
+        sb2.append(artikel.getMehrwertsteuer()); 
         sb2.append("%");
-        System.out.println(sb2);
         this.CB_Mehrwertsteuersatz.setEditable(true);
         this.CB_Mehrwertsteuersatz.setSelectedItem(sb2);
 
-        // kategorie
+        // Kategorie
         StringBuilder sb3 = new StringBuilder();
-        sb3.append(artikel.getKategorie()); //artikel.getMehrwertsteuer()        
-        System.out.println(sb3);
+        sb3.append(artikel.getKategorie()); 
         this.CB_Kategorie.setEditable(true);
         this.CB_Kategorie.setSelectedItem(sb3);
 
@@ -93,7 +91,6 @@ public class ArtikelForm extends javax.swing.JFrame {
         TB_Name = new javax.swing.JTextField();
         LB_Aktion = new javax.swing.JLabel();
         LB_Beschreibung = new javax.swing.JLabel();
-        TF_Beschreibung = new javax.swing.JTextField();
         LB_Nettopreis = new javax.swing.JLabel();
         TB_Nettopreis = new javax.swing.JTextField();
         LB_Mehrwertsteuersatz = new javax.swing.JLabel();
@@ -104,6 +101,8 @@ public class ArtikelForm extends javax.swing.JFrame {
         CheckBox_Aktiv = new javax.swing.JCheckBox();
         BT_OK = new javax.swing.JButton();
         BT_DELETE = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TF_Beschreibung = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +151,10 @@ public class ArtikelForm extends javax.swing.JFrame {
             }
         });
 
+        TF_Beschreibung.setColumns(20);
+        TF_Beschreibung.setRows(1);
+        jScrollPane1.setViewportView(TF_Beschreibung);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -175,12 +178,16 @@ public class ArtikelForm extends javax.swing.JFrame {
                             .addComponent(LB_Nettopreis)
                             .addComponent(LB_Name)
                             .addComponent(LB_Mehrwertsteuersatz))
-                        .addGap(20, 20, 20)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(CB_Mehrwertsteuersatz, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(TB_Name)
-                            .addComponent(TF_Beschreibung)
-                            .addComponent(TB_Nettopreis)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(CB_Mehrwertsteuersatz, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(TB_Name)
+                                    .addComponent(jScrollPane1)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(TB_Nettopreis))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(LB_Aktion)
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -202,7 +209,7 @@ public class ArtikelForm extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(LB_Beschreibung)
-                    .addComponent(TF_Beschreibung, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(LB_Nettopreis)
@@ -343,14 +350,12 @@ public class ArtikelForm extends javax.swing.JFrame {
         String name = this.TB_Name.getText();
         String beschreibung = this.TF_Beschreibung.getText();
         int nettopreis = Integer.parseInt(this.TB_Nettopreis.getText());
-        //int mehrwertsteuerID = 1; //TODO: Integer.parseInt(this.CB_Mehrwertsteuersatz.getSelectedItem().toString());
-        //int kategorieID = 1; //TODO: 
         int mehrwertsteuer = getMehrwertsteuerNameFromForm();
         String ketegorie = getKategorieNameFromForm();
         
         boolean aktiv = this.CheckBox_Aktiv.isSelected();
 
-        if (ArtikelHelper.updateArticle(id, name, beschreibung, nettopreis, mehrwertsteuer, ketegorie, aktiv/*, id*/)) {
+        if (ArtikelHelper.updateArticle(id, name, beschreibung, nettopreis, mehrwertsteuer, ketegorie, aktiv)) {
             ArtikelHelper.artikelPuffer.remove(id);
             JOptionPane.showMessageDialog(this, "Artikel erfolgreich gespeichert");
             this.setVisible(false);
@@ -465,6 +470,7 @@ public class ArtikelForm extends javax.swing.JFrame {
     private javax.swing.JLabel LB_Nettopreis;
     private javax.swing.JTextField TB_Name;
     private javax.swing.JTextField TB_Nettopreis;
-    private javax.swing.JTextField TF_Beschreibung;
+    private javax.swing.JTextArea TF_Beschreibung;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }

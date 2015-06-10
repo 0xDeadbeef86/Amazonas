@@ -76,7 +76,7 @@ public class StatistikenTableModel extends AbstractTableModel {
         } else //letzte Zeile
         {
             if (columnIndex == 0) {
-                return "Durchschnitt";
+                return "<html>&Oslash; Durchschnitt</html>";
             } else if (columnIndex == 1) {
                 return rundeKorrektInEuro(StatistikenTableModel.gesamtbruttoumsaetzeAVG / 100d) + " €";
             } else if (columnIndex == 2) {

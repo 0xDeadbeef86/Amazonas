@@ -8,6 +8,8 @@ package View;
 import DBService.BestellungHelper;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
+import model.Warenkorb;
+import model.WarenkorbTableModel;
 
 /**
  *
@@ -81,6 +83,11 @@ public class AdressenScreen extends javax.swing.JFrame {
         if (BestellungHelper.insertBestellung(1, this.alleBestellenArtikel)) //Bestellung erfolgreich in die DB eingetragen
         {
             JOptionPane.showMessageDialog(this, "Ihre Bestellung wurde erfolgreich gespeichert");
+            //Warenkorb leeren
+            Object[] alleIDs = Warenkorb.GetInstance().getWarenkorbinhalt().keySet().toArray();
+            for (Object id : alleIDs) {
+                Warenkorb.GetInstance().removeArtikel((int) id);
+            }
             this.setVisible(false);
         } else {
             JOptionPane.showMessageDialog(this, "Ihre Bestellung konnte leider nicht gespeichert werden");

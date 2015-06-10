@@ -41,7 +41,6 @@ public class LoginScreen extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        tf_Username.setText("admin");
         tf_Username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 tf_UsernameActionPerformed(evt);
@@ -59,8 +58,6 @@ public class LoginScreen extends javax.swing.JFrame {
                 loginActionPerformed(evt);
             }
         });
-
-        tf_Passwort.setText("a");
 
         LB_Ausgabe.setForeground(new java.awt.Color(255, 0, 0));
 

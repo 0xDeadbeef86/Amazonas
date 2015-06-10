@@ -124,7 +124,7 @@ public class HauptScreen extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(TBL_Artikel);
 
-        btnEdit.setText("Edit");
+        btnEdit.setText("Artikel bearbeiten");
         btnEdit.setEnabled(false);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,14 +175,14 @@ public class HauptScreen extends javax.swing.JFrame {
 
         LBL_SUCHE.setText("Suche");
 
-        BT_Adresse.setText("Adresse");
+        BT_Adresse.setText("Adressen");
         BT_Adresse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BT_AdresseActionPerformed(evt);
             }
         });
 
-        BT_CreateAccount.setText("Create Account");
+        BT_CreateAccount.setText("Accounts");
         BT_CreateAccount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BT_CreateAccountActionPerformed(evt);
@@ -323,7 +323,10 @@ public class HauptScreen extends javax.swing.JFrame {
 
     private void BT_ZumWarenkorbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_ZumWarenkorbActionPerformed
         try {
-            new WarenkorbScreen().setVisible(true);
+            WarenkorbScreen warenkorbScreen = new WarenkorbScreen();
+            warenkorbScreen.setVisible(true);
+            warenkorbScreen.setResizable(false);
+            warenkorbScreen.setLocationRelativeTo(null);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }

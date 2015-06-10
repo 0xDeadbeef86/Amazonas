@@ -23,7 +23,7 @@ public class ArtikelDetails extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.HIDE_ON_CLOSE);
         this.artikel = artikel;
         this.LB_ArtikelName.setText(artikel.getName());
-        this.LB_ArtikelBeschreibung.setText(artikel.getBeschreibung());
+        this.TA_ArtikelBeschreibung.setText(artikel.getBeschreibung());
         this.LB_ArtikelPreis.setText(String.valueOf(artikel.getBruttopreis()) + " €"); //zwei Nachkommstellen
     }
 
@@ -37,31 +37,30 @@ public class ArtikelDetails extends javax.swing.JFrame {
     private void initComponents() {
 
         LB_ArtikelName = new javax.swing.JLabel();
-        LB_ArtikelBeschreibung = new javax.swing.JLabel();
         TB_ArtikelMenge = new javax.swing.JTextField();
         LB_ArtikelPreis = new javax.swing.JLabel();
         BT_Warenkorb = new javax.swing.JButton();
         LB_X = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        TA_ArtikelBeschreibung = new javax.swing.JTextArea();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         LB_ArtikelName.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         LB_ArtikelName.setText("Artikelname");
 
-        LB_ArtikelBeschreibung.setText("Artikelbeschreibung");
-
         TB_ArtikelMenge.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         TB_ArtikelMenge.setText("1");
-        TB_ArtikelMenge.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                TB_ArtikelMengeActionPerformed(evt);
-            }
-        });
         TB_ArtikelMenge.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
             public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
                 TB_ArtikelMengeInputMethodTextChanged(evt);
+            }
+        });
+        TB_ArtikelMenge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TB_ArtikelMengeActionPerformed(evt);
             }
         });
 
@@ -76,33 +75,40 @@ public class ArtikelDetails extends javax.swing.JFrame {
 
         LB_X.setText("x");
 
+        TA_ArtikelBeschreibung.setColumns(20);
+        TA_ArtikelBeschreibung.setRows(1);
+        TA_ArtikelBeschreibung.setHighlighter(null);
+        jScrollPane1.setViewportView(TA_ArtikelBeschreibung);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(BT_Warenkorb)
-                        .addComponent(LB_ArtikelBeschreibung)
-                        .addComponent(LB_ArtikelName))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(TB_ArtikelMenge, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(LB_X)
-                        .addGap(18, 18, 18)
-                        .addComponent(LB_ArtikelPreis)))
-                .addContainerGap(188, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BT_Warenkorb)
+                            .addComponent(LB_ArtikelName)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TB_ArtikelMenge, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LB_X)
+                                .addGap(18, 18, 18)
+                                .addComponent(LB_ArtikelPreis)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(LB_ArtikelName)
-                .addGap(42, 42, 42)
-                .addComponent(LB_ArtikelBeschreibung)
-                .addGap(26, 26, 26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TB_ArtikelMenge, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(LB_ArtikelPreis)
@@ -126,7 +132,7 @@ public class ArtikelDetails extends javax.swing.JFrame {
         } catch (Exception ex) {
 
         }
-        if (anzahl == 0) {
+        if (anzahl <= 0) {
             JOptionPane.showMessageDialog(this, "Bitte geben Sie eine gültige Menge ein");
         } else {
             Warenkorb.GetInstance().addArtikel(this.artikel.getId(), anzahl);
@@ -143,10 +149,11 @@ public class ArtikelDetails extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_Warenkorb;
-    private javax.swing.JLabel LB_ArtikelBeschreibung;
     private javax.swing.JLabel LB_ArtikelName;
     private javax.swing.JLabel LB_ArtikelPreis;
     private javax.swing.JLabel LB_X;
+    private javax.swing.JTextArea TA_ArtikelBeschreibung;
     private javax.swing.JTextField TB_ArtikelMenge;
+    private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
