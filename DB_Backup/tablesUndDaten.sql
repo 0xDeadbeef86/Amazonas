@@ -78,7 +78,7 @@ CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
     SELECT 
     "User".username AS "Kunde", 
     SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
-    SUM((("Artikel".nettopreis * "RechnungArtikel".anzahl))) AS "Gesamtnettoumsatz", 
+    SUM((("Artikel".nettopreis * 100 * ("RechnungArtikel".anzahl)))) AS "Gesamtnettoumsatz", 
     COUNT("Rechnung".id) AS Bestellungen
         FROM "UserAdresse"
              LEFT JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
@@ -177,25 +177,6 @@ CREATE OR REPLACE VIEW vwuseradresse AS
             JOIN "UserAdresse" ON "Adresse".id = "UserAdresse".fk_adresse
             JOIN "User" ON "UserAdresse".fk_user = "User".id          
                 ORDER BY "UserAdresse".id;
-
-
-
--- CREATE OR REPLACE RULE rule_vwuseradresse_insert 
--- AS ON INSERT TO vwuseradresse
--- DO INSTEAD (
---    INSERT INTO "UserAdresse" (fk_user, fk_adresse) VALUES (
---        (SELECT id from "User" where "User".id = NEW.UserId),  
---        (SELECT id from "Adresse" where "Adresse".id = NEW.AdresseID)
---    )  
---);
---CREATE OR REPLACE RULE rule_vwuseradresse_insert2 
---AS ON INSERT TO vwuseradresse
---DO INSTEAD (    
---    UPDATE "Adresse" SET 
---        anschrift = NEW.adresse
---    WHERE id = NEW.adresseid   
---);
-
 
 
 --Berechtigungen
