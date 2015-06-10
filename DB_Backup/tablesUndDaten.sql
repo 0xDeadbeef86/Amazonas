@@ -77,8 +77,8 @@ CREATE TABLE "RechnungArtikel" (
 CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
     SELECT 
     "User".username AS "Kunde", 
-    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
-    SUM((("Artikel".nettopreis * 100 * ("RechnungArtikel".anzahl)))) AS "Gesamtnettoumsatz", 
+    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl) / 100) AS "Gesamtbruttoumsatz", 
+    SUM((("Artikel".nettopreis * ("RechnungArtikel".anzahl)))) AS "Gesamtnettoumsatz", 
     COUNT("Rechnung".id) AS Bestellungen
         FROM "UserAdresse"
              LEFT JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
@@ -251,10 +251,10 @@ VALUES (2);
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
 VALUES (1, 1, 1);
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
-VALUES (1, 2, 2);
+VALUES (1, 2, 1);
 
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
-VALUES (2, 3, 5);
+VALUES (2, 3, 2);
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
 VALUES (2, 1, 1);
 
