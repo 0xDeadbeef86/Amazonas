@@ -75,16 +75,16 @@ CREATE TABLE "RechnungArtikel" (
 --Views
 
 CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
-    SELECT 
+    SELECT
     "User".username AS "Kunde", 
-    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl) / 100) AS "Gesamtbruttoumsatz", 
-    SUM((("Artikel".nettopreis * ("RechnungArtikel".anzahl)))) AS "Gesamtnettoumsatz", 
-    COUNT("Rechnung".id) AS Bestellungen
+    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
+    SUM((("Artikel".nettopreis * "RechnungArtikel".anzahl))) AS "Gesamtnettoumsatz", 
+    COUNT("Rechnung".id) AS "Bestellpositionen"
         FROM "UserAdresse"
-             LEFT JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
-             JOIN "RechnungArtikel" ON "RechnungArtikel".fk_rechnung = "Rechnung".id
-             JOIN "Artikel" ON "Artikel".id = "RechnungArtikel".fk_artikel
-             JOIN "Mehrwertsteuer" ON "Artikel".fk_mehrwertsteuer = "Mehrwertsteuer".id
+             INNER JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
+             INNER JOIN "RechnungArtikel" ON "RechnungArtikel".fk_rechnung = "Rechnung".id
+             INNER JOIN "Artikel" ON "Artikel".id = "RechnungArtikel".fk_artikel
+             INNER JOIN "Mehrwertsteuer" ON "Artikel".fk_mehrwertsteuer = "Mehrwertsteuer".id
              RIGHT JOIN "User" ON "User".id = "UserAdresse".fk_user
                  GROUP BY "User".username;
 
@@ -254,9 +254,9 @@ INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
 VALUES (1, 2, 1);
 
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
-VALUES (2, 3, 2);
+VALUES (2, 3, 1);
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
 VALUES (2, 1, 1);
 
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
-VALUES (3, 3, 3);
+VALUES (3, 3, 1);
