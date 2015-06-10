@@ -79,7 +79,7 @@ CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
     "User".username AS "Kunde", 
     SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
     SUM((("Artikel".nettopreis * "RechnungArtikel".anzahl))) AS "Gesamtnettoumsatz", 
-    COUNT("Rechnung".id) AS "Bestellpositionen"
+    COUNT("Rechnung".id) AS "Bestellungen"
         FROM "UserAdresse"
              INNER JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
              INNER JOIN "RechnungArtikel" ON "RechnungArtikel".fk_rechnung = "Rechnung".id
