@@ -6,6 +6,7 @@
 package View;
 
 import DBService.LoginHelper;
+import java.awt.event.KeyEvent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +36,7 @@ public class LoginScreen extends javax.swing.JFrame {
         tf_Username = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        login = new javax.swing.JButton();
+        BT_Login = new javax.swing.JButton();
         tf_Passwort = new javax.swing.JPasswordField();
         LB_Ausgabe = new javax.swing.JLabel();
 
@@ -51,11 +52,17 @@ public class LoginScreen extends javax.swing.JFrame {
 
         jLabel2.setText("Benutzername");
 
-        login.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        login.setText("Login");
-        login.addActionListener(new java.awt.event.ActionListener() {
+        BT_Login.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
+        BT_Login.setText("Login");
+        BT_Login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                loginActionPerformed(evt);
+                BT_LoginActionPerformed(evt);
+            }
+        });
+
+        tf_Passwort.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tf_PasswortKeyPressed(evt);
             }
         });
 
@@ -75,7 +82,7 @@ public class LoginScreen extends javax.swing.JFrame {
                     .addComponent(LB_Ausgabe, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                            .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(BT_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addContainerGap())
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -97,7 +104,7 @@ public class LoginScreen extends javax.swing.JFrame {
                     .addComponent(tf_Passwort, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
                 .addGap(11, 11, 11)
-                .addComponent(login, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(BT_Login, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28))
         );
 
@@ -108,7 +115,7 @@ public class LoginScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tf_UsernameActionPerformed
 
-    private void loginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginActionPerformed
+    private void BT_LoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_LoginActionPerformed
         int id = 0;
         try {
             id = LoginHelper.getLoginID(this.tf_Username.getText(), this.tf_Passwort.getText());
@@ -136,13 +143,20 @@ public class LoginScreen extends javax.swing.JFrame {
         }
 
 
-    }//GEN-LAST:event_loginActionPerformed
+    }//GEN-LAST:event_BT_LoginActionPerformed
+
+    private void tf_PasswortKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tf_PasswortKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER)
+        {
+            this.BT_Login.doClick();
+        }        
+    }//GEN-LAST:event_tf_PasswortKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BT_Login;
     private javax.swing.JLabel LB_Ausgabe;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JButton login;
     private javax.swing.JPasswordField tf_Passwort;
     private javax.swing.JTextField tf_Username;
     // End of variables declaration//GEN-END:variables

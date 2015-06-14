@@ -21,7 +21,7 @@ public class LoginHelper {
     //returns: 0 bei fehlgeschlagenem Loginversuch, ansonsten die ID
     @SuppressWarnings("empty-statement")
     public static int getLoginID(String name, String passwort) throws SQLException {
-        String sql = "SELECT id FROM \"User\" WHERE username = ? AND passwort = ?";
+        String sql = "SELECT id FROM \"User\" WHERE username = ? AND passwort = ? AND fk_berechtigung > 1";
         dbVerbindung.connect();
         PreparedStatement prepStmt = dbVerbindung.database.prepareStatement(sql);
         prepStmt.setString(1, name);

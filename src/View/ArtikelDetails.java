@@ -24,7 +24,9 @@ public class ArtikelDetails extends javax.swing.JFrame {
         this.artikel = artikel;
         this.LB_ArtikelName.setText(artikel.getName());
         this.TA_ArtikelBeschreibung.setText(artikel.getBeschreibung());
+        this.TA_ArtikelBeschreibung.setEditable(false);
         this.LB_ArtikelPreis.setText(String.valueOf(artikel.getBruttopreis()) + " €"); //zwei Nachkommstellen
+
     }
 
     /**
@@ -130,7 +132,6 @@ public class ArtikelDetails extends javax.swing.JFrame {
         try {
             anzahl = Integer.parseInt(this.TB_ArtikelMenge.getText());
         } catch (Exception ex) {
-
         }
         if (anzahl <= 0) {
             JOptionPane.showMessageDialog(this, "Bitte geben Sie eine gültige Menge ein");
@@ -146,7 +147,6 @@ public class ArtikelDetails extends javax.swing.JFrame {
     private void TB_ArtikelMengeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TB_ArtikelMengeActionPerformed
         //ToDo: Preis ändern
     }//GEN-LAST:event_TB_ArtikelMengeActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_Warenkorb;
     private javax.swing.JLabel LB_ArtikelName;
