@@ -18,7 +18,7 @@ import model.Artikel;
  */
 public class ArtikelHelper {
 
-    private static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
+    static final MyDatabaseConnection dbVerbindung = new MyDatabaseConnection();
     public static final HashMap<Integer, Artikel> artikelPuffer = new HashMap<>(); //ID, Artikel
     
     public static boolean insertArticle(String name, String beschreibung, int nettopreis, int mehrwertsteuer, String kategorie, boolean aktiv) throws SQLException {
@@ -34,13 +34,22 @@ public class ArtikelHelper {
         }
         return false; //Fehler
     }    
-    
-    public static boolean deleteArticle(int id) {
-        String sql;
-        sql = "DELETE FROM \"Artikel\" "
+
+    public static boolean deleteArticle(int id) {        
+        String deleteRechnungArtikel;
+        deleteRechnungArtikel = "DELETE FROM \"RechnungArtikel\" "
+                + "WHERE fk_artikel = " + "'" + id + "'";
+         
+        String deleteArtikel;
+        deleteArtikel = "DELETE FROM \"Artikel\" "
                 + "WHERE id = " + "'" + id + "'";
           try {
-            ArtikelHelper.dbVerbindung.executeUpdate(sql);
+            // delete deleteRechnungArtikel
+            ArtikelHelper.dbVerbindung.executeUpdate(deleteRechnungArtikel);
+              
+            // delete Artikel
+            ArtikelHelper.dbVerbindung.executeUpdate(deleteArtikel);
+            artikelPuffer.remove(id);
             return true;
         } catch (Exception ex) {
 
@@ -124,7 +133,7 @@ public class ArtikelHelper {
         sql = sql.concat(" kategorie = " + "'" + kategorie + "' ");
         
         // search limitation via texfield
-        String sqlSearchExtension =  "AND name like " + "'%" + suchtext + "%' ";
+        String sqlSearchExtension =  "AND name ILIKE " + "'%" + suchtext + "%' ";
         if(!suchtext.isEmpty())
             sql = sql.concat(sqlSearchExtension);
         
@@ -155,7 +164,7 @@ public class ArtikelHelper {
 
     public static ArrayList<Artikel> getAlleArtikel() throws SQLException {
         String sql;
-        sql = "SELECT * FROM \"User\"";
+        sql = "SELECT * FROM \"Artikel\"";
         ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
 
         ArrayList<Artikel> artikelList = new ArrayList<>();

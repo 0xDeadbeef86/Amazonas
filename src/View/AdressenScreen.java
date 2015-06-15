@@ -5,7 +5,11 @@
  */
 package View;
 
+import DBService.ArtikelHelper;
 import DBService.BestellungHelper;
+import DBService.UserAdresseHelper;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import model.Warenkorb;
@@ -22,12 +26,25 @@ public class AdressenScreen extends javax.swing.JFrame {
      */
     private double gesamtpreisAllerArtikel = 0.0;
     private final HashMap<Integer, Integer> alleBestellenArtikel;
+    private HashMap<Integer, String> adressen;
 
-    public AdressenScreen(double gesamtpreisAllerArtikel, HashMap<Integer, Integer> bestellteArtikel) {
+    public AdressenScreen(double gesamtpreisAllerArtikel, HashMap<Integer, Integer> bestellteArtikel) throws SQLException {
         initComponents();
         this.gesamtpreisAllerArtikel = gesamtpreisAllerArtikel;
         this.alleBestellenArtikel = bestellteArtikel;
         this.setDefaultCloseOperation(HIDE_ON_CLOSE);
+        fillComboboxen();
+    }
+    
+    //Füllt die Comboboxen mit Werten
+    private void fillComboboxen() throws SQLException {
+        //Kategorien
+        this.adressen = UserAdresseHelper.getAlleUserAdresse(); //UserAdresseHelper.getAlleUserAdresse(WIDTH)
+        ArrayList<Integer> alleIDsKategorien = new ArrayList<>();
+        alleIDsKategorien.addAll(this.adressen.keySet());
+        for (int i = 0; i < alleIDsKategorien.size(); i++) {
+            this.CB_Adresse.addItem(this.adressen.get(alleIDsKategorien.get(i)));
+        }
     }
 
     /**
@@ -41,6 +58,7 @@ public class AdressenScreen extends javax.swing.JFrame {
 
         LB_Adresse = new javax.swing.JLabel();
         BT_Bestellen = new javax.swing.JButton();
+        CB_Adresse = new javax.swing.JComboBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,22 +76,27 @@ public class AdressenScreen extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(118, 118, 118)
-                .addComponent(LB_Adresse)
-                .addContainerGap(141, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(BT_Bestellen)
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(118, 118, 118)
+                        .addComponent(LB_Adresse))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(56, 56, 56)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(BT_Bestellen)
+                            .addComponent(CB_Adresse, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(LB_Adresse)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 241, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(CB_Adresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
                 .addComponent(BT_Bestellen)
-                .addContainerGap())
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         pack();
@@ -102,6 +125,7 @@ public class AdressenScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_Bestellen;
+    private javax.swing.JComboBox CB_Adresse;
     private javax.swing.JLabel LB_Adresse;
     // End of variables declaration//GEN-END:variables
 }

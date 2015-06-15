@@ -86,7 +86,7 @@ public class BenutzerTableModel extends AbstractTableModel {
         
         try {
             //TODO: Update Benutzer
-            int index = userList.get(3).getId();// ((Benutzer)value).getId();
+            int index = userList.get(row).getId();// ((Benutzer)value).getId();
             BenutzerHelper.updateBenutzer(index, userList.get(row).getName(), userList.get(row).getPasswort(), userList.get(row).getBerechtigung());
             //BenutzerHelper.insertBenutzer(userList.get(row).getName(), userList.get(row).getPasswort(), userList.get(row).getBerechtigung());
         } catch (SQLException ex) {

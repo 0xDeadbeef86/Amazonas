@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import model.User;
 import model.UserAdresse;
 
 /**
@@ -43,7 +44,9 @@ public class UserAdresseHelper {
             String user = "";
             String vorname = "";
             String nachname = "";   
-            String adresse = "";            
+            String adresse = "";   
+            int hausnummer = -1;
+            int plz = -1;
 
             while (res.next()) {
                 userId = res.getInt("userId");
@@ -51,6 +54,9 @@ public class UserAdresseHelper {
                 vorname = res.getString("vorname");
                 nachname = res.getString("nachname");
                 adresse = res.getString("adresse");
+                hausnummer = res.getInt("hausnummer");
+                plz = res.getInt("plz");
+                
             }
 
             // set data for UserAdresse object
@@ -62,6 +68,8 @@ public class UserAdresseHelper {
             userAdresse.setVorname(vorname);
             userAdresse.setNachname(nachname);
             userAdresse.setAnschrift(adresse);
+            userAdresse.setHausnummer(hausnummer);
+            userAdresse.setPlz(plz);
             UserAdressePuffer.put(id, userAdresse);
             return userAdresse;
         } 
@@ -71,12 +79,12 @@ public class UserAdresseHelper {
         }
     }
     
-    public static boolean insertUserAdresse(int userId, String user, String vorname, String nachname, String adresse) throws SQLException {
+    public static boolean insertUserAdresse(int userId, String user, String vorname, String nachname, String adresse, int hausnummer, int plz) throws SQLException {
         try {    
             
             String sql_adresse;
-            sql_adresse = "INSERT INTO \"Adresse\" (vorname, nachname, anschrift)" 
-                + " VALUES (" + "'" + vorname + "'" + "," + "'" + nachname + "'" + "," + "'" + adresse + "'" + ");";   
+            sql_adresse = "INSERT INTO \"Adresse\" (vorname, nachname, anschrift, hausnummer, plz)" 
+                + " VALUES (" + "'" + vorname + "'" + "," + "'" + nachname + "'" + "," + "'" + adresse + "'" + ", " + "'" + hausnummer + "'" + ", " + "'" + plz + "'" + ");";   
             
             String sql_userAdresse;
             sql_userAdresse = "INSERT into \"UserAdresse\" (fk_user, fk_adresse) VALUES ((select id from \"User\" where username = '" + user
@@ -95,16 +103,51 @@ public class UserAdresseHelper {
     }    
 
     public static boolean deleteUserAdresse(int id) { 
-        String sql;
-        sql = "DELETE FROM \"UserAdresse\" "
-                + "WHERE id = " + "'" + id + "'";
-          try {
-            dbVerbindung.executeUpdate(sql);
-            return true;
-        } catch (Exception ex) {
+            String deleteRechnungArtikel;
+            deleteRechnungArtikel = 
+                    "delete from \"RechnungArtikel\" \n" +
+                    "where fk_rechnung in (\n" +
+                    "    select id from \"Rechnung\" \n" +
+                    "    where fk_user_adresse in (\n" +
+                    "        select id from \"UserAdresse\" where \"UserAdresse\".id = " + id + ")\n" +
+                    ")";
+        
+            String deleteRechnung;
+            deleteRechnung = "DELETE FROM \"Rechnung\" "
+            + "WHERE fk_user_adresse = " + "'" + id + "'";
+
+            String deleteUserAdresse;
+            deleteUserAdresse = "DELETE FROM \"UserAdresse\" "
+                    + "WHERE id = " + "'" + id + "'";
+            try {
+                
+                dbVerbindung.executeUpdate(deleteRechnungArtikel);
+                dbVerbindung.executeUpdate(deleteRechnung);
+                dbVerbindung.executeUpdate(deleteUserAdresse);
+                return true;
+            } catch (Exception ex) {
 
         }
 
         return false; //Fehler
     }    
+    
+    //Gibt eine HashMap mit Key: UserAdresseID und Value: Anschrift zurück
+    public static HashMap<Integer, String> getAlleUserAdresse() throws SQLException {
+        String sql;
+        sql = "SELECT * FROM \"vwuseradresse\" WHERE \"vwuseradresse\".user = '" + User.GetInstance().getName() + "'";
+        System.out.println(sql);
+        ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
+        HashMap<Integer, String> alleUserAdresse = new HashMap<>();
+        int id = 0;
+        String anschrift = "";
+        while (res.next()) {
+            id = Integer.parseInt(res.getString("id"));
+            anschrift = res.getString("plz") + ", " + res.getString("adresse") + " " + res.getString("hausnummer");
+            if (id != 0 && !"".equals(anschrift)) {
+                alleUserAdresse.put(id, anschrift);
+            }
+        }
+        return alleUserAdresse;
+    }
 }

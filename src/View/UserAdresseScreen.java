@@ -48,6 +48,10 @@ public class UserAdresseScreen extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         BT_löschen = new javax.swing.JButton();
+        TF_hausnummer = new javax.swing.JTextField();
+        TF_plz = new javax.swing.JTextField();
+        LBL_hausnummer = new javax.swing.JLabel();
+        LBL_plz = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,6 +90,16 @@ public class UserAdresseScreen extends javax.swing.JFrame {
             }
         });
 
+        TF_plz.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                TF_plzActionPerformed(evt);
+            }
+        });
+
+        LBL_hausnummer.setText("Hausnr.");
+
+        LBL_plz.setText("PLZ");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -96,21 +110,35 @@ public class UserAdresseScreen extends javax.swing.JFrame {
                     .addComponent(jScrollPane1)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(LBL_vorname)
-                            .addComponent(TF_vorname, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(TF_nachname, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(LBL_nachname))
-                        .addGap(32, 32, 32)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(TF_adresse, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(TF_hausnummer)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton1)
-                                .addGap(18, 18, 18)
-                                .addComponent(BT_löschen)))
+                                .addComponent(TF_plz, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(418, 418, 418))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(LBL_vorname)
+                                            .addComponent(TF_vorname, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(TF_nachname, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(LBL_nachname))
+                                        .addGap(32, 32, 32)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel1)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(TF_adresse, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(jButton1)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(BT_löschen))))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(LBL_hausnummer)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(LBL_plz)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(0, 34, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -129,8 +157,16 @@ public class UserAdresseScreen extends javax.swing.JFrame {
                     .addComponent(TF_adresse, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1)
                     .addComponent(BT_löschen))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LBL_hausnummer)
+                    .addComponent(LBL_plz))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TF_hausnummer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(TF_plz, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 35, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -143,9 +179,11 @@ public class UserAdresseScreen extends javax.swing.JFrame {
             String vorname = TF_vorname.getText().trim();
             String nachname = TF_nachname.getText().trim();
             String anschrift = TF_adresse.getText();
+            int hausnummer = Integer.parseInt(TF_hausnummer.getText());
+            int plz = Integer.parseInt(TF_plz.getText());
             
             User user = User.GetInstance();            
-            UserAdresseHelper.insertUserAdresse(user.getId(), user.getName(), vorname, nachname, anschrift);       
+            UserAdresseHelper.insertUserAdresse(user.getId(), user.getName(), vorname, nachname, anschrift, hausnummer, plz);       
             refreshUserAdresseTabelle();
             
         } catch (SQLException ex) {
@@ -168,6 +206,10 @@ public class UserAdresseScreen extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_BT_löschenActionPerformed
+
+    private void TF_plzActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TF_plzActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_TF_plzActionPerformed
 
     private void refreshUserAdresseTabelle() {
         try {
@@ -218,11 +260,15 @@ public class UserAdresseScreen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_löschen;
+    private javax.swing.JLabel LBL_hausnummer;
     private javax.swing.JLabel LBL_nachname;
+    private javax.swing.JLabel LBL_plz;
     private javax.swing.JLabel LBL_vorname;
     private javax.swing.JTable TBL_UserAdresse;
     private javax.swing.JTextField TF_adresse;
+    private javax.swing.JTextField TF_hausnummer;
     private javax.swing.JTextField TF_nachname;
+    private javax.swing.JTextField TF_plz;
     private javax.swing.JTextField TF_vorname;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;

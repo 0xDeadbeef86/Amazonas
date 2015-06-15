@@ -29,7 +29,7 @@ public class UserAdresseTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 7;
+        return 9;
     }
     
     @Override
@@ -48,6 +48,10 @@ public class UserAdresseTableModel extends AbstractTableModel {
             return "Nachname";        
         } else if (column == 6) {
             return "Adresse";
+        } else if (column == 7) {
+            return "hausnummer";
+        } else if (column == 8) {
+            return "plz";
         } else {
             return "";
         }
@@ -69,6 +73,10 @@ public class UserAdresseTableModel extends AbstractTableModel {
             return (adressList.get(rowIndex).getNachname()); 
         } else if (columnIndex == 6) {
             return (adressList.get(rowIndex).getAnschrift()); 
+        } else if (columnIndex == 7) {
+            return (adressList.get(rowIndex).getHausnummer()); 
+        } else if (columnIndex == 8) {
+            return (adressList.get(rowIndex).getPlz());             
         } else {
             return "fehlerhafter Übergabeparameter";
         }

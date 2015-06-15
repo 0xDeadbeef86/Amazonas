@@ -10,7 +10,7 @@ package model;
  * @author Christopher
  */
 public class UserAdresse {
-    
+
     int id;
     int userid;
     int adresseid;
@@ -18,6 +18,8 @@ public class UserAdresse {
     String vorname;
     String nachname;
     String anschrift;
+    int hausnummer = -1;
+    int plz = -1;
 
     public int getAdresseid() {
         return adresseid;
@@ -26,7 +28,7 @@ public class UserAdresse {
     public void setAdresseid(int adresseid) {
         this.adresseid = adresseid;
     }
-    
+
     public int getUserid() {
         return userid;
     }
@@ -34,15 +36,15 @@ public class UserAdresse {
     public void setUserid(int userid) {
         this.userid = userid;
     }
-    
+
     public String getUser() {
         return user;
     }
 
     public void setUser(String user) {
         this.user = user;
-    }   
-    
+    }
+
     public int getId() {
         return id;
     }
@@ -73,5 +75,21 @@ public class UserAdresse {
 
     public void setAnschrift(String anschrift) {
         this.anschrift = anschrift;
-    }  
+    }    
+    
+    public int getHausnummer() {
+        return hausnummer;
+    }
+
+    public void setHausnummer(int hausnummer) {
+        this.hausnummer = hausnummer;
+    }
+
+    public int getPlz() {
+        return plz;
+    }
+
+    public void setPlz(int plz) {
+        this.plz = plz;
+    }
 }

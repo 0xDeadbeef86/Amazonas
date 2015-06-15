@@ -50,7 +50,9 @@ CREATE TABLE "Adresse" (
     id SERIAL PRIMARY KEY,
     vorname VARCHAR(50) NOT NULL,
     nachname VARCHAR(50) NOT NULL,
-    anschrift VARCHAR(500) NOT NULL
+    anschrift VARCHAR(500) NOT NULL,
+    hausnummer INT,
+    plz INT
 );
 
 CREATE TABLE "UserAdresse" (
@@ -172,11 +174,19 @@ CREATE OR REPLACE VIEW vwuseradresse AS
     "User".username as User,   
     "Adresse".vorname as Vorname,  
     "Adresse".nachname as Nachname,  
-    "Adresse".anschrift as Adresse
+    "Adresse".anschrift as Adresse,
+    "Adresse".hausnummer as Hausnummer,
+    "Adresse".plz as PLZ
         FROM "Adresse"
             JOIN "UserAdresse" ON "Adresse".id = "UserAdresse".fk_adresse
             JOIN "User" ON "UserAdresse".fk_user = "User".id          
                 ORDER BY "UserAdresse".id;
+
+-- WARUM GEHT DAS NICHT???
+--CREATE OR REPLACE RULE rule_vwuseradresse_delete AS ON DELETE TO vwuseradresse DO INSTEAD (
+--    DELETE FROM "UserAdresse" WHERE fk_adresse = OLD.adresseid;
+--    DELETE FROM "Rechnung" WHERE fk_user_adresse = OLD.adresseid
+--);
 
 
 --Berechtigungen
@@ -224,12 +234,12 @@ VALUES ('Pampers', 'Pampers für Kinder mit 4-6kg', '19' , 'Sonstiges', '999', '
 
 
 --Adresse
-INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
-VALUES ('Bibo', 'Vogel', 'Anschrift');
-INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
-VALUES ('Peter', 'Meier', 'Daheim');
-INSERT INTO "Adresse" ("vorname", "nachname", "anschrift")
-VALUES ('Andreas', 'Schulz', 'Im Gems 5');
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift", "hausnummer", "plz")
+VALUES ('Bibo', 'Vogel', 'Anschrift', 1, 1111);
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift", "hausnummer", "plz")
+VALUES ('Peter', 'Meier', 'Daheim', 2, 2222);
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift", "hausnummer", "plz")
+VALUES ('Andreas', 'Schulz', 'Im Gems 5', 3, 3333);
 
 --UserAdresse
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
@@ -245,7 +255,7 @@ VALUES (1);
 INSERT INTO "Rechnung" ("fk_user_adresse") 
 VALUES (2);
 INSERT INTO "Rechnung" ("fk_user_adresse") 
-VALUES (2);
+VALUES (3);
 
 --RechnungArtikel
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")
