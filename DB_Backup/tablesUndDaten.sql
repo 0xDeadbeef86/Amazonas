@@ -201,6 +201,8 @@ VALUES (3, 'Adminstrator');
 
 --User
 INSERT INTO "vwuser" (username, passwort, berechtigung)
+VALUES ('geloeschte Benutzer', 'a', 'kein Zugriff');
+INSERT INTO "vwuser" (username, passwort, berechtigung)
 VALUES ('kunde', 'a', 'Kunde');
 INSERT INTO "vwuser" (username, passwort, berechtigung)
 VALUES ('mitarbeiter', 'a', 'Mitarbeiter');
@@ -235,6 +237,8 @@ VALUES ('Pampers', 'Pampers für Kinder mit 4-6kg', '19' , 'Sonstiges', '999', '
 
 --Adresse
 INSERT INTO "Adresse" ("vorname", "nachname", "anschrift", "hausnummer", "plz")
+VALUES ('Dummy', 'Fucker', 'Dum-Fuck-Street', 0, 666);
+INSERT INTO "Adresse" ("vorname", "nachname", "anschrift", "hausnummer", "plz")
 VALUES ('Bibo', 'Vogel', 'Anschrift', 1, 1111);
 INSERT INTO "Adresse" ("vorname", "nachname", "anschrift", "hausnummer", "plz")
 VALUES ('Peter', 'Meier', 'Daheim', 2, 2222);
@@ -243,11 +247,13 @@ VALUES ('Andreas', 'Schulz', 'Im Gems 5', 3, 3333);
 
 --UserAdresse
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
-VALUES (3, 1);
+VALUES (1, 1);
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
-VALUES (1, 2);
+VALUES (4, 2);
 INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
 VALUES (2, 3);
+INSERT INTO "UserAdresse" ("fk_user", "fk_adresse")
+VALUES (3, 4);
 
 --Rechnung
 INSERT INTO "Rechnung" ("fk_user_adresse") 
