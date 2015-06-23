@@ -24,7 +24,7 @@ public class UserAdresseHelper {
         String sql;
         sql = "SELECT * FROM \"vwuseradresse\" WHERE userId = " + "'" + userId + "';";
         ResultSet res = dbVerbindung.executeQuery(sql);
-        System.out.println(sql);
+        
         ArrayList<UserAdresse> userList = new ArrayList<>();
 
         while (res.next()) {
@@ -92,24 +92,22 @@ public class UserAdresseHelper {
             
             dbVerbindung.executeUpdate(sql_adresse);
             dbVerbindung.executeUpdate(sql_userAdresse);
-
-            System.out.println(sql_userAdresse);
-
+            
             return true;
         } catch (Exception ex) {
-            System.out.println("EXCEPTION!!!");
+            
         }
         return false; //Fehler
     }    
 
-    public static boolean deleteUserAdresse(int id) { 
+    public static boolean deleteUserAdresse(int id) {         
             String deleteRechnungArtikel;
             deleteRechnungArtikel = 
-                    "delete from \"RechnungArtikel\" \n" +
-                    "where fk_rechnung in (\n" +
-                    "    select id from \"Rechnung\" \n" +
-                    "    where fk_user_adresse in (\n" +
-                    "        select id from \"UserAdresse\" where \"UserAdresse\".id = " + id + ")\n" +
+                    "DELETE from \"RechnungArtikel\" \n" +
+                    "WHERE fk_rechnung in (\n" +
+                    "    SELECT id FROM \"Rechnung\" \n" +
+                    "    WHERE fk_user_adresse IN (\n" +
+                    "        SELECT id FROM \"UserAdresse\" WHERE \"UserAdresse\".id = " + id + ")\n" +
                     ")";
         
             String deleteRechnung;
@@ -120,8 +118,7 @@ public class UserAdresseHelper {
             deleteUserAdresse = "DELETE FROM \"UserAdresse\" "
                     + "WHERE id = " + "'" + id + "'";
             try {
-                
-                dbVerbindung.executeUpdate(deleteRechnungArtikel);
+                dbVerbindung.executeUpdate(deleteRechnungArtikel);                                
                 dbVerbindung.executeUpdate(deleteRechnung);
                 dbVerbindung.executeUpdate(deleteUserAdresse);
                 return true;
@@ -136,7 +133,7 @@ public class UserAdresseHelper {
     public static HashMap<Integer, String> getAlleUserAdresse() throws SQLException {
         String sql;
         sql = "SELECT * FROM \"vwuseradresse\" WHERE \"vwuseradresse\".user = '" + User.GetInstance().getName() + "'";
-        System.out.println(sql);
+        
         ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
         HashMap<Integer, String> alleUserAdresse = new HashMap<>();
         int id = 0;
@@ -149,5 +146,19 @@ public class UserAdresseHelper {
             }
         }
         return alleUserAdresse;
+    }
+    
+        public static boolean updateUserAdresseToDummy(int id) throws SQLException {
+        String sql;
+        sql = "UPDATE \"UserAdresse\" SET fk_user = '1' "               
+                + "where fk_user = " + "'" + id + "'";
+        try {
+            ArtikelHelper.dbVerbindung.executeUpdate(sql);
+            return true;
+        } catch (Exception ex) {
+
+        }
+
+        return false; //Fehler
     }
 }

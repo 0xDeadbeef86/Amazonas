@@ -26,15 +26,28 @@ public class BenutzerHelper {
      * @throws SQLException
      */
     public static ArrayList<Benutzer> getAlleUser() throws SQLException {
-        String sql;
-        sql = "SELECT * FROM \"User\"";
+        
+        String sql = "";
+        
+        if(User.GetInstance().getAccessLevel().equals("Adminstrator")) {
+            sql = "SELECT * FROM \"User\""; 
+        }
+        
+        else if(User.GetInstance().getAccessLevel().equals("Mitarbeiter")) {
+            sql = "SELECT * FROM \"User\" WHERE fk_berechtigung < '4'";
+        }
+               
         ResultSet res = dbVerbindung.executeQuery(sql);
 
         ArrayList<Benutzer> userList = new ArrayList<>();
 
-        while (res.next()) {
-            userList.add(getBenutzer(res.getInt("id")));
-        }
+        //if(res != null)
+            while (res.next()) {
+                userList.add(getBenutzer(res.getInt("id")));
+            }
+        
+      
+      
         return userList;
     }
     
@@ -81,8 +94,6 @@ public class BenutzerHelper {
         String sql;        
         sql = "INSERT INTO \"vwuser\" (username, passwort, berechtigung)"
         + " VALUES (" + "'" + username + "'" + "," + "'" + passwort + "'" + "," + "'" + berechtigung + "'" + ");";
-
-        System.out.println(sql);
         
         try {
             dbVerbindung.executeUpdate(sql);
@@ -96,19 +107,26 @@ public class BenutzerHelper {
     //Gibt eine HashMap mit Key: BerechtigungID und Value: Berechtigungsname zurück
     public static HashMap<Integer, String> getBerechtigungFromDB() throws SQLException {
         String sql;
+        
         sql = "SELECT * FROM \"Berechtigung\"";
+        if(!User.GetInstance().getAccessLevel().equals("Adminstrator"))
+        {
+            System.out.println("dasuzgdhasjd");
+            sql = sql.concat(" WHERE berechtigungsstufe < 3");
+        }
+        System.out.println(sql);
         ResultSet res = dbVerbindung.executeQuery(sql);
-        HashMap<Integer, String> alleKategorien = new HashMap<>();
+        HashMap<Integer, String> alleBerechtigungen = new HashMap<>();
         int id = 0;
         String berechtigung = "";
         while (res.next()) {
             id = Integer.parseInt(res.getString("id"));
             berechtigung = res.getString("titel");
             if (id != 0 && !"".equals(berechtigung)) {
-                alleKategorien.put(id, berechtigung);
+                alleBerechtigungen.put(id, berechtigung);
             }
         }
-        return alleKategorien;
+        return alleBerechtigungen;
     }
     
     public static boolean updateBenutzer(int id, String username, String passwort, String berechtigung) throws SQLException {
@@ -118,7 +136,7 @@ public class BenutzerHelper {
                 + ", passwort = " + "'" + passwort + "'"
                 + ", berechtigung = " + "'" + berechtigung + "'"
                 + " where id = " + "'" + id + "'";
-        System.out.println(sql);
+        
         try {
             dbVerbindung.executeUpdate(sql);
             return true;
@@ -129,18 +147,24 @@ public class BenutzerHelper {
         return false; //Fehler
     }
     
-    public static boolean deleteBenutzer(int id) {
+    public static boolean deleteBenutzer(int id) throws SQLException {
         String sql;
+        
+        //TODO: UserAdresse von diesem User auf Dummy-User umbiegen:
+        UserAdresseHelper.updateUserAdresseToDummy(id);
+        
         sql = "DELETE FROM \"User\" "
                 + "WHERE id = " + "'" + id + "'";
           try {
-            dbVerbindung.executeUpdate(sql);
-            return true;
+            int executed = dbVerbindung.executeUpdate(sql);
+            if(executed > 0)
+                return true;
+            //return true;
         } catch (Exception ex) {
-
+               
         }
-
-        return false; //Fehler
+        return false;
+        //return false; //Fehler
     }
     
 }

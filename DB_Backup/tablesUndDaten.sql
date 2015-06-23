@@ -79,8 +79,8 @@ CREATE TABLE "RechnungArtikel" (
 CREATE OR REPLACE VIEW v_KundeUmsatzBestellungen AS
     SELECT
     "User".username AS "Kunde", 
-    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl)) AS "Gesamtbruttoumsatz", 
-    SUM((("Artikel".nettopreis * "RechnungArtikel".anzahl))) AS "Gesamtnettoumsatz", 
+    SUM((("Artikel".nettopreis * (100 + "Mehrwertsteuer".mehrwertsteuersatz)) * "RechnungArtikel".anzahl) / 100) AS "Gesamtbruttoumsatz", 
+    SUM("Artikel".nettopreis * "RechnungArtikel".anzahl) AS "Gesamtnettoumsatz", 
     COUNT("Rechnung".id) AS "Bestellungen"
         FROM "UserAdresse"
              INNER JOIN "Rechnung" ON "UserAdresse".id = "Rechnung".fk_user_adresse
@@ -201,7 +201,7 @@ VALUES (3, 'Adminstrator');
 
 --User
 INSERT INTO "vwuser" (username, passwort, berechtigung)
-VALUES ('geloeschte Benutzer', 'a', 'kein Zugriff');
+VALUES ('geloeschte Benutzer', 'a', 'Kunde');
 INSERT INTO "vwuser" (username, passwort, berechtigung)
 VALUES ('kunde', 'a', 'Kunde');
 INSERT INTO "vwuser" (username, passwort, berechtigung)
@@ -257,11 +257,11 @@ VALUES (3, 4);
 
 --Rechnung
 INSERT INTO "Rechnung" ("fk_user_adresse") 
-VALUES (1);
-INSERT INTO "Rechnung" ("fk_user_adresse") 
 VALUES (2);
 INSERT INTO "Rechnung" ("fk_user_adresse") 
 VALUES (3);
+INSERT INTO "Rechnung" ("fk_user_adresse") 
+VALUES (4);
 
 --RechnungArtikel
 INSERT INTO "RechnungArtikel" ("fk_rechnung", "fk_artikel", "anzahl")

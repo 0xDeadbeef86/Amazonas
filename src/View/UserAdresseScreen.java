@@ -176,10 +176,15 @@ public class UserAdresseScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             // TODO add your handling code here:
+            if(!istNummmer(TF_plz.getText())) {
+                JOptionPane.showMessageDialog(this, "Für die PLZ bitte eine Zahl eingeben!");
+                return;
+            }
+            
             String vorname = TF_vorname.getText().trim();
             String nachname = TF_nachname.getText().trim();
             String anschrift = TF_adresse.getText();
-            int hausnummer = Integer.parseInt(TF_hausnummer.getText());
+            int hausnummer = Integer.parseInt(TF_hausnummer.getText());             
             int plz = Integer.parseInt(TF_plz.getText());
             
             User user = User.GetInstance();            
@@ -191,6 +196,11 @@ public class UserAdresseScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    public static boolean istNummmer(String str)
+    {
+      return str.matches("[0123456789]*");  
+    }
+    
     private void BT_löschenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_löschenActionPerformed
         // TODO add your handling code here:
         int selectedRowId = this.TBL_UserAdresse.getSelectedRow();

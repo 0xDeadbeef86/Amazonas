@@ -24,6 +24,7 @@ public class CreateAccountScreen extends javax.swing.JFrame {
     
     /**
      * Creates new form CreateUserScreen
+     * @throws java.sql.SQLException
      */
     public CreateAccountScreen() throws SQLException {
         initComponents();        
@@ -36,10 +37,10 @@ public class CreateAccountScreen extends javax.swing.JFrame {
     private void fillComboboxen() throws SQLException {
         // Kategorien         
         this.berechtigungen = BenutzerHelper.getBerechtigungFromDB();
-        ArrayList<Integer> alleIDsKategorien = new ArrayList<>();
-        alleIDsKategorien.addAll(this.berechtigungen.keySet());
-        for (int i = 0; i < alleIDsKategorien.size(); i++) {
-            this.CB_Berechtigung.addItem(this.berechtigungen.get(alleIDsKategorien.get(i)));
+        ArrayList<Integer> alleIDBerechtigungen = new ArrayList<>();
+        alleIDBerechtigungen.addAll(this.berechtigungen.keySet());
+        for (int i = 1; i < alleIDBerechtigungen.size(); i++) {
+            this.CB_Berechtigung.addItem(this.berechtigungen.get(alleIDBerechtigungen.get(i)));
         }        
     }
 
@@ -198,8 +199,16 @@ public class CreateAccountScreen extends javax.swing.JFrame {
         if (selectedRowId != -1) {
             BT_Löschen.setEnabled(true);
             benutzerId = (int) this.TBL_Account.getModel().getValueAt(selectedRowId, 3);
-            if (benutzerId != -1) {                
-                BenutzerHelper.deleteBenutzer(benutzerId);
+            if (benutzerId > 1) {                
+                boolean isUserDeleted = false;
+                try {
+                    isUserDeleted = BenutzerHelper.deleteBenutzer(benutzerId);
+                } catch (SQLException ex) {
+                    Logger.getLogger(CreateAccountScreen.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                if(!isUserDeleted)
+                    JOptionPane.showMessageDialog(this, "Kann nicht gelöscht werden (Abhängigkeit von: blabla");
+                
                 refreshBenutzerTabelle();
             } else {
                 JOptionPane.showMessageDialog(this, "Fehler: Der selektiere Benutzer konnte nicht in der Datenbank gefunden werden");
@@ -237,6 +246,7 @@ public class CreateAccountScreen extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 try {
                     new CreateAccountScreen().setVisible(true);

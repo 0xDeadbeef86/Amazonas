@@ -126,26 +126,27 @@ public class ArtikelHelper {
         sql = "SELECT * FROM \"vwartikel\" WHERE"; 
         
         // filter aktiv/inaktiv articles
-        if(inaktiveZusaetzlichAnzeigen)
-            sql = sql.concat(" aktiv = true ");
-        
+        if(!inaktiveZusaetzlichAnzeigen)
+            sql = sql.concat(" aktiv = true AND");
+
+        if(kategorie != "Alles")
         // filter kategorie        
-        sql = sql.concat(" kategorie = " + "'" + kategorie + "' ");
+        sql = sql.concat(" kategorie = " + "'" + kategorie + "' AND ");
         
         // search limitation via texfield
-        String sqlSearchExtension =  "AND name ILIKE " + "'%" + suchtext + "%' ";
+        String sqlSearchExtension =  " name ILIKE " + "'%" + suchtext + "%' ";
         if(!suchtext.isEmpty())
             sql = sql.concat(sqlSearchExtension);
         
         // finish the query
         sql = sql.concat(";");      
-    
         ResultSet res = ArtikelHelper.dbVerbindung.executeQuery(sql);
         ArrayList<Artikel> artikelList = new ArrayList<>();
 
-        while (res.next()) {
-            artikelList.add(getArticle(res.getInt("id")));
-        }
+        if(res != null)
+            while (res.next()) {
+                artikelList.add(getArticle(res.getInt("id")));
+            }
         return artikelList;
     }
 

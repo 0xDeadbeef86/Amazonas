@@ -47,19 +47,19 @@ public class HauptScreen extends javax.swing.JFrame {
         BT_CreateAccount.setVisible(false);
         CB_InaktiveAnzeigen.setVisible(false);
         BT_Statistiken.setVisible(false);
-        System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
+        //System.out.println("AccessLevel: " + User.GetInstance().getAccessLevel());
         String accessLevel = User.GetInstance().getAccessLevel();
         if (accessLevel.equals("Mitarbeiter") || accessLevel.equals("Adminstrator")) {
             btnEdit.setVisible(true);
             BT_NeuerArtikel.setVisible(true);
             CB_InaktiveAnzeigen.setVisible(true);
+            BT_CreateAccount.setVisible(true);
         }
         if (accessLevel.equals("Adminstrator")) {
             BT_Statistiken.setVisible(true);
             BT_CreateAccount.setVisible(true);
         }
-        //int index = this.TBL_Artikel.getSelectedRow();
-        //System.out.println(index);
+        
     }
     
         //Füllt die Comboboxen mit Werten
@@ -68,6 +68,7 @@ public class HauptScreen extends javax.swing.JFrame {
         this.kategorien = ArtikelHelper.getKategorienFromDB();
         ArrayList<Integer> alleIDsKategorien = new ArrayList<>();
         alleIDsKategorien.addAll(this.kategorien.keySet());
+        this.CB_Kategorie.addItem("Alles");
         for (int i = 0; i < alleIDsKategorien.size(); i++) {
             this.CB_Kategorie.addItem(this.kategorien.get(alleIDsKategorien.get(i)));
         }
@@ -96,6 +97,7 @@ public class HauptScreen extends javax.swing.JFrame {
         LBL_SUCHE = new javax.swing.JLabel();
         BT_Adresse = new javax.swing.JButton();
         BT_CreateAccount = new javax.swing.JButton();
+        BT_Suche = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -189,6 +191,13 @@ public class HauptScreen extends javax.swing.JFrame {
             }
         });
 
+        BT_Suche.setText("Suche");
+        BT_Suche.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BT_SucheActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -207,7 +216,10 @@ public class HauptScreen extends javax.swing.JFrame {
                                 .addGap(92, 92, 92)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(LBL_SUCHE)
-                            .addComponent(TF_Suche, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(TF_Suche, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(BT_Suche))))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -250,8 +262,9 @@ public class HauptScreen extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(TF_Suche, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(CB_Kategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
+                    .addComponent(CB_Kategorie, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BT_Suche))
+                .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -297,7 +310,6 @@ public class HauptScreen extends javax.swing.JFrame {
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
         // TODO add your handling code here:
-        //System.out.println("TODO: Formular für \"Artikel\" bearbeiten");
         int selectedRowId = this.TBL_Artikel.getSelectedRow();
 
         int artikelId = -1;
@@ -335,6 +347,8 @@ public class HauptScreen extends javax.swing.JFrame {
         try {
             this.TBL_Artikel.setModel(new ArtikelTableModel(this.auchInaktiveAnzeigen));
             this.btnEdit.setEnabled(false);
+            this.TF_Suche.setText("");
+            this.CB_Kategorie.setSelectedIndex(0);
         } catch (SQLException ex) {
             Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -405,6 +419,15 @@ public class HauptScreen extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_BT_AdresseActionPerformed
 
+    private void BT_SucheActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_SucheActionPerformed
+        try {
+            // TODO add your handling code here:
+            sucheArtikel();
+        } catch (SQLException ex) {
+            Logger.getLogger(HauptScreen.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_BT_SucheActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BT_Adresse;
@@ -412,6 +435,7 @@ public class HauptScreen extends javax.swing.JFrame {
     private javax.swing.JButton BT_NeuerArtikel;
     private javax.swing.JButton BT_Reload;
     private javax.swing.JButton BT_Statistiken;
+    private javax.swing.JButton BT_Suche;
     private javax.swing.JButton BT_ZumWarenkorb;
     private javax.swing.JCheckBox CB_InaktiveAnzeigen;
     private javax.swing.JComboBox CB_Kategorie;

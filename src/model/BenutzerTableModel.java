@@ -69,7 +69,7 @@ public class BenutzerTableModel extends AbstractTableModel {
     
     @Override
     public boolean isCellEditable(int row, int col) {
-        if(col < 3)
+        if(col < 2)
             return true;
         else
             return false;

@@ -103,7 +103,14 @@ public class AdressenScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BT_BestellenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_BestellenActionPerformed
-        if (BestellungHelper.insertBestellung(1, this.alleBestellenArtikel)) //Bestellung erfolgreich in die DB eingetragen
+        String selectedObj = (String) CB_Adresse.getSelectedItem();
+        
+        if(selectedObj == null) {
+            JOptionPane.showMessageDialog(this, "Sie müssen noch eine Adresse anlegen!");
+            return;
+        }
+        
+        else if (BestellungHelper.insertBestellung(1, this.alleBestellenArtikel)) //Bestellung erfolgreich in die DB eingetragen
         {
             JOptionPane.showMessageDialog(this, "Ihre Bestellung wurde erfolgreich gespeichert");
             //Warenkorb leeren

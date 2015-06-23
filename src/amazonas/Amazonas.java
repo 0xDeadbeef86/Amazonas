@@ -17,16 +17,8 @@ public class Amazonas {
      * @param args the command line arguments   */
     
     
-    public static void main(String[] args) {
-        
-        startGUI();
-                
-        //MyDatabaseConnection connection = new MyDatabaseConnection();
-        //connection.connect();
-        //System.out.println(connection.executeUpdate("UPDATE \"Mehrwertsteuer\" SET mehrwertsteuersatz='10' WHERE mehrwertsteuersatz='5' AND id = '1'"));
-        //connection.disconnect();   
-        
-        
+    public static void main(String[] args) {        
+        startGUI();   
     }    
     
     private static void startGUI() {

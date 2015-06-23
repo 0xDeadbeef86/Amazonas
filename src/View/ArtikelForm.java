@@ -45,6 +45,7 @@ public class ArtikelForm extends javax.swing.JFrame {
         this.CheckBox_Aktiv.setSelected(true);
         this.LB_Aktion.setText("Artikel anlegen");
         this.BT_OK.setText("Artikel anlegen");
+        this.BT_DELETE.setVisible(false);
     }
 
     public ArtikelForm(Artikel artikel) throws SQLException {
@@ -279,6 +280,13 @@ public class ArtikelForm extends javax.swing.JFrame {
     }//GEN-LAST:event_CB_MehrwertsteuersatzActionPerformed
 
     private void BT_DELETEActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BT_DELETEActionPerformed
+        
+        int returnValue = JOptionPane.showConfirmDialog(this, "Achtung durch das Löschen von Artikeln wird die Statistik verfälscht! Wollen Sie das wirklcih tun?");
+        if(returnValue == 0)
+            loescheArtikel ();
+    }//GEN-LAST:event_BT_DELETEActionPerformed
+
+    private void loescheArtikel () {
         int artikelId = artikel.getId();
         if (ArtikelHelper.deleteArticle(artikelId)) {
             ArtikelHelper.artikelPuffer.remove(artikelId);
@@ -287,10 +295,9 @@ public class ArtikelForm extends javax.swing.JFrame {
 
         } else {
             JOptionPane.showMessageDialog(this, "Fehler: Artikel konnte nicht gelöscht werden");
-        }
-        ;
-    }//GEN-LAST:event_BT_DELETEActionPerformed
-
+        }        
+    }
+    
     private void erstelleArtikel() {
         boolean aktiv = false;
         String name = "";
@@ -345,7 +352,6 @@ public class ArtikelForm extends javax.swing.JFrame {
     }
 
     private void bearbeiteArtikel() throws SQLException {
-        System.out.println("bearbeiten");
         int id = artikel.getId();
         String name = this.TB_Name.getText();
         String beschreibung = this.TF_Beschreibung.getText();
